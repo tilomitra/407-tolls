@@ -4,8 +4,9 @@ import {
   DirectionSchema,
   ResolvedTimeSlotSchema,
   calculateToll,
+  computeAllTimeSlotCosts,
 } from "@407-etr/core";
-import { loadInterchanges } from "@/lib/load-toll-points";
+import { getInterchangeById } from "@/lib/load-toll-points";
 
 const TollRequestSchema = z.object({
   entryId: z.string(),
@@ -28,9 +29,8 @@ export async function POST(req: Request) {
     }
 
     const { entryId, exitId, direction, timeSlot, hasTransponder } = parsed.data;
-    const interchanges = loadInterchanges();
-    const entry = interchanges.find((ic) => ic.id === entryId);
-    const exit = interchanges.find((ic) => ic.id === exitId);
+    const entry = getInterchangeById(entryId);
+    const exit = getInterchangeById(exitId);
 
     if (!entry || !exit) {
       return NextResponse.json(
@@ -39,17 +39,25 @@ export async function POST(req: Request) {
       );
     }
 
-    const result = calculateToll({
+    const shared = {
       entryZone: entry.zone,
       exitZone: exit.zone,
       entryKm: entry.km,
       exitKm: exit.km,
       direction,
-      timeSlot,
       hasTransponder,
-    });
+    };
 
-    return NextResponse.json(result);
+    const result = calculateToll({ ...shared, timeSlot });
+    const byTimeSlot = computeAllTimeSlotCosts(shared);
+
+    return NextResponse.json({ ...result, byTimeSlot }, {
+      headers: {
+        // Rates are static for the year. Cache in browser for 1 hour,
+        // allow CDN to serve stale while revalidating for up to 24 hours.
+        "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400",
+      },
+    });
   } catch {
     return NextResponse.json(
       { error: "Internal server error" },

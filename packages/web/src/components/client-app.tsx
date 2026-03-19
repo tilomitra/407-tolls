@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import type { TollPoint, Interchange, TollBreakdown } from "@407-etr/core";
+import type { TollPoint, Interchange, TollResponse } from "@407-etr/core";
 import { HighwayMap } from "./map/highway-map";
 import { ZoneLegend } from "./map/zone-legend";
 import { RouteForm } from "./form/route-form";
 import { TollBreakdownView } from "./results/toll-breakdown";
+import { TimeChart } from "./results/time-chart";
 import { FreeSectionCallout } from "./results/free-section-callout";
 import { Card } from "./ui/card";
 
@@ -18,7 +19,7 @@ export function ClientApp({
   interchanges: Interchange[];
   highwayGeometry: Array<[number, number]>;
 }) {
-  const [tollResult, setTollResult] = useState<TollBreakdown | null>(null);
+  const [tollResult, setTollResult] = useState<TollResponse | null>(null);
   const [selectedRoute, setSelectedRoute] = useState<{
     entryId: string;
     exitId: string;
@@ -29,7 +30,7 @@ export function ClientApp({
     entryId,
     exitId,
   }: {
-    result: TollBreakdown;
+    result: TollResponse;
     entryId: string;
     exitId: string;
   }) {
@@ -61,9 +62,18 @@ export function ClientApp({
         <div className="lg:col-span-2">
           <RouteForm onTollResult={handleTollResult} />
         </div>
-        <div className="lg:col-span-3">
+        <div className="lg:col-span-3 space-y-6">
           {tollResult ? (
-            <TollBreakdownView breakdown={tollResult} />
+            <>
+              <TollBreakdownView breakdown={tollResult} />
+              {tollResult.byTimeSlot.length > 0 && (
+                <TimeChart
+                  data={tollResult.byTimeSlot}
+                  currentSlot={tollResult.timeSlot.slot}
+                  currentDayType={tollResult.timeSlot.dayType}
+                />
+              )}
+            </>
           ) : (
             <Card className="flex h-full items-center justify-center p-12">
               <div className="text-center">
