@@ -31,13 +31,20 @@ export function TollBreakdownView({ breakdown }: { breakdown: TollBreakdown }) {
     breakdown.timeSlot.slot === "7am" ||
     breakdown.timeSlot.slot === "330pm";
 
+  const totalDistanceKm = breakdown.perZone.reduce((sum, z) => sum + z.distanceKm, 0);
+
   return (
     <Card>
       <CardHeader className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <h2 className="text-sm font-semibold text-slate-900">Toll Estimate</h2>
-          <DirectionBadge direction={breakdown.direction} />
-          {isPeak && <Badge variant="warning">Peak</Badge>}
+        <div>
+          <div className="flex items-center gap-3">
+            <h2 className="text-sm font-semibold text-slate-900">Estimated Toll</h2>
+            <DirectionBadge direction={breakdown.direction} />
+            {isPeak && <Badge variant="warning">Peak</Badge>}
+          </div>
+          <p className="mt-0.5 text-xs text-slate-400">
+            {totalDistanceKm.toFixed(1)} km across {breakdown.perZone.length} {breakdown.perZone.length === 1 ? "zone" : "zones"}
+          </p>
         </div>
         <span className="text-2xl font-bold tracking-tight text-slate-900">
           {formatDollars(breakdown.totalCents)}
@@ -90,10 +97,15 @@ export function TollBreakdownView({ breakdown }: { breakdown: TollBreakdown }) {
               </div>
             )}
             <div className="flex justify-between border-t border-slate-100 pt-2 text-base font-semibold text-slate-900">
-              <span>Total</span>
+              <span>Estimated total</span>
               <span className="tabular-nums">{formatDollars(breakdown.totalCents)}</span>
             </div>
           </div>
+          <p className="mt-3 text-xs leading-relaxed text-slate-400">
+            This is an estimate based on 2026 published rates and approximate
+            distances. Actual charges on your 407 ETR bill may differ slightly
+            due to precise gantry-to-gantry measurements.
+          </p>
         </div>
       </CardBody>
     </Card>
