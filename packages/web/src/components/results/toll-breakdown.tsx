@@ -1,12 +1,9 @@
-import type { TollBreakdown } from "@407-etr/core";
+import type { TollBreakdown, Zone } from "@407-etr/core";
 import { Card, CardHeader, CardBody } from "../ui/card";
 import { Badge } from "../ui/badge";
+import { ShareButton } from "../ui/share-button";
 import { zoneColors } from "@/lib/design/tokens";
-import type { Zone } from "@407-etr/core";
-
-function formatDollars(cents: number): string {
-  return `$${(cents / 100).toFixed(2)}`;
-}
+import { formatDollars } from "@/lib/format";
 
 function DirectionBadge({ direction }: { direction: string }) {
   const isEast = direction === "eastbound";
@@ -26,7 +23,22 @@ function ZoneBadge({ zone }: { zone: Zone }) {
   );
 }
 
-export function TollBreakdownView({ breakdown }: { breakdown: TollBreakdown }) {
+function buildShareUrl(entryId: string, exitId: string, breakdown: TollBreakdown): string {
+  const { dayType, slot } = breakdown.timeSlot;
+  const day = dayType === "weekday" ? "weekday" : "weekend";
+  const transponder = breakdown.cameraChargeCents === null;
+  return `/trip/${entryId}-to-${exitId}?day=${day}&time=${slot}&transponder=${transponder}`;
+}
+
+export function TollBreakdownView({
+  breakdown,
+  entryId,
+  exitId,
+}: {
+  breakdown: TollBreakdown;
+  entryId?: string;
+  exitId?: string;
+}) {
   const isPeak =
     breakdown.timeSlot.slot === "7am" ||
     breakdown.timeSlot.slot === "330pm";
@@ -46,9 +58,14 @@ export function TollBreakdownView({ breakdown }: { breakdown: TollBreakdown }) {
             {totalDistanceKm.toFixed(1)} km across {breakdown.perZone.length} {breakdown.perZone.length === 1 ? "zone" : "zones"}
           </p>
         </div>
-        <span className="text-2xl font-bold tracking-tight text-slate-900">
-          {formatDollars(breakdown.totalCents)}
-        </span>
+        <div className="flex items-center gap-3">
+          <span className="text-2xl font-bold tracking-tight text-slate-900">
+            {formatDollars(breakdown.totalCents)}
+          </span>
+          {entryId && exitId && (
+            <ShareButton url={buildShareUrl(entryId, exitId, breakdown)} />
+          )}
+        </div>
       </CardHeader>
 
       <CardBody className="p-0">
@@ -87,6 +104,10 @@ export function TollBreakdownView({ breakdown }: { breakdown: TollBreakdown }) {
         <div className="border-t border-slate-100 px-6 py-3">
           <div className="space-y-1.5">
             <div className="flex justify-between text-sm text-slate-500">
+              <span>Toll (distance-based)</span>
+              <span className="tabular-nums">{formatDollars(breakdown.tollCents)}</span>
+            </div>
+            <div className="flex justify-between text-sm text-slate-500">
               <span>Trip charge</span>
               <span className="tabular-nums">{formatDollars(breakdown.tripChargeCents)}</span>
             </div>
@@ -101,10 +122,25 @@ export function TollBreakdownView({ breakdown }: { breakdown: TollBreakdown }) {
               <span className="tabular-nums">{formatDollars(breakdown.totalCents)}</span>
             </div>
           </div>
+
+          <div className="mt-3 rounded-lg bg-slate-50 px-3 py-2.5 text-xs text-slate-500">
+            <p className="font-medium text-slate-600 mb-1">Fee breakdown</p>
+            <p>Trip charge ({formatDollars(breakdown.tripChargeCents)}) applies to every trip regardless of transponder.</p>
+            {breakdown.cameraChargeCents !== null && (
+              <>
+                <p className="text-amber-600 mt-0.5">
+                  Camera charge ({formatDollars(breakdown.cameraChargeCents)}) applies because you don't have a transponder. With a transponder, this trip would be {formatDollars(breakdown.totalCents - breakdown.cameraChargeCents)}.
+                </p>
+                <p className="text-amber-600 mt-0.5">
+                  Without a transponder, 407 ETR also charges a $5.00/month account fee on your bill.
+                </p>
+              </>
+            )}
+          </div>
+
           <p className="mt-3 text-xs leading-relaxed text-slate-400">
-            This is an estimate based on 2026 published rates and approximate
-            distances. Actual charges on your 407 ETR bill may differ slightly
-            due to precise gantry-to-gantry measurements.
+            Estimate based on 2026 published rates and approximate distances.
+            Actual charges may differ slightly due to gantry-to-gantry measurements.
           </p>
         </div>
       </CardBody>
