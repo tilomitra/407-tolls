@@ -1,5 +1,6 @@
 import { gantries, interchanges, highwayGeometry } from "@/data";
 import { ClientApp } from "@/components/client-app";
+import { Footer } from "@/components/ui/footer";
 
 export default function Home() {
   return (
@@ -27,6 +28,8 @@ export default function Home() {
           highwayGeometry={highwayGeometry}
         />
       </main>
+
+      <Footer />
     </div>
   );
 }
