@@ -9,9 +9,9 @@ const ZONE_END_KM: number[] = new Array(13).fill(0);
 
 for (let i = 0; i < ZONE_BOUNDARIES.length; i++) {
   const boundary = ZONE_BOUNDARIES[i]!;
-  const nextKm = ZONE_BOUNDARIES[i + 1]?.km ?? EASTERN_TERMINUS_KM;
-  ZONE_LENGTHS[boundary.zone] = nextKm - boundary.km;
-  ZONE_START_KM[boundary.zone] = boundary.km;
+  const nextKm = ZONE_BOUNDARIES[i + 1]?.startKm ?? EASTERN_TERMINUS_KM;
+  ZONE_LENGTHS[boundary.zone] = nextKm - boundary.startKm;
+  ZONE_START_KM[boundary.zone] = boundary.startKm;
   ZONE_END_KM[boundary.zone] = nextKm;
 }
 

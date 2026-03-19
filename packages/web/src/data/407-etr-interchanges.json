@@ -1,0 +1,945 @@
+[
+  {
+    "id": "1",
+    "apiId": 1,
+    "name": "QEW",
+    "nameFr": "QEW",
+    "km": 0,
+    "zone": 1,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.336964,
+      "lng": -79.83039
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "2",
+    "apiId": 2,
+    "name": "Dundas Street",
+    "nameFr": "Dundas Street",
+    "km": 6.062,
+    "zone": 1,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.383553,
+      "lng": -79.83348
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "3",
+    "apiId": 3,
+    "name": "Appleby Line",
+    "nameFr": "Appleby Line",
+    "km": 9.909,
+    "zone": 2,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.415417,
+      "lng": -79.820274
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "4",
+    "apiId": 4,
+    "name": "Bronte Road",
+    "nameFr": "Bronte Road",
+    "km": 14.062,
+    "zone": 2,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.445324,
+      "lng": -79.78993
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "5",
+    "apiId": 5,
+    "name": "Neyagawa Blvd.",
+    "nameFr": "Neyagawa Blvd.",
+    "km": 18.989,
+    "zone": 2,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.48436,
+      "lng": -79.76604
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "6",
+    "apiId": 6,
+    "name": "Trafalgar Road",
+    "nameFr": "Trafalgar Road",
+    "km": 22.216,
+    "zone": 3,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.508827,
+      "lng": -79.74789
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "7",
+    "apiId": 7,
+    "name": "Highway 403",
+    "nameFr": "Highway 403",
+    "km": 25.133,
+    "zone": 3,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.527954,
+      "lng": -79.725365
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "8",
+    "apiId": 8,
+    "name": "Britannia Road",
+    "nameFr": "Britannia Road",
+    "km": 29.432,
+    "zone": 4,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.55225,
+      "lng": -79.76278
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "9",
+    "apiId": 9,
+    "name": "Derry Road",
+    "nameFr": "Derry Road",
+    "km": 32.505,
+    "zone": 4,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.571613,
+      "lng": -79.7899
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "10",
+    "apiId": 10,
+    "name": "Highway 401",
+    "nameFr": "Highway 401",
+    "km": 35.012,
+    "zone": 4,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.5882,
+      "lng": -79.810356
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "11",
+    "apiId": 11,
+    "name": "Mississauga Road",
+    "nameFr": "Mississauga Road",
+    "km": 40.303,
+    "zone": 5,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.61775,
+      "lng": -79.7623
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "12",
+    "apiId": 12,
+    "name": "Mavis Road",
+    "nameFr": "Mavis Road",
+    "km": 43.542,
+    "zone": 5,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.641018,
+      "lng": -79.7369
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "13",
+    "apiId": 13,
+    "name": "Hurontario",
+    "nameFr": "Hurontario",
+    "km": 45.852,
+    "zone": 5,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.653637,
+      "lng": -79.71656
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "14",
+    "apiId": 14,
+    "name": "Highway 410",
+    "nameFr": "Highway 410",
+    "km": 47.999,
+    "zone": 5,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.66886,
+      "lng": -79.70015
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "15",
+    "apiId": 15,
+    "name": "Dixie Road",
+    "nameFr": "Dixie Road",
+    "km": 50.222,
+    "zone": 6,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.687614,
+      "lng": -79.691086
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "16",
+    "apiId": 16,
+    "name": "Bramalea Road",
+    "nameFr": "Bramalea Road",
+    "km": 51.703,
+    "zone": 6,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": false
+    },
+    "westbound": {
+      "hasOnRamp": false,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.699757,
+      "lng": -79.683556
+    },
+    "note": "Partial interchange with access to 407 East only.",
+    "noteFr": null
+  },
+  {
+    "id": "17",
+    "apiId": 17,
+    "name": "Airport Road",
+    "nameFr": "Airport Road",
+    "km": 54.881,
+    "zone": 6,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.726982,
+      "lng": -79.673515
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "18",
+    "apiId": 18,
+    "name": "Goreway Drive",
+    "nameFr": "Goreway Drive",
+    "km": 56.267,
+    "zone": 6,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": false
+    },
+    "westbound": {
+      "hasOnRamp": false,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.735764,
+      "lng": -79.66153
+    },
+    "note": "Partial interchange with access to 407 East only.",
+    "noteFr": null
+  },
+  {
+    "id": "19",
+    "apiId": 19,
+    "name": "Highway 427",
+    "nameFr": "Highway 427",
+    "km": 59.502,
+    "zone": 6,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.754635,
+      "lng": -79.63159
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "20",
+    "apiId": 20,
+    "name": "Highway 27",
+    "nameFr": "Highway 27",
+    "km": 60.826,
+    "zone": 7,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.758316,
+      "lng": -79.61598
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "22",
+    "apiId": 22,
+    "name": "Pine Valley Drive",
+    "nameFr": "Pine Valley Drive",
+    "km": 64.887,
+    "zone": 7,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.773964,
+      "lng": -79.570526
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "23",
+    "apiId": 23,
+    "name": "Weston Road",
+    "nameFr": "Weston Road",
+    "km": 67.057,
+    "zone": 7,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": false,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": false
+    },
+    "location": {
+      "lat": 43.781353,
+      "lng": -79.545685
+    },
+    "note": "Partial interchange with access to 407 West only.",
+    "noteFr": null
+  },
+  {
+    "id": "24",
+    "apiId": 24,
+    "name": "Highway 400",
+    "nameFr": "Highway 400",
+    "km": 67.748,
+    "zone": 7,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.78308,
+      "lng": -79.53736
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "25",
+    "apiId": 25,
+    "name": "Jane Street",
+    "nameFr": "Jane Street",
+    "km": 68.93,
+    "zone": 8,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.786068,
+      "lng": -79.52338
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "26",
+    "apiId": 26,
+    "name": "Keele Street",
+    "nameFr": "Keele Street",
+    "km": 71.129,
+    "zone": 8,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.792416,
+      "lng": -79.49747
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "28",
+    "apiId": 28,
+    "name": "Dufferin Street",
+    "nameFr": "Dufferin Street",
+    "km": 74.65,
+    "zone": 8,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.817913,
+      "lng": -79.477104
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "29",
+    "apiId": 29,
+    "name": "Bathurst Street",
+    "nameFr": "Bathurst Street",
+    "km": 76.844,
+    "zone": 8,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.82754,
+      "lng": -79.45393
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "30",
+    "apiId": 30,
+    "name": "Yonge Street",
+    "nameFr": "Yonge Street",
+    "km": 79.016,
+    "zone": 8,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.834274,
+      "lng": -79.42864
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "31",
+    "apiId": 31,
+    "name": "Bayview Avenue",
+    "nameFr": "Bayview Avenue",
+    "km": 80.946,
+    "zone": 9,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.83818,
+      "lng": -79.40605
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "32",
+    "apiId": 32,
+    "name": "Leslie Street",
+    "nameFr": "Leslie Street",
+    "km": 83.022,
+    "zone": 9,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": false,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": false
+    },
+    "location": {
+      "lat": 43.83716,
+      "lng": -79.38048
+    },
+    "note": "Partial interchange with access to 407 West only.",
+    "noteFr": null
+  },
+  {
+    "id": "33",
+    "apiId": 33,
+    "name": "Highway 404",
+    "nameFr": "Highway 404",
+    "km": 84.019,
+    "zone": 9,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.83902,
+      "lng": -79.36828
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "34",
+    "apiId": 34,
+    "name": "Woodbine Avenue",
+    "nameFr": "Woodbine Avenue",
+    "km": 85.048,
+    "zone": 10,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.84098,
+      "lng": -79.3558
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "35",
+    "apiId": 35,
+    "name": "Warden Avenue",
+    "nameFr": "Warden Avenue",
+    "km": 87.126,
+    "zone": 10,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.845135,
+      "lng": -79.33061
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "36",
+    "apiId": 36,
+    "name": "Kennedy Road",
+    "nameFr": "Kennedy Road",
+    "km": 89.056,
+    "zone": 10,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.850277,
+      "lng": -79.30768
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "37",
+    "apiId": 37,
+    "name": "McCowan Road",
+    "nameFr": "McCowan Road",
+    "km": 91.271,
+    "zone": 10,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.856274,
+      "lng": -79.28141
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "38",
+    "apiId": 38,
+    "name": "Markham Road",
+    "nameFr": "Markham Road",
+    "km": 93.374,
+    "zone": 11,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.863426,
+      "lng": -79.25727
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "39",
+    "apiId": 39,
+    "name": "Ninth Line",
+    "nameFr": "Ninth Line",
+    "km": 95.448,
+    "zone": 11,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.870415,
+      "lng": -79.23341
+    },
+    "note": "Partial interchange with access to 407 East and West from Ninth Line North only.",
+    "noteFr": null
+  },
+  {
+    "id": "40",
+    "apiId": 40,
+    "name": "Donald Cousens Pkwy",
+    "nameFr": "Donald Cousens Pkwy",
+    "km": 97.134,
+    "zone": 11,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.874744,
+      "lng": -79.21327
+    },
+    "note": "Partial interchange with access to 407 East and West from Donald Cousens Parkway North only.",
+    "noteFr": null
+  },
+  {
+    "id": "41",
+    "apiId": 41,
+    "name": "York Durham Line",
+    "nameFr": "York Durham Line",
+    "km": 100.11,
+    "zone": 11,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.89095,
+      "lng": -79.18593
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "42",
+    "apiId": 42,
+    "name": "Whites Road",
+    "nameFr": "Whites Road",
+    "km": 103.881,
+    "zone": 12,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.905468,
+      "lng": -79.14263
+    },
+    "note": null,
+    "noteFr": null
+  },
+  {
+    "id": "44",
+    "apiId": 44,
+    "name": "Brock Road",
+    "nameFr": "Brock Road",
+    "km": 107.964,
+    "zone": 12,
+    "isFree": false,
+    "eastbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "westbound": {
+      "hasOnRamp": true,
+      "hasOffRamp": true
+    },
+    "location": {
+      "lat": 43.916576,
+      "lng": -79.10049
+    },
+    "note": null,
+    "noteFr": null
+  }
+]
