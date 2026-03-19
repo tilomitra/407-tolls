@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { TollBreakdown, Direction, ResolvedTimeSlot, Zone, DayType, WeekdaySlot, WeekendSlot } from "@407-etr/core";
+import type { TollResponse, Direction, ResolvedTimeSlot, Zone, DayType, WeekdaySlot, WeekendSlot } from "@407-etr/core";
 import { Card, CardBody } from "../ui/card";
 import { Select } from "../ui/select";
 import { Button } from "../ui/button";
@@ -105,7 +105,7 @@ function resolveCurrentSlot(): { dayType: DayType; slot: string } {
 export function RouteForm({
   onTollResult,
 }: {
-  onTollResult: (args: { result: TollBreakdown; entryId: string; exitId: string }) => void;
+  onTollResult: (args: { result: TollResponse; entryId: string; exitId: string }) => void;
 }) {
   const currentSlot = resolveCurrentSlot();
 

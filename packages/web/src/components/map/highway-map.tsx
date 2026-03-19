@@ -1,28 +1,14 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { TollPoint, Interchange } from "@407-etr/core";
+import { PolylineSpatialIndex } from "@407-etr/core";
 import { zoneColors, FREE_DOT_COLOR } from "@/lib/design/tokens";
 
 function getZoneColor(zone: number): string {
   return zoneColors[zone as keyof typeof zoneColors]?.dot ?? "#94a3b8";
-}
-
-function findNearestPointIndex(points: Array<[number, number]>, target: [number, number]): number {
-  let bestIdx = 0;
-  let bestDist = Infinity;
-  for (let i = 0; i < points.length; i++) {
-    const dx = points[i]![0] - target[0];
-    const dy = points[i]![1] - target[1];
-    const d = dx * dx + dy * dy;
-    if (d < bestDist) {
-      bestDist = d;
-      bestIdx = i;
-    }
-  }
-  return bestIdx;
 }
 
 export function HighwayMap({
@@ -38,11 +24,14 @@ export function HighwayMap({
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
-  // Store latest selectedRoute in a ref so the load callback can access it
   const selectedRouteRef = useRef(selectedRoute);
   selectedRouteRef.current = selectedRoute;
 
-  // Function to update route visualization on the map
+  const spatialIndex = useMemo(
+    () => highwayGeometry.length > 0 ? new PolylineSpatialIndex(highwayGeometry) : null,
+    [highwayGeometry],
+  );
+
   const updateRouteRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
@@ -219,8 +208,8 @@ export function HighwayMap({
         const entryCoord: [number, number] = [entry.location.lng, entry.location.lat];
         const exitCoord: [number, number] = [exit.location.lng, exit.location.lat];
 
-        const entryIdx = findNearestPointIndex(highwayGeometry, entryCoord);
-        const exitIdx = findNearestPointIndex(highwayGeometry, exitCoord);
+        const entryIdx = spatialIndex ? spatialIndex.findNearest(entryCoord) : 0;
+        const exitIdx = spatialIndex ? spatialIndex.findNearest(exitCoord) : 0;
         const startIdx = Math.min(entryIdx, exitIdx);
         const endIdx = Math.max(entryIdx, exitIdx);
         const segment = highwayGeometry.slice(startIdx, endIdx + 1);

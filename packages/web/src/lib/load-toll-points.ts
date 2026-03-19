@@ -4,8 +4,10 @@ import type { TollPoint, Interchange, OnRamp, Direction } from "@407-etr/core";
 
 const DATA_DIR = join(process.cwd(), "..", "..", "data");
 
+// Module-level caches — populated once on first access, reused for the process lifetime.
 let cachedTollPoints: TollPoint[] | null = null;
 let cachedInterchanges: Interchange[] | null = null;
+let cachedInterchangeMap: Map<string, Interchange> | null = null;
 let cachedOnRamps: Record<Direction, OnRamp[]> | null = null;
 
 export function loadTollPoints(): TollPoint[] {
@@ -22,6 +24,15 @@ export function loadInterchanges(): Interchange[] {
     readFileSync(join(DATA_DIR, "interchanges.json"), "utf-8"),
   ) as Interchange[];
   return cachedInterchanges;
+}
+
+export function getInterchangeById(id: string): Interchange | undefined {
+  if (!cachedInterchangeMap) {
+    cachedInterchangeMap = new Map(
+      loadInterchanges().map((ic) => [ic.id, ic]),
+    );
+  }
+  return cachedInterchangeMap.get(id);
 }
 
 function buildOnRampsByDirection(): Record<Direction, OnRamp[]> {

@@ -3,7 +3,9 @@ import { join } from "node:path";
 import type { TollPoint, Interchange } from "@407-etr/core";
 import { ClientApp } from "@/components/client-app";
 
-export const dynamic = "force-dynamic";
+// Data files change only on deploy (rates update yearly).
+// Revalidate daily as a safety net.
+export const revalidate = 86400;
 
 const DATA_DIR = join(process.cwd(), "..", "..", "data");
 
