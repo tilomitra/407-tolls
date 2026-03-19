@@ -30,7 +30,7 @@ export function Select({
         >
           {options.map((opt) => (
             <option key={opt.value} value={opt.value}>
-              {opt.label}{opt.detail ? ` — ${opt.detail}` : ""}
+              {opt.label}{opt.detail ? ` (${opt.detail})` : ""}
             </option>
           ))}
         </select>

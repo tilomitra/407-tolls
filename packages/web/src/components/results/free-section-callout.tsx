@@ -11,7 +11,7 @@ export function FreeSectionCallout() {
           407 East of Brock Road is toll-free
         </p>
         <p className="mt-0.5 text-xs leading-relaxed text-emerald-700">
-          Brock Rd (Pickering) to Hwy 35/115 (Clarington) — free since June 2025.
+          Brock Rd (Pickering) to Hwy 35/115 (Clarington), free since June 2025.
           Highways 412 and 418 are also free.
         </p>
       </div>

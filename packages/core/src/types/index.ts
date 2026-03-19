@@ -230,6 +230,45 @@ export interface CompareRoutesArgs {
   getDirections: DirectionsProvider;
 }
 
+// ── Commute ───────────────────────────────────────────────────────────────────
+
+export type DayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+
+export const DAY_NAMES: Record<DayOfWeek, string> = {
+  0: "Sun",
+  1: "Mon",
+  2: "Tue",
+  3: "Wed",
+  4: "Thu",
+  5: "Fri",
+  6: "Sat",
+};
+
+export const CommuteInputSchema = z.object({
+  route: RouteInputSchema,
+  goTimeSlot: ResolvedTimeSlotSchema,
+  returnTimeSlot: ResolvedTimeSlotSchema,
+  weekendGoTimeSlot: ResolvedTimeSlotSchema,
+  weekendReturnTimeSlot: ResolvedTimeSlotSchema,
+  commuteDays: z.array(z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3), z.literal(4), z.literal(5), z.literal(6)])),
+});
+export type CommuteInput = z.infer<typeof CommuteInputSchema>;
+
+export const CommuteEstimateSchema = z.object({
+  weekdayGoCostCents: z.number(),
+  weekdayReturnCostCents: z.number(),
+  weekendGoCostCents: z.number(),
+  weekendReturnCostCents: z.number(),
+  perMonthCents: z.number(),
+  perYearCents: z.number(),
+  weekdayDaysPerYear: z.number(),
+  weekendDaysPerYear: z.number(),
+  holidayDaysPerYear: z.number(),
+  altTransponderMonthCents: z.number(),
+  transponderSavingsMonthCents: z.number(),
+});
+export type CommuteEstimate = z.infer<typeof CommuteEstimateSchema>;
+
 // ── Rate table shape ─────────────────────────────────────────────────────────
 
 export type WeekdayRateKey =

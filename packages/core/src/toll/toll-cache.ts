@@ -1,4 +1,4 @@
-import type { RateKey, RouteInput, TollBreakdown, ZoneTollDetail } from "../types";
+import type { RateKey, ResolvedTimeSlot, RouteInput, TollBreakdown, ZoneTollDetail } from "../types";
 import { WEEKDAY_SLOTS, WEEKEND_SLOTS } from "../types";
 import { getRate, TRIP_CHARGE_CENTS, CAMERA_CHARGE_CENTS } from "../rates";
 import { computeZoneDistances } from "./compute-zone-distances";
@@ -69,4 +69,12 @@ export function getAllBreakdowns(input: RouteInput): TollBreakdown[] {
 
   cache.set(key, breakdowns);
   return breakdowns;
+}
+
+export function findBreakdown(breakdowns: TollBreakdown[], timeSlot: ResolvedTimeSlot): TollBreakdown {
+  const match = breakdowns.find(
+    (b) => b.timeSlot.dayType === timeSlot.dayType && b.timeSlot.slot === timeSlot.slot,
+  );
+  if (!match) throw new Error(`No breakdown for ${timeSlot.dayType}:${timeSlot.slot}`);
+  return match;
 }

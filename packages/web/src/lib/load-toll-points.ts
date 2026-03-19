@@ -4,7 +4,7 @@ import type { TollPoint, Interchange, OnRamp, Direction } from "@407-etr/core";
 
 const DATA_DIR = join(process.cwd(), "..", "..", "data");
 
-// Module-level caches — populated once on first access, reused for the process lifetime.
+// Module-level caches. Populated once on first access, reused for the process lifetime.
 let cachedTollPoints: TollPoint[] | null = null;
 let cachedInterchanges: Interchange[] | null = null;
 let cachedInterchangeMap: Map<string, Interchange> | null = null;
