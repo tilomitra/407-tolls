@@ -1,0 +1,106 @@
+[
+  { "id": 1, "name": "QEW", "lat": 43.336964, "lng": -79.83039, "note": "", "type": 0 },
+  { "id": 2, "name": "Dundas Street", "lat": 43.383553, "lng": -79.83348, "note": "", "type": 0 },
+  { "id": 3, "name": "Appleby Line", "lat": 43.415417, "lng": -79.820274, "note": "", "type": 0 },
+  { "id": 4, "name": "Bronte Road", "lat": 43.445324, "lng": -79.78993, "note": "", "type": 0 },
+  { "id": 5, "name": "Neyagawa Blvd.", "lat": 43.48436, "lng": -79.76604, "note": "", "type": 0 },
+  { "id": 6, "name": "Trafalgar Road", "lat": 43.508827, "lng": -79.74789, "note": "", "type": 0 },
+  { "id": 7, "name": "Highway 403", "lat": 43.527954, "lng": -79.725365, "note": "", "type": 0 },
+  { "id": 8, "name": "Britannia Road", "lat": 43.55225, "lng": -79.76278, "note": "", "type": 0 },
+  { "id": 9, "name": "Derry Road", "lat": 43.571613, "lng": -79.7899, "note": "", "type": 0 },
+  { "id": 10, "name": "Highway 401", "lat": 43.5882, "lng": -79.810356, "note": "", "type": 0 },
+  { "id": 11, "name": "Mississauga Road", "lat": 43.61775, "lng": -79.7623, "note": "", "type": 0 },
+  { "id": 12, "name": "Mavis Road", "lat": 43.641018, "lng": -79.7369, "note": "", "type": 0 },
+  { "id": 13, "name": "Hurontario", "lat": 43.653637, "lng": -79.71656, "note": "", "type": 0 },
+  { "id": 14, "name": "Highway 410", "lat": 43.66886, "lng": -79.70015, "note": "", "type": 0 },
+  { "id": 15, "name": "Dixie Road", "lat": 43.687614, "lng": -79.691086, "note": "", "type": 0 },
+  {
+    "id": 16,
+    "name": "Bramalea Road",
+    "lat": 43.699757,
+    "lng": -79.683556,
+    "note": "Partial interchange with access to 407 East only.",
+    "type": 1
+  },
+  { "id": 17, "name": "Airport Road", "lat": 43.726982, "lng": -79.673515, "note": "", "type": 0 },
+  {
+    "id": 18,
+    "name": "Goreway Drive",
+    "lat": 43.735764,
+    "lng": -79.66153,
+    "note": "Partial interchange with access to 407 East only.",
+    "type": 1
+  },
+  { "id": 19, "name": "Highway 427", "lat": 43.754635, "lng": -79.63159, "note": "", "type": 0 },
+  { "id": 20, "name": "Highway 27", "lat": 43.758316, "lng": -79.61598, "note": "", "type": 0 },
+  {
+    "id": 22,
+    "name": "Pine Valley Drive",
+    "lat": 43.773964,
+    "lng": -79.570526,
+    "note": "",
+    "type": 0
+  },
+  {
+    "id": 23,
+    "name": "Weston Road",
+    "lat": 43.781353,
+    "lng": -79.545685,
+    "note": "Partial interchange with access to 407 West only.",
+    "type": 1
+  },
+  { "id": 24, "name": "Highway 400", "lat": 43.78308, "lng": -79.53736, "note": "", "type": 0 },
+  { "id": 25, "name": "Jane Street", "lat": 43.786068, "lng": -79.52338, "note": "", "type": 0 },
+  { "id": 26, "name": "Keele Street", "lat": 43.792416, "lng": -79.49747, "note": "", "type": 0 },
+  {
+    "id": 28,
+    "name": "Dufferin Street",
+    "lat": 43.817913,
+    "lng": -79.477104,
+    "note": "",
+    "type": 0
+  },
+  { "id": 29, "name": "Bathurst Street", "lat": 43.82754, "lng": -79.45393, "note": "", "type": 0 },
+  { "id": 30, "name": "Yonge Street", "lat": 43.834274, "lng": -79.42864, "note": "", "type": 0 },
+  { "id": 31, "name": "Bayview Avenue", "lat": 43.83818, "lng": -79.40605, "note": "", "type": 0 },
+  {
+    "id": 32,
+    "name": "Leslie Street",
+    "lat": 43.83716,
+    "lng": -79.38048,
+    "note": "Partial interchange with access to 407 West only.",
+    "type": 1
+  },
+  { "id": 33, "name": "Highway 404", "lat": 43.83902, "lng": -79.36828, "note": "", "type": 0 },
+  { "id": 34, "name": "Woodbine Avenue", "lat": 43.84098, "lng": -79.3558, "note": "", "type": 0 },
+  { "id": 35, "name": "Warden Avenue", "lat": 43.845135, "lng": -79.33061, "note": "", "type": 0 },
+  { "id": 36, "name": "Kennedy Road", "lat": 43.850277, "lng": -79.30768, "note": "", "type": 0 },
+  { "id": 37, "name": "McCowan Road", "lat": 43.856274, "lng": -79.28141, "note": "", "type": 0 },
+  { "id": 38, "name": "Markham Road", "lat": 43.863426, "lng": -79.25727, "note": "", "type": 0 },
+  {
+    "id": 39,
+    "name": "Ninth Line",
+    "lat": 43.870415,
+    "lng": -79.23341,
+    "note": "Partial interchange with access to 407 East and West from Ninth Line North only.",
+    "type": 1
+  },
+  {
+    "id": 40,
+    "name": "Donald Cousens Pkwy",
+    "lat": 43.874744,
+    "lng": -79.21327,
+    "note": "Partial interchange with access to 407 East and West from Donald Cousens Parkway North only.",
+    "type": 1
+  },
+  {
+    "id": 41,
+    "name": "York Durham Line",
+    "lat": 43.89095,
+    "lng": -79.18593,
+    "note": "",
+    "type": 0
+  },
+  { "id": 42, "name": "Whites Road", "lat": 43.905468, "lng": -79.14263, "note": "", "type": 0 },
+  { "id": 44, "name": "Brock Road", "lat": 43.916576, "lng": -79.10049, "note": "", "type": 0 }
+]

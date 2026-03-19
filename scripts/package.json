@@ -1,0 +1,20 @@
+{
+  "name": "@407-etr/scripts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "fetch": "tsx fetch-toll-points.ts",
+    "geocode": "tsx reverse-geocode.ts",
+    "assign-zones": "tsx assign-zones.ts",
+    "validate": "tsx validate-data.ts",
+    "pipeline": "pnpm fetch && pnpm geocode && pnpm assign-zones && pnpm validate"
+  },
+  "dependencies": {
+    "@407-etr/core": "workspace:*",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0"
+  }
+}

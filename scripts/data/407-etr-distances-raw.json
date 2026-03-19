@@ -1,0 +1,1933 @@
+{
+  "fetchedAt": "2026-03-19",
+  "ratedClass": 2,
+  "ratedClassName": "Light vehicle",
+  "timestamp": "2026-01-06T05:00:00.000Z",
+  "totalPairs": 76,
+  "pairs": [
+    {
+      "direction": "EB",
+      "entry": 1,
+      "exit": 2,
+      "etr_toll": 3.4244237,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 4.4244237,
+      "total_video": 9.724424,
+      "etr_rate": 0.5649,
+      "east_rate": 0,
+      "etr_distance": 6.062,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 1",
+          "entry": 1,
+          "exit": 2,
+          "toll": 3.4244237,
+          "distance": 6.062,
+          "rate": 0.5649
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 2,
+      "exit": 3,
+      "etr_toll": 2.2051003,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.2051003,
+      "total_video": 8.5051,
+      "etr_rate": 0.5732,
+      "east_rate": 0,
+      "etr_distance": 3.847,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 2",
+          "entry": 2,
+          "exit": 3,
+          "toll": 2.2051003,
+          "distance": 3.847,
+          "rate": 0.5732
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 3,
+      "exit": 4,
+      "etr_toll": 2.3804996,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.3804996,
+      "total_video": 8.6805,
+      "etr_rate": 0.5732,
+      "east_rate": 0,
+      "etr_distance": 4.153,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 2",
+          "entry": 3,
+          "exit": 4,
+          "toll": 2.3804996,
+          "distance": 4.153,
+          "rate": 0.5732
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 4,
+      "exit": 5,
+      "etr_toll": 2.8241563,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.8241563,
+      "total_video": 9.124157,
+      "etr_rate": 0.5732,
+      "east_rate": 0,
+      "etr_distance": 4.927,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 2",
+          "entry": 4,
+          "exit": 5,
+          "toll": 2.8241563,
+          "distance": 4.927,
+          "rate": 0.5732
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 5,
+      "exit": 6,
+      "etr_toll": 2.0175204,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.0175204,
+      "total_video": 8.31752,
+      "etr_rate": 0.62520003,
+      "east_rate": 0,
+      "etr_distance": 3.227,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 3",
+          "entry": 5,
+          "exit": 6,
+          "toll": 2.0175204,
+          "distance": 3.227,
+          "rate": 0.62520003
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 6,
+      "exit": 7,
+      "etr_toll": 1.8237084,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.8237085,
+      "total_video": 8.123709,
+      "etr_rate": 0.6252,
+      "east_rate": 0,
+      "etr_distance": 2.917,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 3",
+          "entry": 6,
+          "exit": 7,
+          "toll": 1.8237084,
+          "distance": 2.917,
+          "rate": 0.6252
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 7,
+      "exit": 8,
+      "etr_toll": 2.609493,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.609493,
+      "total_video": 8.909493,
+      "etr_rate": 0.60700005,
+      "east_rate": 0,
+      "etr_distance": 4.299,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 4",
+          "entry": 7,
+          "exit": 8,
+          "toll": 2.609493,
+          "distance": 4.299,
+          "rate": 0.60700005
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 8,
+      "exit": 9,
+      "etr_toll": 1.865311,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.8653111,
+      "total_video": 8.165312,
+      "etr_rate": 0.607,
+      "east_rate": 0,
+      "etr_distance": 3.073,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 4",
+          "entry": 8,
+          "exit": 9,
+          "toll": 1.865311,
+          "distance": 3.073,
+          "rate": 0.607
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 9,
+      "exit": 10,
+      "etr_toll": 1.521749,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.521749,
+      "total_video": 7.821749,
+      "etr_rate": 0.607,
+      "east_rate": 0,
+      "etr_distance": 2.507,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 4",
+          "entry": 9,
+          "exit": 10,
+          "toll": 1.521749,
+          "distance": 2.507,
+          "rate": 0.607
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 10,
+      "exit": 11,
+      "etr_toll": 3.6111076,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 4.611108,
+      "total_video": 9.911108,
+      "etr_rate": 0.6825,
+      "east_rate": 0,
+      "etr_distance": 5.291,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 5",
+          "entry": 10,
+          "exit": 11,
+          "toll": 3.6111076,
+          "distance": 5.291,
+          "rate": 0.6825
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 11,
+      "exit": 12,
+      "etr_toll": 2.2106175,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.2106175,
+      "total_video": 8.510618,
+      "etr_rate": 0.6825,
+      "east_rate": 0,
+      "etr_distance": 3.239,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 5",
+          "entry": 11,
+          "exit": 12,
+          "toll": 2.2106175,
+          "distance": 3.239,
+          "rate": 0.6825
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 12,
+      "exit": 13,
+      "etr_toll": 1.576575,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.576575,
+      "total_video": 7.8765755,
+      "etr_rate": 0.68250006,
+      "east_rate": 0,
+      "etr_distance": 2.31,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 5",
+          "entry": 12,
+          "exit": 13,
+          "toll": 1.576575,
+          "distance": 2.31,
+          "rate": 0.68250006
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 13,
+      "exit": 14,
+      "etr_toll": 1.4653275,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.4653275,
+      "total_video": 7.7653275,
+      "etr_rate": 0.6825,
+      "east_rate": 0,
+      "etr_distance": 2.147,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 5",
+          "entry": 13,
+          "exit": 14,
+          "toll": 1.4653275,
+          "distance": 2.147,
+          "rate": 0.6825
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 14,
+      "exit": 15,
+      "etr_toll": 1.8077435,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.8077435,
+      "total_video": 8.107744,
+      "etr_rate": 0.81319994,
+      "east_rate": 0,
+      "etr_distance": 2.223,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 6",
+          "entry": 14,
+          "exit": 15,
+          "toll": 1.8077435,
+          "distance": 2.223,
+          "rate": 0.81319994
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 15,
+      "exit": 17,
+      "etr_toll": 3.7886987,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 4.7886987,
+      "total_video": 10.088699,
+      "etr_rate": 0.8132,
+      "east_rate": 0,
+      "etr_distance": 4.659,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 6",
+          "entry": 15,
+          "exit": 17,
+          "toll": 3.7886987,
+          "distance": 4.659,
+          "rate": 0.8132
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 16,
+      "exit": 17,
+      "etr_toll": 2.5843496,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.5843496,
+      "total_video": 8.88435,
+      "etr_rate": 0.8132,
+      "east_rate": 0,
+      "etr_distance": 3.178,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 6",
+          "entry": 16,
+          "exit": 17,
+          "toll": 2.5843496,
+          "distance": 3.178,
+          "rate": 0.8132
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 17,
+      "exit": 19,
+      "etr_toll": 3.7577972,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 4.7577972,
+      "total_video": 10.057797,
+      "etr_rate": 0.81320006,
+      "east_rate": 0,
+      "etr_distance": 4.621,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 6",
+          "entry": 17,
+          "exit": 19,
+          "toll": 3.7577972,
+          "distance": 4.621,
+          "rate": 0.81320006
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 18,
+      "exit": 19,
+      "etr_toll": 2.630702,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.630702,
+      "total_video": 8.930702,
+      "etr_rate": 0.81320006,
+      "east_rate": 0,
+      "etr_distance": 3.235,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 6",
+          "entry": 18,
+          "exit": 19,
+          "toll": 2.630702,
+          "distance": 3.235,
+          "rate": 0.81320006
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 19,
+      "exit": 22,
+      "etr_toll": 4.456626,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 5.456626,
+      "total_video": 10.756626,
+      "etr_rate": 0.8276,
+      "east_rate": 0,
+      "etr_distance": 5.3849998,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 7",
+          "entry": 19,
+          "exit": 22,
+          "toll": 4.456626,
+          "distance": 5.3849998,
+          "rate": 0.8276
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 20,
+      "exit": 22,
+      "etr_toll": 3.3608837,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 4.3608837,
+      "total_video": 9.660884,
+      "etr_rate": 0.82760006,
+      "east_rate": 0,
+      "etr_distance": 4.061,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 7",
+          "entry": 20,
+          "exit": 22,
+          "toll": 3.3608837,
+          "distance": 4.061,
+          "rate": 0.82760006
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 22,
+      "exit": 23,
+      "etr_toll": 1.795892,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.795892,
+      "total_video": 8.095892,
+      "etr_rate": 0.82759994,
+      "east_rate": 0,
+      "etr_distance": 2.17,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 7",
+          "entry": 22,
+          "exit": 23,
+          "toll": 1.795892,
+          "distance": 2.17,
+          "rate": 0.82759994
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 24,
+      "exit": 26,
+      "etr_toll": 2.7328625,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.7328625,
+      "total_video": 9.032863,
+      "etr_rate": 0.8083,
+      "east_rate": 0,
+      "etr_distance": 3.381,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 8",
+          "entry": 24,
+          "exit": 26,
+          "toll": 2.7328625,
+          "distance": 3.381,
+          "rate": 0.8083
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 25,
+      "exit": 26,
+      "etr_toll": 1.7774518,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.7774518,
+      "total_video": 8.077452,
+      "etr_rate": 0.8083001,
+      "east_rate": 0,
+      "etr_distance": 2.199,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 8",
+          "entry": 25,
+          "exit": 26,
+          "toll": 1.7774518,
+          "distance": 2.199,
+          "rate": 0.8083001
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 26,
+      "exit": 28,
+      "etr_toll": 2.8460243,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.8460243,
+      "total_video": 9.146025,
+      "etr_rate": 0.8083,
+      "east_rate": 0,
+      "etr_distance": 3.521,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 8",
+          "entry": 26,
+          "exit": 28,
+          "toll": 2.8460243,
+          "distance": 3.521,
+          "rate": 0.8083
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 28,
+      "exit": 29,
+      "etr_toll": 1.7734102,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.7734103,
+      "total_video": 8.07341,
+      "etr_rate": 0.8083,
+      "east_rate": 0,
+      "etr_distance": 2.194,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 8",
+          "entry": 28,
+          "exit": 29,
+          "toll": 1.7734102,
+          "distance": 2.194,
+          "rate": 0.8083
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 29,
+      "exit": 30,
+      "etr_toll": 1.7556276,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.7556276,
+      "total_video": 8.055628,
+      "etr_rate": 0.8083,
+      "east_rate": 0,
+      "etr_distance": 2.172,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 8",
+          "entry": 29,
+          "exit": 30,
+          "toll": 1.7556276,
+          "distance": 2.172,
+          "rate": 0.8083
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 30,
+      "exit": 31,
+      "etr_toll": 1.597847,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.597847,
+      "total_video": 7.897847,
+      "etr_rate": 0.8279,
+      "east_rate": 0,
+      "etr_distance": 1.93,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 9",
+          "entry": 30,
+          "exit": 31,
+          "toll": 1.597847,
+          "distance": 1.93,
+          "rate": 0.8279
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 31,
+      "exit": 32,
+      "etr_toll": 1.7187204,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.7187204,
+      "total_video": 8.018721,
+      "etr_rate": 0.82790005,
+      "east_rate": 0,
+      "etr_distance": 2.076,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 9",
+          "entry": 31,
+          "exit": 32,
+          "toll": 1.7187204,
+          "distance": 2.076,
+          "rate": 0.82790005
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 33,
+      "exit": 35,
+      "etr_toll": 2.1062353,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.1062353,
+      "total_video": 8.406236,
+      "etr_rate": 0.67789996,
+      "east_rate": 0,
+      "etr_distance": 3.107,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 10",
+          "entry": 33,
+          "exit": 35,
+          "toll": 2.1062353,
+          "distance": 3.107,
+          "rate": 0.67789996
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 34,
+      "exit": 35,
+      "etr_toll": 1.4086761,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.4086761,
+      "total_video": 7.7086763,
+      "etr_rate": 0.67789996,
+      "east_rate": 0,
+      "etr_distance": 2.078,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 10",
+          "entry": 34,
+          "exit": 35,
+          "toll": 1.4086761,
+          "distance": 2.078,
+          "rate": 0.67789996
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 35,
+      "exit": 36,
+      "etr_toll": 1.308347,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.308347,
+      "total_video": 7.608347,
+      "etr_rate": 0.6779,
+      "east_rate": 0,
+      "etr_distance": 1.93,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 10",
+          "entry": 35,
+          "exit": 36,
+          "toll": 1.308347,
+          "distance": 1.93,
+          "rate": 0.6779
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 36,
+      "exit": 37,
+      "etr_toll": 1.5015485,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.5015485,
+      "total_video": 7.801549,
+      "etr_rate": 0.6779,
+      "east_rate": 0,
+      "etr_distance": 2.215,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 10",
+          "entry": 36,
+          "exit": 37,
+          "toll": 1.5015485,
+          "distance": 2.215,
+          "rate": 0.6779
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 37,
+      "exit": 38,
+      "etr_toll": 1.5368724,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.5368724,
+      "total_video": 7.8368726,
+      "etr_rate": 0.73080003,
+      "east_rate": 0,
+      "etr_distance": 2.103,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 11",
+          "entry": 37,
+          "exit": 38,
+          "toll": 1.5368724,
+          "distance": 2.103,
+          "rate": 0.73080003
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 38,
+      "exit": 39,
+      "etr_toll": 1.5156792,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.5156794,
+      "total_video": 7.8156796,
+      "etr_rate": 0.73080003,
+      "east_rate": 0,
+      "etr_distance": 2.074,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 11",
+          "entry": 38,
+          "exit": 39,
+          "toll": 1.5156792,
+          "distance": 2.074,
+          "rate": 0.73080003
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 39,
+      "exit": 40,
+      "etr_toll": 1.2321289,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.2321289,
+      "total_video": 7.5321293,
+      "etr_rate": 0.73080003,
+      "east_rate": 0,
+      "etr_distance": 1.686,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 11",
+          "entry": 39,
+          "exit": 40,
+          "toll": 1.2321289,
+          "distance": 1.686,
+          "rate": 0.73080003
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 40,
+      "exit": 41,
+      "etr_toll": 2.1748607,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.1748607,
+      "total_video": 8.474861,
+      "etr_rate": 0.7308,
+      "east_rate": 0,
+      "etr_distance": 2.976,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 11",
+          "entry": 40,
+          "exit": 41,
+          "toll": 2.1748607,
+          "distance": 2.976,
+          "rate": 0.7308
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 41,
+      "exit": 42,
+      "etr_toll": 2.9364777,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.9364777,
+      "total_video": 9.236478,
+      "etr_rate": 0.7787,
+      "east_rate": 0,
+      "etr_distance": 3.771,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 12",
+          "entry": 41,
+          "exit": 42,
+          "toll": 2.9364777,
+          "distance": 3.771,
+          "rate": 0.7787
+        }
+      ]
+    },
+    {
+      "direction": "EB",
+      "entry": 42,
+      "exit": 44,
+      "etr_toll": 3.1794322,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 4.179432,
+      "total_video": 9.479432,
+      "etr_rate": 0.7787,
+      "east_rate": 0,
+      "etr_distance": 4.083,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 12",
+          "entry": 42,
+          "exit": 44,
+          "toll": 3.1794322,
+          "distance": 4.083,
+          "rate": 0.7787
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 44,
+      "exit": 42,
+      "etr_toll": 2.6151614,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.6151614,
+      "total_video": 8.915161,
+      "etr_rate": 0.64049995,
+      "east_rate": 0,
+      "etr_distance": 4.083,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 12",
+          "entry": 44,
+          "exit": 42,
+          "toll": 2.6151614,
+          "distance": 4.083,
+          "rate": 0.64049995
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 42,
+      "exit": 41,
+      "etr_toll": 2.4153254,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.4153254,
+      "total_video": 8.715325,
+      "etr_rate": 0.6405,
+      "east_rate": 0,
+      "etr_distance": 3.771,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 12",
+          "entry": 42,
+          "exit": 41,
+          "toll": 2.4153254,
+          "distance": 3.771,
+          "rate": 0.6405
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 41,
+      "exit": 40,
+      "etr_toll": 1.906128,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.906128,
+      "total_video": 8.206128,
+      "etr_rate": 0.6405,
+      "east_rate": 0,
+      "etr_distance": 2.976,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 11",
+          "entry": 41,
+          "exit": 40,
+          "toll": 1.906128,
+          "distance": 2.976,
+          "rate": 0.6405
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 40,
+      "exit": 39,
+      "etr_toll": 1.079883,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.079883,
+      "total_video": 7.3798833,
+      "etr_rate": 0.6405,
+      "east_rate": 0,
+      "etr_distance": 1.686,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 11",
+          "entry": 40,
+          "exit": 39,
+          "toll": 1.079883,
+          "distance": 1.686,
+          "rate": 0.6405
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 39,
+      "exit": 38,
+      "etr_toll": 1.328397,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.328397,
+      "total_video": 7.628397,
+      "etr_rate": 0.64050007,
+      "east_rate": 0,
+      "etr_distance": 2.074,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 11",
+          "entry": 39,
+          "exit": 38,
+          "toll": 1.328397,
+          "distance": 2.074,
+          "rate": 0.64050007
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 38,
+      "exit": 37,
+      "etr_toll": 1.3469715,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.3469715,
+      "total_video": 7.6469717,
+      "etr_rate": 0.6405,
+      "east_rate": 0,
+      "etr_distance": 2.103,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 11",
+          "entry": 38,
+          "exit": 37,
+          "toll": 1.3469715,
+          "distance": 2.103,
+          "rate": 0.6405
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 37,
+      "exit": 36,
+      "etr_toll": 1.2512535,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.2512536,
+      "total_video": 7.551254,
+      "etr_rate": 0.56490004,
+      "east_rate": 0,
+      "etr_distance": 2.215,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 10",
+          "entry": 37,
+          "exit": 36,
+          "toll": 1.2512535,
+          "distance": 2.215,
+          "rate": 0.56490004
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 36,
+      "exit": 35,
+      "etr_toll": 1.090257,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.0902572,
+      "total_video": 7.3902574,
+      "etr_rate": 0.56490004,
+      "east_rate": 0,
+      "etr_distance": 1.93,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 10",
+          "entry": 36,
+          "exit": 35,
+          "toll": 1.090257,
+          "distance": 1.93,
+          "rate": 0.56490004
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 35,
+      "exit": 34,
+      "etr_toll": 1.1738622,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.1738622,
+      "total_video": 7.4738626,
+      "etr_rate": 0.5649,
+      "east_rate": 0,
+      "etr_distance": 2.078,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 10",
+          "entry": 35,
+          "exit": 34,
+          "toll": 1.1738622,
+          "distance": 2.078,
+          "rate": 0.5649
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 34,
+      "exit": 31,
+      "etr_toll": 2.8193479,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.8193479,
+      "total_video": 9.119349,
+      "etr_rate": 0.6873105,
+      "east_rate": 0,
+      "etr_distance": 4.102,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 10",
+          "entry": 34,
+          "exit": 33,
+          "toll": 0.5812821,
+          "distance": 1.029,
+          "rate": 0.5649
+        },
+        {
+          "zone": "Zone 9",
+          "entry": 33,
+          "exit": 31,
+          "toll": 2.238066,
+          "distance": 3.073,
+          "rate": 0.72830003
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 33,
+      "exit": 31,
+      "etr_toll": 2.238066,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.238066,
+      "total_video": 8.538066,
+      "etr_rate": 0.72830003,
+      "east_rate": 0,
+      "etr_distance": 3.073,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 9",
+          "entry": 33,
+          "exit": 31,
+          "toll": 2.238066,
+          "distance": 3.073,
+          "rate": 0.72830003
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 32,
+      "exit": 31,
+      "etr_toll": 1.5119509,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.511951,
+      "total_video": 7.811951,
+      "etr_rate": 0.72830003,
+      "east_rate": 0,
+      "etr_distance": 2.076,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 9",
+          "entry": 32,
+          "exit": 31,
+          "toll": 1.5119509,
+          "distance": 2.076,
+          "rate": 0.72830003
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 31,
+      "exit": 30,
+      "etr_toll": 1.405619,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.4056191,
+      "total_video": 7.7056193,
+      "etr_rate": 0.72830003,
+      "east_rate": 0,
+      "etr_distance": 1.93,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 9",
+          "entry": 31,
+          "exit": 30,
+          "toll": 1.405619,
+          "distance": 1.93,
+          "rate": 0.72830003
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 30,
+      "exit": 29,
+      "etr_toll": 1.5818676,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.5818677,
+      "total_video": 7.881868,
+      "etr_rate": 0.72830003,
+      "east_rate": 0,
+      "etr_distance": 2.172,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 8",
+          "entry": 30,
+          "exit": 29,
+          "toll": 1.5818676,
+          "distance": 2.172,
+          "rate": 0.72830003
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 29,
+      "exit": 28,
+      "etr_toll": 1.5978903,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.5978904,
+      "total_video": 7.8978906,
+      "etr_rate": 0.72830003,
+      "east_rate": 0,
+      "etr_distance": 2.194,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 8",
+          "entry": 29,
+          "exit": 28,
+          "toll": 1.5978903,
+          "distance": 2.194,
+          "rate": 0.72830003
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 28,
+      "exit": 26,
+      "etr_toll": 2.5643444,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.5643444,
+      "total_video": 8.864345,
+      "etr_rate": 0.72830003,
+      "east_rate": 0,
+      "etr_distance": 3.521,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 8",
+          "entry": 28,
+          "exit": 26,
+          "toll": 2.5643444,
+          "distance": 3.521,
+          "rate": 0.72830003
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 26,
+      "exit": 25,
+      "etr_toll": 1.6015317,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.6015317,
+      "total_video": 7.901532,
+      "etr_rate": 0.72830003,
+      "east_rate": 0,
+      "etr_distance": 2.199,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 8",
+          "entry": 26,
+          "exit": 25,
+          "toll": 1.6015317,
+          "distance": 2.199,
+          "rate": 0.72830003
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 25,
+      "exit": 22,
+      "etr_toll": 3.041791,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 4.041791,
+      "total_video": 9.341791,
+      "etr_rate": 0.7523598,
+      "east_rate": 0,
+      "etr_distance": 4.043,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 8",
+          "entry": 25,
+          "exit": 24,
+          "toll": 0.8608506,
+          "distance": 1.182,
+          "rate": 0.7283
+        },
+        {
+          "zone": "Zone 7",
+          "entry": 24,
+          "exit": 22,
+          "toll": 2.1809404,
+          "distance": 2.861,
+          "rate": 0.7623
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 24,
+      "exit": 22,
+      "etr_toll": 2.1809404,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.1809404,
+      "total_video": 8.480941,
+      "etr_rate": 0.7623,
+      "east_rate": 0,
+      "etr_distance": 2.861,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 7",
+          "entry": 24,
+          "exit": 22,
+          "toll": 2.1809404,
+          "distance": 2.861,
+          "rate": 0.7623
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 23,
+      "exit": 22,
+      "etr_toll": 1.654191,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.654191,
+      "total_video": 7.954191,
+      "etr_rate": 0.76229995,
+      "east_rate": 0,
+      "etr_distance": 2.17,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 7",
+          "entry": 23,
+          "exit": 22,
+          "toll": 1.654191,
+          "distance": 2.17,
+          "rate": 0.76229995
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 22,
+      "exit": 20,
+      "etr_toll": 3.0957003,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 4.0957003,
+      "total_video": 9.3957,
+      "etr_rate": 0.7623,
+      "east_rate": 0,
+      "etr_distance": 4.061,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 7",
+          "entry": 22,
+          "exit": 20,
+          "toll": 3.0957003,
+          "distance": 4.061,
+          "rate": 0.7623
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 20,
+      "exit": 18,
+      "etr_toll": 3.3239276,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 4.323928,
+      "total_video": 9.623928,
+      "etr_rate": 0.7290914,
+      "east_rate": 0,
+      "etr_distance": 4.559,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 7",
+          "entry": 20,
+          "exit": 19,
+          "toll": 1.0092852,
+          "distance": 1.324,
+          "rate": 0.7623
+        },
+        {
+          "zone": "Zone 6",
+          "entry": 19,
+          "exit": 18,
+          "toll": 2.3146424,
+          "distance": 3.235,
+          "rate": 0.7155
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 19,
+      "exit": 18,
+      "etr_toll": 2.3146424,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.3146424,
+      "total_video": 8.614643,
+      "etr_rate": 0.7155,
+      "east_rate": 0,
+      "etr_distance": 3.235,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 6",
+          "entry": 19,
+          "exit": 18,
+          "toll": 2.3146424,
+          "distance": 3.235,
+          "rate": 0.7155
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 17,
+      "exit": 16,
+      "etr_toll": 2.273859,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.273859,
+      "total_video": 8.573859,
+      "etr_rate": 0.7155,
+      "east_rate": 0,
+      "etr_distance": 3.178,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 6",
+          "entry": 17,
+          "exit": 16,
+          "toll": 2.273859,
+          "distance": 3.178,
+          "rate": 0.7155
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 15,
+      "exit": 14,
+      "etr_toll": 1.5905565,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.5905566,
+      "total_video": 7.890557,
+      "etr_rate": 0.7155,
+      "east_rate": 0,
+      "etr_distance": 2.223,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 6",
+          "entry": 15,
+          "exit": 14,
+          "toll": 1.5905565,
+          "distance": 2.223,
+          "rate": 0.7155
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 14,
+      "exit": 13,
+      "etr_toll": 1.6978476,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.6978476,
+      "total_video": 7.9978476,
+      "etr_rate": 0.7908,
+      "east_rate": 0,
+      "etr_distance": 2.147,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 5",
+          "entry": 14,
+          "exit": 13,
+          "toll": 1.6978476,
+          "distance": 2.147,
+          "rate": 0.7908
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 13,
+      "exit": 12,
+      "etr_toll": 1.826748,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.826748,
+      "total_video": 8.126748,
+      "etr_rate": 0.79080003,
+      "east_rate": 0,
+      "etr_distance": 2.31,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 5",
+          "entry": 13,
+          "exit": 12,
+          "toll": 1.826748,
+          "distance": 2.31,
+          "rate": 0.79080003
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 12,
+      "exit": 11,
+      "etr_toll": 2.5614011,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.5614011,
+      "total_video": 8.861402,
+      "etr_rate": 0.7908,
+      "east_rate": 0,
+      "etr_distance": 3.239,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 5",
+          "entry": 12,
+          "exit": 11,
+          "toll": 2.5614011,
+          "distance": 3.239,
+          "rate": 0.7908
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 11,
+      "exit": 10,
+      "etr_toll": 4.1841226,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 5.1841226,
+      "total_video": 10.484123,
+      "etr_rate": 0.7908,
+      "east_rate": 0,
+      "etr_distance": 5.291,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 5",
+          "entry": 11,
+          "exit": 10,
+          "toll": 4.1841226,
+          "distance": 5.291,
+          "rate": 0.7908
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 10,
+      "exit": 9,
+      "etr_toll": 1.5337826,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.5337825,
+      "total_video": 7.8337827,
+      "etr_rate": 0.6118,
+      "east_rate": 0,
+      "etr_distance": 2.507,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 4",
+          "entry": 10,
+          "exit": 9,
+          "toll": 1.5337826,
+          "distance": 2.507,
+          "rate": 0.6118
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 9,
+      "exit": 8,
+      "etr_toll": 1.8800614,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.8800614,
+      "total_video": 8.180061,
+      "etr_rate": 0.6118,
+      "east_rate": 0,
+      "etr_distance": 3.073,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 4",
+          "entry": 9,
+          "exit": 8,
+          "toll": 1.8800614,
+          "distance": 3.073,
+          "rate": 0.6118
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 8,
+      "exit": 7,
+      "etr_toll": 2.6301281,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.6301281,
+      "total_video": 8.930128,
+      "etr_rate": 0.6118,
+      "east_rate": 0,
+      "etr_distance": 4.299,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 4",
+          "entry": 8,
+          "exit": 7,
+          "toll": 2.6301281,
+          "distance": 4.299,
+          "rate": 0.6118
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 7,
+      "exit": 6,
+      "etr_toll": 1.9430137,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 2.9430137,
+      "total_video": 8.243013,
+      "etr_rate": 0.66609997,
+      "east_rate": 0,
+      "etr_distance": 2.917,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 3",
+          "entry": 7,
+          "exit": 6,
+          "toll": 1.9430137,
+          "distance": 2.917,
+          "rate": 0.66609997
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 6,
+      "exit": 5,
+      "etr_toll": 2.1495047,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.1495047,
+      "total_video": 8.449505,
+      "etr_rate": 0.66609997,
+      "east_rate": 0,
+      "etr_distance": 3.227,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 3",
+          "entry": 6,
+          "exit": 5,
+          "toll": 2.1495047,
+          "distance": 3.227,
+          "rate": 0.66609997
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 5,
+      "exit": 4,
+      "etr_toll": 3.2104332,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 4.210433,
+      "total_video": 9.510433,
+      "etr_rate": 0.6516,
+      "east_rate": 0,
+      "etr_distance": 4.927,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 2",
+          "entry": 5,
+          "exit": 4,
+          "toll": 3.2104332,
+          "distance": 4.927,
+          "rate": 0.6516
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 4,
+      "exit": 3,
+      "etr_toll": 2.7060947,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.7060947,
+      "total_video": 9.006095,
+      "etr_rate": 0.6516,
+      "east_rate": 0,
+      "etr_distance": 4.153,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 2",
+          "entry": 4,
+          "exit": 3,
+          "toll": 2.7060947,
+          "distance": 4.153,
+          "rate": 0.6516
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 3,
+      "exit": 2,
+      "etr_toll": 2.5067053,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 3.5067053,
+      "total_video": 8.806705,
+      "etr_rate": 0.65160006,
+      "east_rate": 0,
+      "etr_distance": 3.847,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 2",
+          "entry": 3,
+          "exit": 2,
+          "toll": 2.5067053,
+          "distance": 3.847,
+          "rate": 0.65160006
+        }
+      ]
+    },
+    {
+      "direction": "WB",
+      "entry": 2,
+      "exit": 1,
+      "etr_toll": 4.7968607,
+      "east_toll": 0,
+      "ttc": 1,
+      "vtc": 5.3,
+      "total_transponder": 5.7968607,
+      "total_video": 11.096861,
+      "etr_rate": 0.79130006,
+      "east_rate": 0,
+      "etr_distance": 6.062,
+      "east_distance": 0,
+      "zone_info": [
+        {
+          "zone": "Zone 1",
+          "entry": 2,
+          "exit": 1,
+          "toll": 4.7968607,
+          "distance": 6.062,
+          "rate": 0.79130006
+        }
+      ]
+    }
+  ]
+}
