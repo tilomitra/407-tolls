@@ -59,27 +59,12 @@ export default async function TripPage({ params, searchParams }: PageProps) {
   const byTimeSlot = computeAllTimeSlotCosts(resolved.route);
 
   return (
-    <div className="min-h-screen">
-      <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4 sm:px-6">
-          <a href="/" className="group">
-            <h1 className="text-lg font-semibold tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors">
-              407 ETR Savings Tool
-            </h1>
-          </a>
-          <span className="rounded-md bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">
-            2026 Rates
-          </span>
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-3xl px-4 py-6 sm:px-6">
-        <TripPageClient
-          breakdown={{ ...result, byTimeSlot }}
-          entryName={resolved.entry.name}
-          exitName={resolved.exit.name}
-        />
-      </main>
-    </div>
+    <main className="mx-auto max-w-3xl px-4 py-6 sm:px-6">
+      <TripPageClient
+        breakdown={{ ...result, byTimeSlot }}
+        entryName={resolved.entry.name}
+        exitName={resolved.exit.name}
+      />
+    </main>
   );
 }

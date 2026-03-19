@@ -1,0 +1,17 @@
+export function Header() {
+  return (
+    <header className="border-b border-slate-200 bg-white">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6">
+        <a href="/" className="group">
+          <h1 className="flex items-center gap-2 text-lg font-semibold tracking-tight">
+            <span className="rounded-md bg-[#1b365d] px-1.5 py-0.5 text-sm font-bold text-white">407</span>
+            <span className="text-slate-900 group-hover:text-blue-600 transition-colors">ETR Savings Tool</span>
+          </h1>
+        </a>
+        <span className="rounded-md bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">
+          2026 Rates
+        </span>
+      </div>
+    </header>
+  );
+}
