@@ -2,7 +2,7 @@ type ButtonVariant = "primary" | "secondary" | "ghost";
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    "bg-slate-900 text-white hover:bg-slate-800 active:bg-slate-950 shadow-sm",
+    "bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 shadow-sm",
   secondary:
     "bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 active:bg-slate-100 shadow-sm",
   ghost:
@@ -29,7 +29,7 @@ export function Button({
       className={`
         inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5
         text-sm font-medium transition-all duration-150
-        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2
+        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2
         disabled:pointer-events-none disabled:opacity-50
         ${variantStyles[variant]}
         ${className}

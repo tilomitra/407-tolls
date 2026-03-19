@@ -25,7 +25,7 @@ export function Select({
             py-2.5 pl-3 pr-10 text-sm text-slate-900 shadow-sm
             transition-colors duration-150
             hover:border-slate-300
-            focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200
+            focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100
           "
         >
           {options.map((opt) => (
