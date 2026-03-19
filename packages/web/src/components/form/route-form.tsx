@@ -1,61 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import type { TollResponse, CommuteEstimate, DayOfWeek, Direction, ResolvedTimeSlot, Zone, DayType, WeekdaySlot, WeekendSlot } from "@407-etr/core";
+import type { TollResponse, CommuteEstimate, DayOfWeek, Interchange, Direction, ResolvedTimeSlot, Zone, DayType, WeekdaySlot, WeekendSlot } from "@407-etr/core";
 import { Card, CardBody } from "../ui/card";
 import { Select } from "../ui/select";
 import { Button } from "../ui/button";
 import { Toggle } from "../ui/toggle";
 import { RadioGroup } from "../ui/radio-group";
-
-const INTERCHANGES: Array<{ id: string; name: string; zone: Zone }> = [
-  { id: "qew", name: "QEW / Highway 403", zone: 1 },
-  { id: "appleby", name: "Appleby Line", zone: 2 },
-  { id: "bronte", name: "Bronte Road", zone: 2 },
-  { id: "neyagawa", name: "Neyagawa Boulevard", zone: 3 },
-  { id: "trafalgar", name: "Trafalgar Road", zone: 3 },
-  { id: "hwy403", name: "Highway 403", zone: 4 },
-  { id: "winston-churchill", name: "Winston Churchill Blvd", zone: 4 },
-  { id: "erin-mills", name: "Erin Mills Parkway", zone: 4 },
-  { id: "mississauga-rd", name: "Mississauga Road", zone: 4 },
-  { id: "creditview", name: "Creditview Road", zone: 5 },
-  { id: "mavis", name: "Mavis Road", zone: 5 },
-  { id: "hurontario", name: "Hurontario Street", zone: 5 },
-  { id: "hwy410", name: "Highway 410", zone: 6 },
-  { id: "dixie", name: "Dixie Road", zone: 6 },
-  { id: "bramalea", name: "Bramalea Road", zone: 6 },
-  { id: "airport", name: "Airport Road", zone: 6 },
-  { id: "goreway", name: "Goreway Drive", zone: 6 },
-  { id: "hwy427", name: "Highway 427", zone: 7 },
-  { id: "hwy27", name: "Highway 27", zone: 7 },
-  { id: "pine-valley", name: "Pine Valley Drive", zone: 7 },
-  { id: "weston", name: "Weston Road", zone: 7 },
-  { id: "hwy400", name: "Highway 400", zone: 8 },
-  { id: "jane", name: "Jane Street", zone: 8 },
-  { id: "keele", name: "Keele Street", zone: 8 },
-  { id: "dufferin", name: "Dufferin Street", zone: 8 },
-  { id: "bathurst", name: "Bathurst Street", zone: 8 },
-  { id: "yonge", name: "Yonge Street", zone: 9 },
-  { id: "bayview", name: "Bayview Avenue", zone: 9 },
-  { id: "leslie", name: "Leslie Street", zone: 9 },
-  { id: "hwy404", name: "Highway 404", zone: 10 },
-  { id: "woodbine", name: "Woodbine Avenue", zone: 10 },
-  { id: "warden", name: "Warden Avenue", zone: 10 },
-  { id: "kennedy", name: "Kennedy Road", zone: 10 },
-  { id: "mccowan", name: "McCowan Road", zone: 11 },
-  { id: "markham", name: "Markham Road", zone: 11 },
-  { id: "ninth-line", name: "Hwy 48 / Ninth Line", zone: 11 },
-  { id: "donald-cousens", name: "Donald Cousens Pkwy", zone: 11 },
-  { id: "york-durham", name: "York-Durham Line", zone: 12 },
-  { id: "whites", name: "Whites Road", zone: 12 },
-  { id: "brock", name: "Brock Road", zone: 12 },
-];
-
-const INTERCHANGE_OPTIONS = INTERCHANGES.map((ic) => ({
-  value: ic.id,
-  label: ic.name,
-  detail: `Zone ${ic.zone}`,
-}));
 
 const WEEKDAY_TIME_OPTIONS = [
   { value: "5am", label: "5:00 – 6:59 AM" },
@@ -112,10 +63,8 @@ function resolveCurrentSlot(): { dayType: DayType; slot: string } {
   return { dayType: isWeekend ? "weekend_or_holiday" : "weekday", slot: "9pm" };
 }
 
-function getDirection(entry: { zone: Zone }, exit: { zone: Zone }, entryIdx: number, exitIdx: number): Direction {
-  return exit.zone > entry.zone || (exit.zone === entry.zone && exitIdx > entryIdx)
-    ? "eastbound"
-    : "westbound";
+function getDirection(entry: { km: number }, exit: { km: number }): Direction {
+  return exit.km > entry.km ? "eastbound" : "westbound";
 }
 
 export type FormMode = "single" | "commute";
@@ -157,20 +106,29 @@ function DayPicker({ selected, onChange }: { selected: DayOfWeek[]; onChange: (d
 }
 
 export function RouteForm({
+  interchanges,
   onTollResult,
   onCommuteResult,
   mode,
   onModeChange,
 }: {
+  interchanges: Interchange[];
   onTollResult: (args: { result: TollResponse; entryId: string; exitId: string }) => void;
   onCommuteResult: (args: { result: CommuteEstimate; entryId: string; exitId: string; entryName: string; exitName: string; commuteDays: DayOfWeek[]; hasTransponder: boolean; shareParams: { goSlot: string; returnSlot: string; weekendGoSlot: string; weekendReturnSlot: string } }) => void;
   mode: FormMode;
   onModeChange: (mode: FormMode) => void;
 }) {
+  const interchangeOptions = interchanges.map((ic) => ({
+    value: ic.id,
+    label: ic.name,
+    detail: `Zone ${ic.zone}`,
+  }));
+
   const currentSlot = resolveCurrentSlot();
 
-  const [entryId, setEntryId] = useState("jane");
-  const [exitId, setExitId] = useState("hwy404");
+  // Default to Jane Street (25) and Highway 404 (33)
+  const [entryId, setEntryId] = useState(interchanges.length > 0 ? "25" : "");
+  const [exitId, setExitId] = useState(interchanges.length > 0 ? "33" : "");
   const [hasTransponder, setHasTransponder] = useState(true);
   const [timeMode, setTimeMode] = useState<"now" | "custom">("now");
   const [dayType, setDayType] = useState<DayType>(currentSlot.dayType);
@@ -191,8 +149,8 @@ export function RouteForm({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const entry = INTERCHANGES.find((ic) => ic.id === entryId)!;
-  const exit = INTERCHANGES.find((ic) => ic.id === exitId)!;
+  const entry = interchanges.find((ic) => ic.id === entryId)!;
+  const exit = interchanges.find((ic) => ic.id === exitId)!;
   const sameInterchange = entryId === exitId;
 
   const hasWeekendDays = commuteDays.includes(0) || commuteDays.includes(6);
@@ -222,7 +180,7 @@ export function RouteForm({
     setLoading(true);
     setError(null);
 
-    const direction = getDirection(entry, exit, INTERCHANGES.indexOf(entry), INTERCHANGES.indexOf(exit));
+    const direction = getDirection(entry, exit);
 
     try {
       if (mode === "commute") {
@@ -311,7 +269,7 @@ export function RouteForm({
                   onChange={(e) => setEntryId(e.target.value)}
                   className="block w-full appearance-none bg-transparent text-sm text-slate-900 focus:outline-none"
                 >
-                  {INTERCHANGE_OPTIONS.map((opt) => (
+                  {interchangeOptions.map((opt) => (
                     <option key={opt.value} value={opt.value}>
                       {opt.label}{opt.detail ? ` (${opt.detail})` : ""}
                     </option>
@@ -328,7 +286,7 @@ export function RouteForm({
                   onChange={(e) => setExitId(e.target.value)}
                   className="block w-full appearance-none bg-transparent text-sm text-slate-900 focus:outline-none"
                 >
-                  {INTERCHANGE_OPTIONS.map((opt) => (
+                  {interchangeOptions.map((opt) => (
                     <option key={opt.value} value={opt.value}>
                       {opt.label}{opt.detail ? ` (${opt.detail})` : ""}
                     </option>

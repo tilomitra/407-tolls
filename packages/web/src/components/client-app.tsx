@@ -13,11 +13,11 @@ import { FreeSectionCallout } from "./results/free-section-callout";
 import { Card } from "./ui/card";
 
 export function ClientApp({
-  tollPoints,
+  gantries,
   interchanges,
   highwayGeometry,
 }: {
-  tollPoints: TollPoint[];
+  gantries: TollPoint[];
   interchanges: Interchange[];
   highwayGeometry: Array<[number, number]>;
 }) {
@@ -84,11 +84,11 @@ export function ClientApp({
     <div className="space-y-6">
       <FreeSectionCallout />
 
-      {tollPoints.length > 0 && (
+      {gantries.length > 0 && (
         <Card>
           <div className="p-1">
             <HighwayMap
-              tollPoints={tollPoints}
+              gantries={gantries}
               interchanges={interchanges}
               highwayGeometry={highwayGeometry}
               selectedRoute={selectedRoute}
@@ -103,6 +103,7 @@ export function ClientApp({
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
         <div className="lg:col-span-2">
           <RouteForm
+            interchanges={interchanges}
             mode={mode}
             onModeChange={handleModeChange}
             onTollResult={handleTollResult}
