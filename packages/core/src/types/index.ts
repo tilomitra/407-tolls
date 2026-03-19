@@ -98,7 +98,7 @@ export const InterchangeSchema = z.object({
 });
 export type Interchange = z.infer<typeof InterchangeSchema>;
 
-// OnRamp used in compare logic — flattened view of a directional ramp
+// OnRamp used in compare logic: flattened view of a directional ramp
 export const OnRampSchema = z.object({
   id: z.string(),
   name: z.string(),

@@ -9,7 +9,7 @@ import type { RateKey } from "../types";
 
 export const RATES_2026: Readonly<Record<RateKey, number>> = {
   // ═══════════════════════════════════════════════════════════════════════════
-  // WESTBOUND — WEEKDAY
+  // WESTBOUND WEEKDAY
   // ═══════════════════════════════════════════════════════════════════════════
 
   // 5:00 AM – 6:59 AM
@@ -125,7 +125,7 @@ export const RATES_2026: Readonly<Record<RateKey, number>> = {
   "weekday:westbound:9pm:12": 50.56,
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // EASTBOUND — WEEKDAY
+  // EASTBOUND WEEKDAY
   // ═══════════════════════════════════════════════════════════════════════════
 
   // 5:00 AM – 6:59 AM
@@ -241,7 +241,7 @@ export const RATES_2026: Readonly<Record<RateKey, number>> = {
   "weekday:eastbound:9pm:12": 50.56,
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // WESTBOUND — WEEKEND / ONTARIO STATUTORY HOLIDAY
+  // WESTBOUND WEEKEND + ONTARIO STATUTORY HOLIDAY
   // ═══════════════════════════════════════════════════════════════════════════
 
   // 8:30 AM – 9:59 AM
@@ -301,7 +301,7 @@ export const RATES_2026: Readonly<Record<RateKey, number>> = {
   "weekend_or_holiday:westbound:9pm:12": 50.56,
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // EASTBOUND — WEEKEND / ONTARIO STATUTORY HOLIDAY
+  // EASTBOUND WEEKEND + ONTARIO STATUTORY HOLIDAY
   // ═══════════════════════════════════════════════════════════════════════════
 
   // 8:30 AM – 9:59 AM

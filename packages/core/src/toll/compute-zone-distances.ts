@@ -4,7 +4,7 @@ import { getZoneDistanceKm, getDistanceInZone } from "./zone-distances";
 /**
  * Compute the actual distance traveled in each zone for a trip.
  *
- * Entry and exit zones are partial — the driver doesn't traverse the full zone.
+ * Entry and exit zones are partial. The driver doesn't traverse the full zone.
  *
  * Example: Dixie Rd (km 48, zone 6) → Dufferin St (km 73, zone 8)
  *   Zone 6 spans km 46–58. Driver enters at 48 → only 10 km in zone 6.
@@ -41,16 +41,16 @@ export function computeZoneDistances({
     let distanceKm: number;
 
     if (zoneCount === 1) {
-      // Same zone — distance between the two interchanges
+      // Same zone: distance between the two interchanges
       distanceKm = getDistanceInZone({ zone, fromKm: westKm, toKm: eastKm });
     } else if (i === 0) {
-      // Entry zone — from on-ramp to the eastern edge of this zone
+      // Entry zone: from on-ramp to the eastern edge of this zone
       distanceKm = getDistanceInZone({ zone, fromKm: westKm, toKm: "end" });
     } else if (i === zoneCount - 1) {
-      // Exit zone — from the western edge of this zone to the off-ramp
+      // Exit zone: from the western edge of this zone to the off-ramp
       distanceKm = getDistanceInZone({ zone, fromKm: "start", toKm: eastKm });
     } else {
-      // Middle zone — fully traversed
+      // Middle zone: fully traversed
       distanceKm = getZoneDistanceKm(zone);
     }
 

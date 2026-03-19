@@ -9,7 +9,7 @@ const slotLabels: Record<string, Record<string, string>> = {
 
 /**
  * Get toll cost for every time slot (8 weekday + 4 weekend).
- * Reads from the shared cache — same source as calculateToll.
+ * Reads from the shared cache, same source as calculateToll.
  */
 export function computeAllTimeSlotCosts(input: RouteInput): TimeSlotCost[] {
   const breakdowns = getAllBreakdowns(input);

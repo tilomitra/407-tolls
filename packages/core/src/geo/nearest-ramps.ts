@@ -3,7 +3,7 @@ import { haversineKm } from "./haversine";
 import { BoundedMaxHeap } from "./min-heap";
 
 /**
- * Equirectangular squared distance — cheap proxy for haversine when we only
+ * Equirectangular squared distance: cheap proxy for haversine when we only
  * need relative ordering. Skips all trig except one cos() for the latitude
  * correction. The result is NOT in real units, but the ordering is identical
  * to haversine for points within a few hundred km of each other.

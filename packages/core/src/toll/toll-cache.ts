@@ -46,7 +46,7 @@ function buildBreakdown(
 
 /**
  * Compute and cache full toll breakdowns for all 12 time slots.
- * This is the single source of truth — both calculateToll and
+ * Single source of truth. Both calculateToll and
  * computeAllTimeSlotCosts read from this cache.
  */
 export function getAllBreakdowns(input: RouteInput): TollBreakdown[] {

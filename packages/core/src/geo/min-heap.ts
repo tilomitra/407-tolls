@@ -5,7 +5,7 @@
  *   - The heap is a max-heap, so the LARGEST of the k items is always at the root.
  *   - For each new item, if it's smaller than the root, it replaces the root
  *     and gets bubbled down to restore heap order.
- *   - Items larger than the root are discarded — they can't be in the top k.
+ *   - Items larger than the root are discarded. They can't be in the top k.
  *   - drain() extracts items in ascending order by repeatedly removing the root.
  *
  * Time:  O(n log k) for n pushes, O(k log k) for drain
@@ -37,7 +37,7 @@ export class BoundedMaxHeap<T> {
       this.heap.push(item);
       this.bubbleUp(this.heap.length - 1);
     } else if (this.compare(item, this.heap[0]!) < 0) {
-      // New item is smaller than the largest in our top-k — replace root
+      // New item is smaller than the largest in our top-k, replace root
       this.heap[0] = item;
       this.bubbleDown(0);
     }
