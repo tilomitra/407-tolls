@@ -3,10 +3,7 @@
 import { useState } from "react";
 import type { TimeSlotCost } from "@407-etr/core";
 import { Card } from "../ui/card";
-
-function formatDollars(cents: number): string {
-  return `$${(cents / 100).toFixed(2)}`;
-}
+import { formatDollars } from "@/lib/format";
 
 export function TimeChart({
   data,
