@@ -11,6 +11,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "407 ETR Savings Tool",
   description: "Find cheaper on-ramps on the 407 ETR and see how much you could save.",
+  icons: { icon: "/favicon.svg" },
 };
 
 export default function RootLayout({

@@ -8,6 +8,7 @@ import { StyledSelect } from "../ui/styled-select";
 import { Button } from "../ui/button";
 import { Toggle } from "../ui/toggle";
 import { RadioGroup } from "../ui/radio-group";
+import { useLocalStorage } from "@/lib/use-local-storage";
 
 const WEEKDAY_TIME_OPTIONS = [
   { value: "5am", label: "5:00am - 7:00am" },
@@ -141,9 +142,9 @@ export function RouteForm({
   const currentSlot = resolveCurrentSlot();
 
   // Default to Jane Street (25) and Highway 404 (33)
-  const [entryId, setEntryId] = useState(interchanges.length > 0 ? "25" : "");
-  const [exitId, setExitId] = useState(interchanges.length > 0 ? "33" : "");
-  const [hasTransponder, setHasTransponder] = useState(true);
+  const [entryId, setEntryId] = useLocalStorage("407-entry", interchanges.length > 0 ? "25" : "");
+  const [exitId, setExitId] = useLocalStorage("407-exit", interchanges.length > 0 ? "33" : "");
+  const [hasTransponder, setHasTransponder] = useLocalStorage("407-transponder", true);
   const [timeMode, setTimeMode] = useState<"now" | "custom">("now");
   const [dayType, setDayType] = useState<DayType>(currentSlot.dayType);
   const [weekdaySlot, setWeekdaySlot] = useState<WeekdaySlot>(
