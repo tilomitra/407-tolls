@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import type { TimeSlotCost } from "@407-etr/core";
 import { Card } from "../ui/card";
 import { formatDollars } from "@/lib/format";
@@ -16,17 +16,20 @@ export function TimeChart({
 }) {
   const [open, setOpen] = useState(false);
 
-  const weekday = data.filter((d) => d.dayType === "weekday");
-  const weekend = data.filter((d) => d.dayType !== "weekday");
+  const weekday = useMemo(() => data.filter((d) => d.dayType === "weekday"), [data]);
+  const weekend = useMemo(() => data.filter((d) => d.dayType !== "weekday"), [data]);
 
-  const minCost = Math.min(...data.map((d) => d.totalCents));
-  const maxCost = Math.max(...data.map((d) => d.totalCents));
-  const currentEntry = data.find(
+  const { minCost, maxCost } = useMemo(() => ({
+    minCost: Math.min(...data.map((d) => d.totalCents)),
+    maxCost: Math.max(...data.map((d) => d.totalCents)),
+  }), [data]);
+
+  const currentEntry = useMemo(() => data.find(
     (d) =>
       d.slot === currentSlot &&
       ((currentDayType === "weekday" && d.dayType === "weekday") ||
         (currentDayType !== "weekday" && d.dayType !== "weekday")),
-  );
+  ), [data, currentSlot, currentDayType]);
   const currentCost = currentEntry?.totalCents ?? 0;
   const canSave = currentCost > minCost;
   const savings = currentCost - minCost;

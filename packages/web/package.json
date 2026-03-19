@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@407-etr/core": "workspace:*",
+    "@headlessui/react": "^2.2.9",
     "maplibre-gl": "^5.20.2",
     "next": "^15.1.0",
     "react": "^19.0.0",

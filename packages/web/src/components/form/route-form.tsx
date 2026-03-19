@@ -1,29 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import type { TollResponse, CommuteEstimate, DayOfWeek, Interchange, ResolvedTimeSlot, DayType, WeekdaySlot, WeekendSlot } from "@407-etr/core";
 import { Card, CardBody } from "../ui/card";
-import { Select } from "../ui/select";
+import { SearchableSelect } from "../ui/searchable-select";
+import { StyledSelect } from "../ui/styled-select";
 import { Button } from "../ui/button";
 import { Toggle } from "../ui/toggle";
 import { RadioGroup } from "../ui/radio-group";
 
 const WEEKDAY_TIME_OPTIONS = [
-  { value: "5am", label: "5:00 – 6:59 AM" },
-  { value: "7am", label: "7:00 – 9:29 AM (AM peak)" },
-  { value: "930am", label: "9:30 – 10:29 AM" },
-  { value: "1030am", label: "10:30 AM – 2:29 PM" },
-  { value: "230pm", label: "2:30 – 3:29 PM" },
-  { value: "330pm", label: "3:30 – 5:59 PM (PM peak)" },
-  { value: "6pm", label: "6:00 – 8:59 PM" },
-  { value: "9pm", label: "9:00 PM – 4:59 AM (overnight)" },
+  { value: "5am", label: "5:00am - 7:00am" },
+  { value: "7am", label: "7:00am - 9:30am" },
+  { value: "930am", label: "9:30am - 10:30am" },
+  { value: "1030am", label: "10:30am - 2:30pm" },
+  { value: "230pm", label: "2:30pm - 3:30pm" },
+  { value: "330pm", label: "3:30pm - 6:00pm" },
+  { value: "6pm", label: "6:00pm - 9:00pm" },
+  { value: "9pm", label: "9:00pm - 5:00am" },
 ];
 
 const WEEKEND_TIME_OPTIONS = [
-  { value: "830am", label: "8:30 – 9:59 AM" },
-  { value: "10am", label: "10:00 AM – 6:59 PM" },
-  { value: "7pm", label: "7:00 – 8:59 PM" },
-  { value: "9pm", label: "9:00 PM – 8:29 AM (overnight)" },
+  { value: "830am", label: "8:30am - 10:00am" },
+  { value: "10am", label: "10:00am - 7:00pm" },
+  { value: "7pm", label: "7:00pm - 9:00pm" },
+  { value: "9pm", label: "9:00pm - 8:30am" },
 ];
 
 const WEEKDAY_BOUNDARIES: Array<[number, WeekdaySlot]> = [
@@ -114,11 +115,28 @@ export function RouteForm({
   mode: FormMode;
   onModeChange: (mode: FormMode) => void;
 }) {
-  const interchangeOptions = interchanges.map((ic) => ({
-    value: ic.id,
+  const interchangeOptions = useMemo(() => interchanges.map((ic) => ({
+    id: ic.id,
     label: ic.name,
-    detail: ic.note ? `Zone ${ic.zone} — ${ic.note}` : `Zone ${ic.zone}`,
-  }));
+    searchText: `${ic.name} zone ${ic.zone}`,
+    zone: ic.zone,
+    note: ic.note ?? null,
+  })), [interchanges]);
+
+  const renderInterchangeOption = (o: typeof interchangeOptions[number]) => (
+    <>
+      <div className="text-sm font-medium text-slate-900">{o.label}</div>
+      <div className="flex items-center gap-2 text-xs text-slate-400">
+        <span>Zone {o.zone}</span>
+        {o.note && (
+          <>
+            <span className="h-2.5 w-px bg-slate-200" />
+            <span className="text-amber-500">{o.note}</span>
+          </>
+        )}
+      </div>
+    </>
+  );
 
   const currentSlot = resolveCurrentSlot();
 
@@ -145,8 +163,8 @@ export function RouteForm({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const entry = interchanges.find((ic) => ic.id === entryId)!;
-  const exit = interchanges.find((ic) => ic.id === exitId)!;
+  const entry = useMemo(() => interchanges.find((ic) => ic.id === entryId)!, [interchanges, entryId]);
+  const exit = useMemo(() => interchanges.find((ic) => ic.id === exitId)!, [interchanges, exitId]);
   const sameInterchange = entryId === exitId;
 
   // Validate ramp access for the computed direction
@@ -267,34 +285,26 @@ export function RouteForm({
             <div className="rounded-xl border border-slate-200">
               <div className="px-3 pb-2 pt-3">
                 <span className="mb-1 block text-xs font-medium text-slate-500">Enter at</span>
-                <select
+                <SearchableSelect
+                  options={interchangeOptions}
                   value={entryId}
-                  onChange={(e) => setEntryId(e.target.value)}
-                  className="block w-full appearance-none bg-transparent text-sm text-slate-900 focus:outline-none"
-                >
-                  {interchangeOptions.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}{opt.detail ? ` (${opt.detail})` : ""}
-                    </option>
-                  ))}
-                </select>
+                  onChange={setEntryId}
+                  placeholder="Search interchanges..."
+                  renderOption={renderInterchangeOption}
+                />
               </div>
 
               <div className="border-t border-slate-100" />
 
               <div className="px-3 pb-3 pt-2">
                 <span className="mb-1 block text-xs font-medium text-slate-500">Exit at</span>
-                <select
+                <SearchableSelect
+                  options={interchangeOptions}
                   value={exitId}
-                  onChange={(e) => setExitId(e.target.value)}
-                  className="block w-full appearance-none bg-transparent text-sm text-slate-900 focus:outline-none"
-                >
-                  {interchangeOptions.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}{opt.detail ? ` (${opt.detail})` : ""}
-                    </option>
-                  ))}
-                </select>
+                  onChange={setExitId}
+                  placeholder="Search interchanges..."
+                  renderOption={renderInterchangeOption}
+                />
               </div>
             </div>
 
@@ -331,7 +341,7 @@ export function RouteForm({
 
               {timeMode === "custom" && (
                 <div className="grid grid-cols-2 gap-3">
-                  <Select
+                  <StyledSelect
                     label="Day"
                     value={dayType}
                     onChange={(v) => setDayType(v as DayType)}
@@ -340,7 +350,7 @@ export function RouteForm({
                       { value: "weekend_or_holiday", label: "Weekend / Holiday" },
                     ]}
                   />
-                  <Select
+                  <StyledSelect
                     label="Time"
                     value={dayType === "weekday" ? weekdaySlot : weekendSlot}
                     onChange={(v) => {
@@ -364,13 +374,13 @@ export function RouteForm({
               <div className="space-y-3">
                 <span className="block text-sm font-medium text-slate-700">Weekday schedule</span>
                 <div className="grid grid-cols-2 gap-3">
-                  <Select
+                  <StyledSelect
                     label="Departure"
                     value={goWeekdaySlot}
                     onChange={(v) => setGoWeekdaySlot(v as WeekdaySlot)}
                     options={WEEKDAY_TIME_OPTIONS}
                   />
-                  <Select
+                  <StyledSelect
                     label="Return"
                     value={returnWeekdaySlot}
                     onChange={(v) => setReturnWeekdaySlot(v as WeekdaySlot)}
@@ -383,13 +393,13 @@ export function RouteForm({
                 <div className="space-y-3">
                   <span className="block text-sm font-medium text-slate-700">Weekend schedule</span>
                   <div className="grid grid-cols-2 gap-3">
-                    <Select
+                    <StyledSelect
                       label="Departure"
                       value={goWeekendSlot}
                       onChange={(v) => setGoWeekendSlot(v as WeekendSlot)}
                       options={WEEKEND_TIME_OPTIONS}
                     />
-                    <Select
+                    <StyledSelect
                       label="Return"
                       value={returnWeekendSlot}
                       onChange={(v) => setReturnWeekendSlot(v as WeekendSlot)}

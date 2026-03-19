@@ -139,8 +139,7 @@ export function TollBreakdownView({
           </div>
 
           <p className="mt-3 text-xs leading-relaxed text-slate-400">
-            Estimate based on 2026 published rates and approximate distances.
-            Actual charges may differ slightly due to gantry-to-gantry measurements.
+            Estimate based on 2026 published rates. Actual charges may vary.
           </p>
         </div>
       </CardBody>
