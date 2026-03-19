@@ -18,7 +18,7 @@ export function calculateToll(input: TollInput): TollBreakdown {
   const zoneCount = end - start + 1;
 
   let tollCents = 0;
-  const perZone: ZoneTollDetail[] = new Array(zoneCount);
+  const perZone: ZoneTollDetail[] = [];
 
   for (let i = 0; i < zoneCount; i++) {
     const zone = (start + i) as Zone;
@@ -37,9 +37,11 @@ export function calculateToll(input: TollInput): TollBreakdown {
       distanceKm = getZoneDistanceKm(zone);
     }
 
+    if (distanceKm === 0) continue;
+
     const costCents = Math.round(rateCentsPerKm * distanceKm);
     tollCents += costCents;
-    perZone[i] = { zone, distanceKm, rateCentsPerKm, costCents };
+    perZone.push({ zone, distanceKm, rateCentsPerKm, costCents });
   }
 
   const cameraChargeCents = hasTransponder ? null : CAMERA_CHARGE_CENTS;
