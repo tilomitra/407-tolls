@@ -1,33 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { calculateToll, computeAllTimeSlotCosts } from "@407-etr/core";
-import type { WeekdaySlot, WeekendSlot, ResolvedTimeSlot } from "@407-etr/core";
 import { buildRouteInput } from "@/lib/load-toll-points";
+import { parseRoute, parseTimeSlot } from "@/lib/params";
+import { formatDollars } from "@/lib/format";
 import { TripPageClient } from "./trip-page-client";
 
 export const revalidate = 86400;
-
-const VALID_WEEKDAY_SLOTS = new Set(["5am", "7am", "930am", "1030am", "230pm", "330pm", "6pm", "9pm"]);
-const VALID_WEEKEND_SLOTS = new Set(["830am", "10am", "7pm", "9pm"]);
-
-function parseRoute(route: string): { entryId: string; exitId: string } | null {
-  const match = route.match(/^(.+)-to-(.+)$/);
-  if (!match) return null;
-  return { entryId: match[1]!, exitId: match[2]! };
-}
-
-function parseTimeSlot(time: string | undefined, day: string | undefined): ResolvedTimeSlot {
-  if (day === "weekend") {
-    const slot = (time && VALID_WEEKEND_SLOTS.has(time) ? time : "10am") as WeekendSlot;
-    return { dayType: "weekend_or_holiday", slot };
-  }
-  const slot = (time && VALID_WEEKDAY_SLOTS.has(time) ? time : "7am") as WeekdaySlot;
-  return { dayType: "weekday", slot };
-}
-
-function formatDollars(cents: number): string {
-  return `$${(cents / 100).toFixed(2)}`;
-}
 
 interface PageProps {
   params: Promise<{ route: string }>;
@@ -42,7 +21,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
 
   const transponder = query.transponder !== "false";
   const resolved = buildRouteInput(parsed.entryId, parsed.exitId, transponder);
-  if (!resolved) return { title: "Trip not found" };
+  if (!resolved.ok) return { title: "Trip not found" };
 
   const timeSlot = parseTimeSlot(
     typeof query.time === "string" ? query.time : undefined,
@@ -69,7 +48,7 @@ export default async function TripPage({ params, searchParams }: PageProps) {
 
   const transponder = query.transponder !== "false";
   const resolved = buildRouteInput(parsed.entryId, parsed.exitId, transponder);
-  if (!resolved) notFound();
+  if (!resolved.ok) notFound();
 
   const timeSlot = parseTimeSlot(
     typeof query.time === "string" ? query.time : undefined,

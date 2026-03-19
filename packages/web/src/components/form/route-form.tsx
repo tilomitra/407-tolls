@@ -117,7 +117,7 @@ export function RouteForm({
   const interchangeOptions = interchanges.map((ic) => ({
     value: ic.id,
     label: ic.name,
-    detail: `Zone ${ic.zone}`,
+    detail: ic.note ? `Zone ${ic.zone} — ${ic.note}` : `Zone ${ic.zone}`,
   }));
 
   const currentSlot = resolveCurrentSlot();
@@ -148,6 +148,21 @@ export function RouteForm({
   const entry = interchanges.find((ic) => ic.id === entryId)!;
   const exit = interchanges.find((ic) => ic.id === exitId)!;
   const sameInterchange = entryId === exitId;
+
+  // Validate ramp access for the computed direction
+  const direction: "eastbound" | "westbound" | null = entry && exit && !sameInterchange
+    ? (exit.km > entry.km ? "eastbound" : "westbound")
+    : null;
+
+  const routeError = (() => {
+    if (!direction || !entry || !exit) return null;
+    const ramps = direction === "eastbound"
+      ? { entry: entry.eastbound, exit: exit.eastbound }
+      : { entry: entry.westbound, exit: exit.westbound };
+    if (!ramps.entry.hasOnRamp) return entry.note ?? `${entry.name} does not have a ${direction} on-ramp.`;
+    if (!ramps.exit.hasOffRamp) return exit.note ?? `${exit.name} does not have a ${direction} off-ramp.`;
+    return null;
+  })();
 
   const hasWeekendDays = commuteDays.includes(0) || commuteDays.includes(6);
 
@@ -397,7 +412,7 @@ export function RouteForm({
 
           <Button
             type="submit"
-            disabled={sameInterchange}
+            disabled={sameInterchange || !!routeError}
             loading={loading}
             className="w-full"
           >
@@ -407,6 +422,12 @@ export function RouteForm({
           {sameInterchange && (
             <p className="text-center text-xs text-amber-600">
               Entry and exit must be different interchanges.
+            </p>
+          )}
+
+          {routeError && !sameInterchange && (
+            <p className="text-center text-xs text-amber-600">
+              {routeError}
             </p>
           )}
 

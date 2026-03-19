@@ -1,4 +1,4 @@
-import type { Interchange, OnRamp, Direction, RouteInput } from "@407-etr/core";
+import type { Interchange, OnRamp, Direction, RouteResult } from "@407-etr/core";
 import { interchanges as rawInterchanges } from "@/data";
 
 let cachedInterchangeMap: Map<string, Interchange> | null = null;
@@ -47,18 +47,37 @@ export function buildRouteInput(
   entryId: string,
   exitId: string,
   hasTransponder: boolean,
-): { route: RouteInput; entry: Interchange; exit: Interchange } | null {
+): RouteResult {
   const entry = getInterchangeById(entryId);
   const exit = getInterchangeById(exitId);
-  if (!entry || !exit) return null;
+
+  if (!entry || !exit) {
+    return { ok: false, error: "Invalid interchange ID" };
+  }
+
+  if (entryId === exitId) {
+    return { ok: false, error: "Entry and exit must be different interchanges." };
+  }
+
+  const direction: Direction = exit.km > entry.km ? "eastbound" : "westbound";
+  const ramps = direction === "eastbound" ? { entry: entry.eastbound, exit: exit.eastbound } : { entry: entry.westbound, exit: exit.westbound };
+
+  if (!ramps.entry.hasOnRamp) {
+    return { ok: false, error: entry.note ?? `${entry.name} does not have a ${direction} on-ramp.` };
+  }
+
+  if (!ramps.exit.hasOffRamp) {
+    return { ok: false, error: exit.note ?? `${exit.name} does not have a ${direction} off-ramp.` };
+  }
 
   return {
+    ok: true,
     route: {
       entryZone: entry.zone,
       exitZone: exit.zone,
       entryKm: entry.km,
       exitKm: exit.km,
-      direction: exit.km > entry.km ? "eastbound" : "westbound",
+      direction,
       hasTransponder,
     },
     entry,

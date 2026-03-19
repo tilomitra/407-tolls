@@ -2,9 +2,7 @@ import { NextResponse } from "next/server";
 import { calculateToll, computeAllTimeSlotCosts } from "@407-etr/core";
 import type { WeekdaySlot, WeekendSlot } from "@407-etr/core";
 import { buildRouteInput } from "@/lib/load-toll-points";
-
-const VALID_WEEKDAY_SLOTS = new Set(["5am", "7am", "930am", "1030am", "230pm", "330pm", "6pm", "9pm"]);
-const VALID_WEEKEND_SLOTS = new Set(["830am", "10am", "7pm", "9pm"]);
+import { VALID_WEEKDAY_SLOTS, VALID_WEEKEND_SLOTS } from "@/lib/params";
 
 export async function GET(req: Request) {
   try {
@@ -20,8 +18,8 @@ export async function GET(req: Request) {
     }
 
     const resolved = buildRouteInput(entryId, exitId, transponder);
-    if (!resolved) {
-      return NextResponse.json({ error: "Invalid interchange ID" }, { status: 400 });
+    if (!resolved.ok) {
+      return NextResponse.json({ error: resolved.error }, { status: 400 });
     }
 
     const isWeekend = day === "weekend";

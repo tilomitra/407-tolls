@@ -1,20 +1,8 @@
 import { NextResponse } from "next/server";
 import { computeCommuteEstimate } from "@407-etr/core";
-import type { WeekdaySlot, WeekendSlot, DayOfWeek } from "@407-etr/core";
+import type { WeekdaySlot, WeekendSlot } from "@407-etr/core";
 import { buildRouteInput } from "@/lib/load-toll-points";
-
-const VALID_WEEKDAY_SLOTS = new Set(["5am", "7am", "930am", "1030am", "230pm", "330pm", "6pm", "9pm"]);
-const VALID_WEEKEND_SLOTS = new Set(["830am", "10am", "7pm", "9pm"]);
-
-function parseSlot(val: string | null, validSet: Set<string>, fallback: string): string {
-  return val && validSet.has(val) ? val : fallback;
-}
-
-function parseDays(val: string | null): DayOfWeek[] {
-  if (!val) return [1, 2, 3, 4, 5];
-  const parsed = val.split(",").map(Number).filter((d) => d >= 0 && d <= 6) as DayOfWeek[];
-  return parsed.length > 0 ? parsed : [1, 2, 3, 4, 5];
-}
+import { VALID_WEEKDAY_SLOTS, VALID_WEEKEND_SLOTS, parseSlot, parseDays } from "@/lib/params";
 
 export async function GET(req: Request) {
   try {
@@ -28,8 +16,8 @@ export async function GET(req: Request) {
     }
 
     const resolved = buildRouteInput(entryId, exitId, transponder);
-    if (!resolved) {
-      return NextResponse.json({ error: "Invalid interchange ID" }, { status: 400 });
+    if (!resolved.ok) {
+      return NextResponse.json({ error: resolved.error }, { status: 400 });
     }
 
     const days = parseDays(url.searchParams.get("days"));

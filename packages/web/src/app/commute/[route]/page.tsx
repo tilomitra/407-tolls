@@ -1,42 +1,17 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { computeCommuteEstimate } from "@407-etr/core";
-import type { WeekdaySlot, WeekendSlot, DayOfWeek } from "@407-etr/core";
+import { computeCommuteEstimate, DAY_NAMES } from "@407-etr/core";
+import type { WeekdaySlot, WeekendSlot } from "@407-etr/core";
 import { buildRouteInput } from "@/lib/load-toll-points";
+import { VALID_WEEKDAY_SLOTS, VALID_WEEKEND_SLOTS, parseRoute, parseSlot, parseDays } from "@/lib/params";
+import { formatDollars } from "@/lib/format";
 import { CommutePageClient } from "./commute-page-client";
 
 export const revalidate = 86400;
 
-const VALID_WEEKDAY_SLOTS = new Set(["5am", "7am", "930am", "1030am", "230pm", "330pm", "6pm", "9pm"]);
-const VALID_WEEKEND_SLOTS = new Set(["830am", "10am", "7pm", "9pm"]);
-
-const DAY_NAMES: Record<number, string> = {
-  0: "Sun", 1: "Mon", 2: "Tue", 3: "Wed", 4: "Thu", 5: "Fri", 6: "Sat",
-};
-
-function parseRoute(route: string): { entryId: string; exitId: string } | null {
-  const match = route.match(/^(.+)-to-(.+)$/);
-  if (!match) return null;
-  return { entryId: match[1]!, exitId: match[2]! };
-}
-
-function parseSlot(time: string | undefined, validSet: Set<string>, fallback: string): string {
-  return time && validSet.has(time) ? time : fallback;
-}
-
-function parseDays(daysParam: string | undefined): DayOfWeek[] {
-  if (!daysParam) return [1, 2, 3, 4, 5];
-  const parsed = daysParam.split(",").map(Number).filter((d) => d >= 0 && d <= 6) as DayOfWeek[];
-  return parsed.length > 0 ? parsed : [1, 2, 3, 4, 5];
-}
-
-function formatDollars(cents: number): string {
-  return `$${(cents / 100).toFixed(2)}`;
-}
-
 function buildCommuteInput(query: Record<string, string | string[] | undefined>, transponder: boolean, entryId: string, exitId: string) {
   const resolved = buildRouteInput(entryId, exitId, transponder);
-  if (!resolved) return null;
+  if (!resolved.ok) return null;
 
   const days = parseDays(typeof query.days === "string" ? query.days : undefined);
   const goSlot = parseSlot(typeof query.departure === "string" ? query.departure : undefined, VALID_WEEKDAY_SLOTS, "7am");
@@ -45,7 +20,8 @@ function buildCommuteInput(query: Record<string, string | string[] | undefined>,
   const wkndRetSlot = parseSlot(typeof query.weekendReturn === "string" ? query.weekendReturn : undefined, VALID_WEEKEND_SLOTS, "7pm");
 
   return {
-    ...resolved,
+    entry: resolved.entry,
+    exit: resolved.exit,
     days,
     commuteInput: {
       route: resolved.route,

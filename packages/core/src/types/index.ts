@@ -95,6 +95,8 @@ export const InterchangeSchema = z.object({
   isFree: z.boolean(),
   eastbound: RampAccessSchema,
   westbound: RampAccessSchema,
+  note: z.string().nullable().optional(),
+  noteFr: z.string().nullable().optional(),
 });
 export type Interchange = z.infer<typeof InterchangeSchema>;
 
@@ -129,6 +131,10 @@ export type TollInput = z.infer<typeof TollInputSchema>;
 
 export const RouteInputSchema = TollInputSchema.omit({ timeSlot: true });
 export type RouteInput = z.infer<typeof RouteInputSchema>;
+
+export type RouteResult =
+  | { ok: true; route: RouteInput; entry: Interchange; exit: Interchange }
+  | { ok: false; error: string };
 
 // ── Toll breakdown ───────────────────────────────────────────────────────────
 

@@ -158,6 +158,7 @@ export function HighwayMap({
             color: ic.isFree ? FREE_DOT_COLOR : getZoneColor(ic.zone),
             access,
             accessLabel,
+            note: ic.note ?? "",
           },
         };
       });
@@ -255,16 +256,16 @@ export function HighwayMap({
         map.getCanvas().style.cursor = "pointer";
         const f = e.features?.[0];
         if (!f || f.geometry.type !== "Point") return;
-        const accessLabel = f.properties.accessLabel;
-        const accessHtml = accessLabel
-          ? `<div style="font-size:10px;color:#f59e0b;font-weight:500;margin-top:2px">${accessLabel}</div>`
+        const note = f.properties.note;
+        const noteHtml = note
+          ? `<div style="font-size:10px;color:#f59e0b;font-weight:500;margin-top:2px">${note}</div>`
           : "";
         popup
           .setLngLat(f.geometry.coordinates.slice() as [number, number])
           .setHTML(
             `<div style="font-size:13px;font-weight:500">${f.properties.name}</div>` +
             `<div style="font-size:11px;color:#64748b">Zone ${f.properties.zone}</div>` +
-            accessHtml,
+            noteHtml,
           )
           .addTo(map);
       }
