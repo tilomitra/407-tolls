@@ -1,27 +1,7 @@
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
-import type { TollPoint, Interchange } from "@407-etr/core";
+import { tollPoints, interchanges, highwayGeometry } from "@/data";
 import { ClientApp } from "@/components/client-app";
 
-// Data files change only on deploy (rates update yearly).
-// Revalidate daily as a safety net.
-export const revalidate = 86400;
-
-const DATA_DIR = join(process.cwd(), "..", "..", "data");
-
-function loadJSON<T>(filename: string, fallback: T): T {
-  try {
-    return JSON.parse(readFileSync(join(DATA_DIR, filename), "utf-8")) as T;
-  } catch {
-    return fallback;
-  }
-}
-
 export default function Home() {
-  const tollPoints = loadJSON<TollPoint[]>("407-toll-points.json", []);
-  const interchanges = loadJSON<Interchange[]>("interchanges.json", []);
-  const highwayGeometry = loadJSON<Array<[number, number]>>("highway-geometry.json", []);
-
   return (
     <div className="min-h-screen">
       <header className="border-b border-slate-200 bg-white">

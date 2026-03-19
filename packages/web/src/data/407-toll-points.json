@@ -1,0 +1,3082 @@
+[
+  {
+    "id": 2,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9131607,
+      "lng": -78.764916
+    },
+    "zone": 12,
+    "name": "Regional Highway 2",
+    "isFree": true
+  },
+  {
+    "id": 3,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8457579,
+      "lng": -79.3295115
+    },
+    "zone": 10,
+    "name": "Warden Avenue",
+    "isFree": false
+  },
+  {
+    "id": 4,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.5725095,
+      "lng": -79.7923487
+    },
+    "zone": 2,
+    "name": "Milton",
+    "isFree": false
+  },
+  {
+    "id": 6,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8153089,
+      "lng": -79.4771757
+    },
+    "zone": 8,
+    "name": "Dufferin Street",
+    "isFree": false
+  },
+  {
+    "id": 7,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9071724,
+      "lng": -78.9978393
+    },
+    "zone": 12,
+    "name": "Highway 412",
+    "isFree": true
+  },
+  {
+    "id": 8,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8553734,
+      "lng": -79.2825928
+    },
+    "zone": 10,
+    "name": "McCowan Road",
+    "isFree": false
+  },
+  {
+    "id": 9,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9992013,
+      "lng": -78.6676094
+    },
+    "zone": 12,
+    "name": "Darlington-Clarke Townline",
+    "isFree": true
+  },
+  {
+    "id": 10,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8439307,
+      "lng": -79.3332553
+    },
+    "zone": 10,
+    "name": "Unionville",
+    "isFree": false
+  },
+  {
+    "id": 11,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7866586,
+      "lng": -79.5256683
+    },
+    "zone": 7,
+    "name": "Autumn Harvest Road",
+    "isFree": false
+  },
+  {
+    "id": 12,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8506506,
+      "lng": -79.308601
+    },
+    "zone": 10,
+    "name": "Kennedy Road",
+    "isFree": false
+  },
+  {
+    "id": 13,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.5872433,
+      "lng": -79.8089937
+    },
+    "zone": 2,
+    "name": "Highway 401",
+    "isFree": false
+  },
+  {
+    "id": 14,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9727053,
+      "lng": -78.9041817
+    },
+    "zone": 12,
+    "name": "Oshawa",
+    "isFree": true
+  },
+  {
+    "id": 15,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.3845509,
+      "lng": -79.8347151
+    },
+    "zone": 1,
+    "name": "Dundas Street",
+    "isFree": false
+  },
+  {
+    "id": 16,
+    "type": "Virtual",
+    "location": {
+      "lat": 44.0025298,
+      "lng": -78.6648026
+    },
+    "zone": 12,
+    "name": "Brown Road",
+    "isFree": true
+  },
+  {
+    "id": 17,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8388992,
+      "lng": -79.4088283
+    },
+    "zone": 9,
+    "name": "Highway 7",
+    "isFree": false
+  },
+  {
+    "id": 18,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9798735,
+      "lng": -78.7449265
+    },
+    "zone": 12,
+    "name": "Clarington",
+    "isFree": true
+  },
+  {
+    "id": 19,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.4467742,
+      "lng": -79.7897918
+    },
+    "zone": 2,
+    "name": "Bronte Road",
+    "isFree": false
+  },
+  {
+    "id": 20,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.5701323,
+      "lng": -79.7887234
+    },
+    "zone": 2,
+    "name": "Milton",
+    "isFree": false
+  },
+  {
+    "id": 21,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7751364,
+      "lng": -79.5694517
+    },
+    "zone": 7,
+    "name": "Pine Valley Drive",
+    "isFree": false
+  },
+  {
+    "id": 22,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.48524,
+      "lng": -79.7639698
+    },
+    "zone": 3,
+    "name": "Neyagawa Boulevard",
+    "isFree": false
+  },
+  {
+    "id": 23,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8743788,
+      "lng": -78.9759852
+    },
+    "zone": 12,
+    "name": "Highway 412",
+    "isFree": true
+  },
+  {
+    "id": 24,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9495178,
+      "lng": -78.9437985
+    },
+    "zone": 12,
+    "name": "Brooklin",
+    "isFree": true
+  },
+  {
+    "id": 25,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.4437805,
+      "lng": -79.7899758
+    },
+    "zone": 2,
+    "name": "Bronte Road",
+    "isFree": false
+  },
+  {
+    "id": 26,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8515202,
+      "lng": -79.3052842
+    },
+    "zone": 10,
+    "name": "Helen Avenue",
+    "isFree": false
+  },
+  {
+    "id": 27,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9473681,
+      "lng": -78.9576841
+    },
+    "zone": 12,
+    "name": "Brooklin",
+    "isFree": true
+  },
+  {
+    "id": 28,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8399421,
+      "lng": -79.3593886
+    },
+    "zone": 10,
+    "name": "Markham",
+    "isFree": false
+  },
+  {
+    "id": 29,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7878986,
+      "lng": -79.5173747
+    },
+    "zone": 8,
+    "name": "Peelar Road",
+    "isFree": false
+  },
+  {
+    "id": 30,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8573663,
+      "lng": -79.2782796
+    },
+    "zone": 10,
+    "name": "Unionville",
+    "isFree": false
+  },
+  {
+    "id": 31,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.3812486,
+      "lng": -79.8342721
+    },
+    "zone": 1,
+    "name": "Dundas Street",
+    "isFree": false
+  },
+  {
+    "id": 32,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8388233,
+      "lng": -79.4047021
+    },
+    "zone": 9,
+    "name": "Highway 7",
+    "isFree": false
+  },
+  {
+    "id": 33,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.3834996,
+      "lng": -79.832752
+    },
+    "zone": 1,
+    "name": "Dundas Street",
+    "isFree": false
+  },
+  {
+    "id": 34,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8264417,
+      "lng": -79.4578277
+    },
+    "zone": 8,
+    "name": "Vaughan",
+    "isFree": false
+  },
+  {
+    "id": 35,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.5714606,
+      "lng": -79.7901394
+    },
+    "zone": 2,
+    "name": "Derry Road West",
+    "isFree": false
+  },
+  {
+    "id": 36,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8381851,
+      "lng": -79.4026945
+    },
+    "zone": 9,
+    "name": "Highway 7",
+    "isFree": false
+  },
+  {
+    "id": 37,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9655562,
+      "lng": -78.8099509
+    },
+    "zone": 12,
+    "name": "6th Concession",
+    "isFree": true
+  },
+  {
+    "id": 38,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9809975,
+      "lng": -78.741116
+    },
+    "zone": 12,
+    "name": "Bowmanville Avenue",
+    "isFree": true
+  },
+  {
+    "id": 39,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7754772,
+      "lng": -79.5713323
+    },
+    "zone": 7,
+    "name": "Pine Valley Drive",
+    "isFree": false
+  },
+  {
+    "id": 40,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7868864,
+      "lng": -79.5182561
+    },
+    "zone": 8,
+    "name": "Vaughan",
+    "isFree": false
+  },
+  {
+    "id": 41,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9411437,
+      "lng": -79.0052485
+    },
+    "zone": 12,
+    "name": "Highway 412",
+    "isFree": true
+  },
+  {
+    "id": 42,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9651492,
+      "lng": -78.8131309
+    },
+    "zone": 12,
+    "name": "Enfield Road",
+    "isFree": true
+  },
+  {
+    "id": 43,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9575311,
+      "lng": -78.7692279
+    },
+    "zone": 12,
+    "name": "Taunton Road",
+    "isFree": true
+  },
+  {
+    "id": 44,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8365743,
+      "lng": -79.4242179
+    },
+    "zone": 9,
+    "name": "Highway 7",
+    "isFree": false
+  },
+  {
+    "id": 45,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9481265,
+      "lng": -78.9624107
+    },
+    "zone": 12,
+    "name": "Brooklin",
+    "isFree": true
+  },
+  {
+    "id": 46,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7597578,
+      "lng": -79.6137962
+    },
+    "zone": 7,
+    "name": "Woodbridge",
+    "isFree": false
+  },
+  {
+    "id": 47,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7237925,
+      "lng": -79.6741608
+    },
+    "zone": 6,
+    "name": "Brampton",
+    "isFree": false
+  },
+  {
+    "id": 48,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8825415,
+      "lng": -78.7470732
+    },
+    "zone": 12,
+    "name": "Highway 401",
+    "isFree": true
+  },
+  {
+    "id": 49,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9039261,
+      "lng": -79.1455378
+    },
+    "zone": 12,
+    "name": "Enterprise Gateway",
+    "isFree": false
+  },
+  {
+    "id": 50,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.5722582,
+      "lng": -79.7886145
+    },
+    "zone": 2,
+    "name": "Derry Road West",
+    "isFree": false
+  },
+  {
+    "id": 51,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6388751,
+      "lng": -79.7383621
+    },
+    "zone": 4,
+    "name": "Churchville",
+    "isFree": false
+  },
+  {
+    "id": 52,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.5069359,
+      "lng": -79.7488712
+    },
+    "zone": 4,
+    "name": "Oakville",
+    "isFree": false
+  },
+  {
+    "id": 53,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8492937,
+      "lng": -79.3087467
+    },
+    "zone": 10,
+    "name": "Kennedy Road",
+    "isFree": false
+  },
+  {
+    "id": 54,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8340652,
+      "lng": -79.4278643
+    },
+    "zone": 9,
+    "name": "Yonge Street",
+    "isFree": false
+  },
+  {
+    "id": 55,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6869902,
+      "lng": -79.6921107
+    },
+    "zone": 6,
+    "name": "Dixie Road",
+    "isFree": false
+  },
+  {
+    "id": 56,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7577127,
+      "lng": -79.6167377
+    },
+    "zone": 6,
+    "name": "Highway 27",
+    "isFree": false
+  },
+  {
+    "id": 57,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6556126,
+      "lng": -79.7154125
+    },
+    "zone": 5,
+    "name": "Kesteven Crescent",
+    "isFree": false
+  },
+  {
+    "id": 58,
+    "type": "Virtual",
+    "location": {
+      "lat": 44.0225555,
+      "lng": -78.6100957
+    },
+    "zone": 12,
+    "name": "Highway 35/115",
+    "isFree": true
+  },
+  {
+    "id": 59,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8913382,
+      "lng": -79.1865485
+    },
+    "zone": 11,
+    "name": "York-Durham Line",
+    "isFree": false
+  },
+  {
+    "id": 60,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8616863,
+      "lng": -79.2597229
+    },
+    "zone": 10,
+    "name": "Markham",
+    "isFree": false
+  },
+  {
+    "id": 61,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6388147,
+      "lng": -79.740367
+    },
+    "zone": 4,
+    "name": "Soccavo Crescent",
+    "isFree": false
+  },
+  {
+    "id": 62,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.827575,
+      "lng": -79.4558261
+    },
+    "zone": 8,
+    "name": "Highway 7",
+    "isFree": false
+  },
+  {
+    "id": 63,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9174608,
+      "lng": -79.0983611
+    },
+    "zone": 12,
+    "name": "Brock Road",
+    "isFree": false
+  },
+  {
+    "id": 64,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8557292,
+      "lng": -79.2800332
+    },
+    "zone": 10,
+    "name": "McCowan Road",
+    "isFree": false
+  },
+  {
+    "id": 65,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8177765,
+      "lng": -79.4783905
+    },
+    "zone": 8,
+    "name": "Highway 7",
+    "isFree": false
+  },
+  {
+    "id": 66,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9033774,
+      "lng": -79.1467084
+    },
+    "zone": 12,
+    "name": "Enterprise Gateway",
+    "isFree": false
+  },
+  {
+    "id": 67,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7728645,
+      "lng": -79.5715652
+    },
+    "zone": 7,
+    "name": "Pine Valley Drive",
+    "isFree": false
+  },
+  {
+    "id": 68,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9087618,
+      "lng": -78.9981172
+    },
+    "zone": 12,
+    "name": "Highway 412",
+    "isFree": true
+  },
+  {
+    "id": 70,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.5075248,
+      "lng": -79.7483285
+    },
+    "zone": 4,
+    "name": "Trafalgar Road",
+    "isFree": false
+  },
+  {
+    "id": 72,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7841563,
+      "lng": -79.5275625
+    },
+    "zone": 7,
+    "name": "Vaughan",
+    "isFree": false
+  },
+  {
+    "id": 73,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7755401,
+      "lng": -79.5690323
+    },
+    "zone": 7,
+    "name": "Rowntree Dairy Road",
+    "isFree": false
+  },
+  {
+    "id": 74,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8363786,
+      "lng": -79.3853477
+    },
+    "zone": 9,
+    "name": "Markham",
+    "isFree": false
+  },
+  {
+    "id": 75,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8828317,
+      "lng": -78.7486504
+    },
+    "zone": 12,
+    "name": "Baseline Road",
+    "isFree": true
+  },
+  {
+    "id": 76,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.5931489,
+      "lng": -79.805938
+    },
+    "zone": 2,
+    "name": "Highway 401",
+    "isFree": false
+  },
+  {
+    "id": 77,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.701081,
+      "lng": -79.6821451
+    },
+    "zone": 6,
+    "name": "Brampton",
+    "isFree": false
+  },
+  {
+    "id": 78,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9469399,
+      "lng": -78.9631265
+    },
+    "zone": 12,
+    "name": "Brooklin",
+    "isFree": true
+  },
+  {
+    "id": 79,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.99891,
+      "lng": -78.6682404
+    },
+    "zone": 12,
+    "name": "Clarington",
+    "isFree": true
+  },
+  {
+    "id": 80,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8372038,
+      "lng": -79.404601
+    },
+    "zone": 9,
+    "name": "Bayview Avenue",
+    "isFree": false
+  },
+  {
+    "id": 81,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.5709519,
+      "lng": -79.7877102
+    },
+    "zone": 2,
+    "name": "Derry Road West",
+    "isFree": false
+  },
+  {
+    "id": 82,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8402369,
+      "lng": -79.3577596
+    },
+    "zone": 10,
+    "name": "Markham",
+    "isFree": false
+  },
+  {
+    "id": 83,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9048198,
+      "lng": -78.9941675
+    },
+    "zone": 12,
+    "name": "Highway 412",
+    "isFree": true
+  },
+  {
+    "id": 84,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.3702433,
+      "lng": -79.8324956
+    },
+    "zone": 1,
+    "name": "Ireland Drive",
+    "isFree": false
+  },
+  {
+    "id": 85,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6171307,
+      "lng": -79.7605972
+    },
+    "zone": 3,
+    "name": "Mississauga Road",
+    "isFree": false
+  },
+  {
+    "id": 86,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7281941,
+      "lng": -79.6733427
+    },
+    "zone": 6,
+    "name": "Airport Road",
+    "isFree": false
+  },
+  {
+    "id": 87,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9803406,
+      "lng": -78.8713156
+    },
+    "zone": 12,
+    "name": "Rural Area",
+    "isFree": true
+  },
+  {
+    "id": 88,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8569338,
+      "lng": -79.2803996
+    },
+    "zone": 10,
+    "name": "McCowan Road",
+    "isFree": false
+  },
+  {
+    "id": 89,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.4428081,
+      "lng": -79.7905834
+    },
+    "zone": 2,
+    "name": "Oakville",
+    "isFree": false
+  },
+  {
+    "id": 90,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8423026,
+      "lng": -79.3523492
+    },
+    "zone": 10,
+    "name": "Bodrington Court",
+    "isFree": false
+  },
+  {
+    "id": 91,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.4157827,
+      "lng": -79.8213396
+    },
+    "zone": 2,
+    "name": "Appleby Line",
+    "isFree": false
+  },
+  {
+    "id": 92,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7869273,
+      "lng": -79.5182438
+    },
+    "zone": 8,
+    "name": "Vaughan",
+    "isFree": false
+  },
+  {
+    "id": 93,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6768134,
+      "lng": -79.6953133
+    },
+    "zone": 6,
+    "name": "Etobicoke Creek Trail",
+    "isFree": false
+  },
+  {
+    "id": 94,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7731125,
+      "lng": -79.5695033
+    },
+    "zone": 7,
+    "name": "Pine Valley Drive",
+    "isFree": false
+  },
+  {
+    "id": 95,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8760259,
+      "lng": -79.2115816
+    },
+    "zone": 11,
+    "name": "Markham",
+    "isFree": false
+  },
+  {
+    "id": 96,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9633299,
+      "lng": -78.8132069
+    },
+    "zone": 12,
+    "name": "Enfield Road",
+    "isFree": true
+  },
+  {
+    "id": 97,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8712642,
+      "lng": -79.2342177
+    },
+    "zone": 11,
+    "name": "Ninth Line",
+    "isFree": false
+  },
+  {
+    "id": 98,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8826392,
+      "lng": -78.7465097
+    },
+    "zone": 12,
+    "name": "Highway 401",
+    "isFree": true
+  },
+  {
+    "id": 99,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8884194,
+      "lng": -79.1866553
+    },
+    "zone": 11,
+    "name": "York-Durham Line",
+    "isFree": false
+  },
+  {
+    "id": 100,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.4167803,
+      "lng": -79.8207753
+    },
+    "zone": 2,
+    "name": "Appleby Line",
+    "isFree": false
+  },
+  {
+    "id": 101,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8196899,
+      "lng": -79.4759497
+    },
+    "zone": 8,
+    "name": "Highway 7",
+    "isFree": false
+  },
+  {
+    "id": 102,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7923315,
+      "lng": -79.4995474
+    },
+    "zone": 8,
+    "name": "Concord",
+    "isFree": false
+  },
+  {
+    "id": 103,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9635226,
+      "lng": -78.8106189
+    },
+    "zone": 12,
+    "name": "Enfield Road",
+    "isFree": true
+  },
+  {
+    "id": 104,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8644414,
+      "lng": -79.2559924
+    },
+    "zone": 11,
+    "name": "Rouge Haven Way",
+    "isFree": false
+  },
+  {
+    "id": 105,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8382277,
+      "lng": -79.4097926
+    },
+    "zone": 9,
+    "name": "Langstaff Road East",
+    "isFree": false
+  },
+  {
+    "id": 106,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9501972,
+      "lng": -78.9419649
+    },
+    "zone": 12,
+    "name": "Thickson Road",
+    "isFree": true
+  },
+  {
+    "id": 107,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.4473918,
+      "lng": -79.7902235
+    },
+    "zone": 2,
+    "name": "Bronte Road",
+    "isFree": false
+  },
+  {
+    "id": 108,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8717569,
+      "lng": -79.2306646
+    },
+    "zone": 11,
+    "name": "Woodway Lane",
+    "isFree": false
+  },
+  {
+    "id": 109,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.813553,
+      "lng": -79.4790279
+    },
+    "zone": 8,
+    "name": "Vaughan",
+    "isFree": false
+  },
+  {
+    "id": 110,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8369642,
+      "lng": -79.3790426
+    },
+    "zone": 10,
+    "name": "Lake to Lake Route",
+    "isFree": false
+  },
+  {
+    "id": 111,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.4824563,
+      "lng": -79.7675138
+    },
+    "zone": 2,
+    "name": "Fourth Line",
+    "isFree": false
+  },
+  {
+    "id": 113,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.729471,
+      "lng": -79.6720909
+    },
+    "zone": 6,
+    "name": "Brampton",
+    "isFree": false
+  },
+  {
+    "id": 114,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8362959,
+      "lng": -79.4277024
+    },
+    "zone": 9,
+    "name": "Highway 7",
+    "isFree": false
+  },
+  {
+    "id": 115,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9046285,
+      "lng": -78.9965124
+    },
+    "zone": 12,
+    "name": "Highway 412",
+    "isFree": true
+  },
+  {
+    "id": 116,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9111118,
+      "lng": -79.1189477
+    },
+    "zone": 12,
+    "name": "Pickering",
+    "isFree": false
+  },
+  {
+    "id": 117,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9696114,
+      "lng": -78.9075871
+    },
+    "zone": 12,
+    "name": "Simcoe Street North",
+    "isFree": true
+  },
+  {
+    "id": 118,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.5534383,
+      "lng": -79.7632977
+    },
+    "zone": 3,
+    "name": "Britannia Road West",
+    "isFree": false
+  },
+  {
+    "id": 119,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9522858,
+      "lng": -78.9396983
+    },
+    "zone": 12,
+    "name": "Thickson Road",
+    "isFree": true
+  },
+  {
+    "id": 120,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.5085653,
+      "lng": -79.7466492
+    },
+    "zone": 4,
+    "name": "Trafalgar Road",
+    "isFree": false
+  },
+  {
+    "id": 121,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.5208537,
+      "lng": -79.7331526
+    },
+    "zone": 4,
+    "name": "Oakville",
+    "isFree": false
+  },
+  {
+    "id": 122,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6196478,
+      "lng": -79.7603204
+    },
+    "zone": 3,
+    "name": "Brampton",
+    "isFree": false
+  },
+  {
+    "id": 123,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8490154,
+      "lng": -79.3098246
+    },
+    "zone": 10,
+    "name": "Markham",
+    "isFree": false
+  },
+  {
+    "id": 124,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6421262,
+      "lng": -79.7341262
+    },
+    "zone": 4,
+    "name": "Mavis Road",
+    "isFree": false
+  },
+  {
+    "id": 125,
+    "type": "Virtual",
+    "location": {
+      "lat": 44.02148,
+      "lng": -78.6088622
+    },
+    "zone": 12,
+    "name": "Highway 35/115",
+    "isFree": true
+  },
+  {
+    "id": 126,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8753029,
+      "lng": -79.2146539
+    },
+    "zone": 11,
+    "name": "Donald Cousens Parkway",
+    "isFree": false
+  },
+  {
+    "id": 127,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6861781,
+      "lng": -79.6910993
+    },
+    "zone": 6,
+    "name": "Dixie Road",
+    "isFree": false
+  },
+  {
+    "id": 128,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7939773,
+      "lng": -79.4948798
+    },
+    "zone": 8,
+    "name": "Jardin Drive",
+    "isFree": false
+  },
+  {
+    "id": 129,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6516328,
+      "lng": -79.717655
+    },
+    "zone": 5,
+    "name": "Brampton",
+    "isFree": false
+  },
+  {
+    "id": 130,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9468756,
+      "lng": -78.9612788
+    },
+    "zone": 12,
+    "name": "Baldwin Street",
+    "isFree": true
+  },
+  {
+    "id": 131,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8910937,
+      "lng": -79.1849962
+    },
+    "zone": 12,
+    "name": "York-Durham Line",
+    "isFree": false
+  },
+  {
+    "id": 132,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9408144,
+      "lng": -79.0078386
+    },
+    "zone": 12,
+    "name": "Highway 412",
+    "isFree": true
+  },
+  {
+    "id": 133,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6162029,
+      "lng": -79.764222
+    },
+    "zone": 3,
+    "name": "Brampton",
+    "isFree": false
+  },
+  {
+    "id": 134,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.509095,
+      "lng": -79.7488924
+    },
+    "zone": 4,
+    "name": "Trafalgar Road",
+    "isFree": false
+  },
+  {
+    "id": 135,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9120237,
+      "lng": -78.7603256
+    },
+    "zone": 12,
+    "name": "Regional Highway 2",
+    "isFree": true
+  },
+  {
+    "id": 136,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7861077,
+      "lng": -79.5256295
+    },
+    "zone": 7,
+    "name": "Autumn Harvest Road",
+    "isFree": false
+  },
+  {
+    "id": 137,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9832324,
+      "lng": -78.8695429
+    },
+    "zone": 12,
+    "name": "Harmony Road North",
+    "isFree": true
+  },
+  {
+    "id": 138,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.4149153,
+      "lng": -79.8188877
+    },
+    "zone": 2,
+    "name": "Appleby Line",
+    "isFree": false
+  },
+  {
+    "id": 139,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6187451,
+      "lng": -79.7616614
+    },
+    "zone": 3,
+    "name": "Mississauga Road",
+    "isFree": false
+  },
+  {
+    "id": 140,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.595597,
+      "lng": -79.8062481
+    },
+    "zone": 2,
+    "name": "Halton Hills",
+    "isFree": false
+  },
+  {
+    "id": 141,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8451152,
+      "lng": -79.3282447
+    },
+    "zone": 10,
+    "name": "Markham",
+    "isFree": false
+  },
+  {
+    "id": 142,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8282323,
+      "lng": -79.4527008
+    },
+    "zone": 8,
+    "name": "Highway 7",
+    "isFree": false
+  },
+  {
+    "id": 143,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7910964,
+      "lng": -79.500137
+    },
+    "zone": 8,
+    "name": "Concord",
+    "isFree": false
+  },
+  {
+    "id": 144,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9483891,
+      "lng": -78.9573913
+    },
+    "zone": 12,
+    "name": "Brooklin",
+    "isFree": true
+  },
+  {
+    "id": 145,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9706521,
+      "lng": -78.9082455
+    },
+    "zone": 12,
+    "name": "Oshawa",
+    "isFree": true
+  },
+  {
+    "id": 146,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9482446,
+      "lng": -78.9588128
+    },
+    "zone": 12,
+    "name": "Brooklin",
+    "isFree": true
+  },
+  {
+    "id": 147,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7374053,
+      "lng": -79.6597205
+    },
+    "zone": 6,
+    "name": "Brampton",
+    "isFree": false
+  },
+  {
+    "id": 148,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.873203,
+      "lng": -78.9769271
+    },
+    "zone": 12,
+    "name": "Highway 412",
+    "isFree": true
+  },
+  {
+    "id": 149,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8288704,
+      "lng": -79.449428
+    },
+    "zone": 8,
+    "name": "Highway 7",
+    "isFree": false
+  },
+  {
+    "id": 150,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9511093,
+      "lng": -79.0211025
+    },
+    "zone": 12,
+    "name": "Lake Ridge Road",
+    "isFree": true
+  },
+  {
+    "id": 151,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8321582,
+      "lng": -79.4332695
+    },
+    "zone": 8,
+    "name": "Highway 7",
+    "isFree": false
+  },
+  {
+    "id": 152,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6639606,
+      "lng": -79.692931
+    },
+    "zone": 6,
+    "name": "Highway 410",
+    "isFree": false
+  },
+  {
+    "id": 153,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7797408,
+      "lng": -79.5495946
+    },
+    "zone": 7,
+    "name": "Aviva Park Drive",
+    "isFree": false
+  },
+  {
+    "id": 154,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9047321,
+      "lng": -79.1424332
+    },
+    "zone": 12,
+    "name": "Whites Road",
+    "isFree": false
+  },
+  {
+    "id": 155,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7239118,
+      "lng": -79.6754164
+    },
+    "zone": 6,
+    "name": "Brampton",
+    "isFree": false
+  },
+  {
+    "id": 156,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6551046,
+      "lng": -79.7163361
+    },
+    "zone": 5,
+    "name": "Kesteven Crescent",
+    "isFree": false
+  },
+  {
+    "id": 157,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.3862091,
+      "lng": -79.833045
+    },
+    "zone": 1,
+    "name": "Dundas Street",
+    "isFree": false
+  },
+  {
+    "id": 158,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.552049,
+      "lng": -79.7611968
+    },
+    "zone": 3,
+    "name": "Britannia Road West",
+    "isFree": false
+  },
+  {
+    "id": 159,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.382321,
+      "lng": -79.8323855
+    },
+    "zone": 1,
+    "name": "Headon Forest Drive",
+    "isFree": false
+  },
+  {
+    "id": 160,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.3837823,
+      "lng": -79.8346198
+    },
+    "zone": 1,
+    "name": "Dundas Street",
+    "isFree": false
+  },
+  {
+    "id": 161,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8642347,
+      "lng": -79.2580946
+    },
+    "zone": 11,
+    "name": "Markham Road",
+    "isFree": false
+  },
+  {
+    "id": 162,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8739725,
+      "lng": -78.9778678
+    },
+    "zone": 12,
+    "name": "Highway 412",
+    "isFree": true
+  },
+  {
+    "id": 163,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.584962,
+      "lng": -79.81009
+    },
+    "zone": 2,
+    "name": "Milton",
+    "isFree": false
+  },
+  {
+    "id": 164,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8510037,
+      "lng": -79.3065683
+    },
+    "zone": 10,
+    "name": "Kennedy Road",
+    "isFree": false
+  },
+  {
+    "id": 165,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9810752,
+      "lng": -78.8705844
+    },
+    "zone": 12,
+    "name": "Rural Area",
+    "isFree": true
+  },
+  {
+    "id": 166,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.3702145,
+      "lng": -79.8322718
+    },
+    "zone": 1,
+    "name": "Ireland Drive",
+    "isFree": false
+  },
+  {
+    "id": 167,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8620097,
+      "lng": -79.2587242
+    },
+    "zone": 10,
+    "name": "Markham Road",
+    "isFree": false
+  },
+  {
+    "id": 168,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9195033,
+      "lng": -79.0974032
+    },
+    "zone": 12,
+    "name": "Brock Road",
+    "isFree": false
+  },
+  {
+    "id": 169,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6541864,
+      "lng": -79.7149569
+    },
+    "zone": 5,
+    "name": "Hurontario Street",
+    "isFree": false
+  },
+  {
+    "id": 170,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.972032,
+      "lng": -78.9051502
+    },
+    "zone": 12,
+    "name": "Simcoe Street North",
+    "isFree": true
+  },
+  {
+    "id": 171,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9829349,
+      "lng": -78.866511
+    },
+    "zone": 12,
+    "name": "Rural Area",
+    "isFree": true
+  },
+  {
+    "id": 172,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.4844143,
+      "lng": -79.7673309
+    },
+    "zone": 2,
+    "name": "Neyagawa Boulevard",
+    "isFree": false
+  },
+  {
+    "id": 173,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6163382,
+      "lng": -79.7625688
+    },
+    "zone": 3,
+    "name": "Mississauga Road",
+    "isFree": false
+  },
+  {
+    "id": 174,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6521866,
+      "lng": -79.7166704
+    },
+    "zone": 5,
+    "name": "Hurontario Street",
+    "isFree": false
+  },
+  {
+    "id": 175,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9689822,
+      "lng": -78.9082025
+    },
+    "zone": 12,
+    "name": "Oshawa",
+    "isFree": true
+  },
+  {
+    "id": 176,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.756853,
+      "lng": -79.6239168
+    },
+    "zone": 6,
+    "name": "Vaughan",
+    "isFree": false
+  },
+  {
+    "id": 177,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.551697,
+      "lng": -79.7606569
+    },
+    "zone": 3,
+    "name": "Britannia Road West",
+    "isFree": false
+  },
+  {
+    "id": 178,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6404919,
+      "lng": -79.7356452
+    },
+    "zone": 4,
+    "name": "Mavis Road",
+    "isFree": false
+  },
+  {
+    "id": 179,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.553212,
+      "lng": -79.7652998
+    },
+    "zone": 3,
+    "name": "Milton",
+    "isFree": false
+  },
+  {
+    "id": 180,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.689029,
+      "lng": -79.6910505
+    },
+    "zone": 6,
+    "name": "Dixie Road",
+    "isFree": false
+  },
+  {
+    "id": 181,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6402029,
+      "lng": -79.7384288
+    },
+    "zone": 4,
+    "name": "Mavis Road",
+    "isFree": false
+  },
+  {
+    "id": 182,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.5221824,
+      "lng": -79.732851
+    },
+    "zone": 4,
+    "name": "Milton",
+    "isFree": false
+  },
+  {
+    "id": 183,
+    "type": "Virtual",
+    "location": {
+      "lat": 44.0200523,
+      "lng": -78.6124108
+    },
+    "zone": 12,
+    "name": "Highway 35/115",
+    "isFree": true
+  },
+  {
+    "id": 184,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9499426,
+      "lng": -79.0232087
+    },
+    "zone": 12,
+    "name": "Lake Ridge Road",
+    "isFree": true
+  },
+  {
+    "id": 185,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7256166,
+      "lng": -79.6736068
+    },
+    "zone": 6,
+    "name": "Airport Road",
+    "isFree": false
+  },
+  {
+    "id": 186,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9059865,
+      "lng": -79.143446
+    },
+    "zone": 12,
+    "name": "Whites Road",
+    "isFree": false
+  },
+  {
+    "id": 187,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9801309,
+      "lng": -78.7439915
+    },
+    "zone": 12,
+    "name": "Bowmanville Avenue",
+    "isFree": true
+  },
+  {
+    "id": 188,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9176539,
+      "lng": -79.0996991
+    },
+    "zone": 12,
+    "name": "Brock Road",
+    "isFree": false
+  },
+  {
+    "id": 189,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9140761,
+      "lng": -78.7630828
+    },
+    "zone": 12,
+    "name": "Regional Highway 2",
+    "isFree": true
+  },
+  {
+    "id": 190,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8888684,
+      "lng": -79.1866105
+    },
+    "zone": 11,
+    "name": "York-Durham Line",
+    "isFree": false
+  },
+  {
+    "id": 191,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7926673,
+      "lng": -79.4949226
+    },
+    "zone": 8,
+    "name": "Concord",
+    "isFree": false
+  },
+  {
+    "id": 192,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.5102789,
+      "lng": -79.7484498
+    },
+    "zone": 4,
+    "name": "Trafalgar Road",
+    "isFree": false
+  },
+  {
+    "id": 193,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9652073,
+      "lng": -78.8106027
+    },
+    "zone": 12,
+    "name": "6th Concession",
+    "isFree": true
+  },
+  {
+    "id": 194,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.551227,
+      "lng": -79.762783
+    },
+    "zone": 3,
+    "name": "Britannia Road West",
+    "isFree": false
+  },
+  {
+    "id": 195,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9154757,
+      "lng": -78.7665141
+    },
+    "zone": 12,
+    "name": "Highway 418",
+    "isFree": true
+  },
+  {
+    "id": 196,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8738528,
+      "lng": -79.2144116
+    },
+    "zone": 11,
+    "name": "Donald Cousens Parkway",
+    "isFree": false
+  },
+  {
+    "id": 197,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8444808,
+      "lng": -79.3317842
+    },
+    "zone": 10,
+    "name": "Warden Avenue",
+    "isFree": false
+  },
+  {
+    "id": 198,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9706962,
+      "lng": -78.9047908
+    },
+    "zone": 12,
+    "name": "Simcoe Street North",
+    "isFree": true
+  },
+  {
+    "id": 199,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9053247,
+      "lng": -79.1462869
+    },
+    "zone": 12,
+    "name": "Whites Road",
+    "isFree": false
+  },
+  {
+    "id": 200,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6872501,
+      "lng": -79.6898918
+    },
+    "zone": 6,
+    "name": "Dixie Road",
+    "isFree": false
+  },
+  {
+    "id": 201,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8338301,
+      "lng": -79.4308792
+    },
+    "zone": 8,
+    "name": "Highway 7",
+    "isFree": false
+  },
+  {
+    "id": 202,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7932892,
+      "lng": -79.4960994
+    },
+    "zone": 8,
+    "name": "Keele Street",
+    "isFree": false
+  },
+  {
+    "id": 203,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.4143587,
+      "lng": -79.8194026
+    },
+    "zone": 2,
+    "name": "Appleby Line",
+    "isFree": false
+  },
+  {
+    "id": 204,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7558598,
+      "lng": -79.6248127
+    },
+    "zone": 6,
+    "name": "Vaughan",
+    "isFree": false
+  },
+  {
+    "id": 205,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.75755,
+      "lng": -79.6146401
+    },
+    "zone": 6,
+    "name": "Highway 27",
+    "isFree": false
+  },
+  {
+    "id": 206,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6731638,
+      "lng": -79.7044059
+    },
+    "zone": 5,
+    "name": "Highway 410",
+    "isFree": false
+  },
+  {
+    "id": 207,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.5316559,
+      "lng": -79.731703
+    },
+    "zone": 4,
+    "name": "Ninth Line",
+    "isFree": false
+  },
+  {
+    "id": 208,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.757723,
+      "lng": -79.6207899
+    },
+    "zone": 6,
+    "name": "Woodbridge",
+    "isFree": false
+  },
+  {
+    "id": 209,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8264308,
+      "lng": -79.4552253
+    },
+    "zone": 8,
+    "name": "Bathurst Street",
+    "isFree": false
+  },
+  {
+    "id": 210,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8692434,
+      "lng": -79.2347074
+    },
+    "zone": 11,
+    "name": "Primrose Path Crescent",
+    "isFree": false
+  },
+  {
+    "id": 211,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9072633,
+      "lng": -78.9950769
+    },
+    "zone": 12,
+    "name": "Taunton Road West",
+    "isFree": true
+  },
+  {
+    "id": 212,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9828371,
+      "lng": -78.7429698
+    },
+    "zone": 12,
+    "name": "Concession 6",
+    "isFree": true
+  },
+  {
+    "id": 213,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8734794,
+      "lng": -79.2153341
+    },
+    "zone": 11,
+    "name": "Markham",
+    "isFree": false
+  },
+  {
+    "id": 214,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9828078,
+      "lng": -78.7421042
+    },
+    "zone": 12,
+    "name": "Concession 6",
+    "isFree": true
+  },
+  {
+    "id": 215,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9111592,
+      "lng": -78.7602867
+    },
+    "zone": 12,
+    "name": "Highway 418",
+    "isFree": true
+  },
+  {
+    "id": 216,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9809356,
+      "lng": -78.8665099
+    },
+    "zone": 12,
+    "name": "Harmony Road North",
+    "isFree": true
+  },
+  {
+    "id": 217,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9100764,
+      "lng": -79.1218495
+    },
+    "zone": 12,
+    "name": "Pickering",
+    "isFree": false
+  },
+  {
+    "id": 218,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8564559,
+      "lng": -79.2836141
+    },
+    "zone": 10,
+    "name": "Caboto Trail",
+    "isFree": false
+  },
+  {
+    "id": 219,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.4863531,
+      "lng": -79.7647245
+    },
+    "zone": 3,
+    "name": "Oakville",
+    "isFree": false
+  },
+  {
+    "id": 220,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8830869,
+      "lng": -78.7455367
+    },
+    "zone": 12,
+    "name": "Solina Road",
+    "isFree": true
+  },
+  {
+    "id": 221,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8691681,
+      "lng": -79.2359367
+    },
+    "zone": 11,
+    "name": "Meadowgrass Crescent",
+    "isFree": false
+  },
+  {
+    "id": 222,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9163057,
+      "lng": -79.0988191
+    },
+    "zone": 12,
+    "name": "Pickering",
+    "isFree": false
+  },
+  {
+    "id": 223,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.4170667,
+      "lng": -79.8195889
+    },
+    "zone": 2,
+    "name": "Appleby Line",
+    "isFree": false
+  },
+  {
+    "id": 224,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6993988,
+      "lng": -79.6834422
+    },
+    "zone": 6,
+    "name": "Bramalea Road",
+    "isFree": false
+  },
+  {
+    "id": 225,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6905716,
+      "lng": -79.6902654
+    },
+    "zone": 6,
+    "name": "Brampton",
+    "isFree": false
+  },
+  {
+    "id": 226,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7820401,
+      "lng": -79.5448837
+    },
+    "zone": 7,
+    "name": "Tim Hortons drive thru",
+    "isFree": false
+  },
+  {
+    "id": 227,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8373564,
+      "lng": -79.383528
+    },
+    "zone": 9,
+    "name": "Commerce Valley Drive West",
+    "isFree": false
+  },
+  {
+    "id": 228,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8929903,
+      "lng": -79.1852167
+    },
+    "zone": 12,
+    "name": "York-Durham Line",
+    "isFree": false
+  },
+  {
+    "id": 229,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6631346,
+      "lng": -79.7049707
+    },
+    "zone": 5,
+    "name": "Kennedy Road",
+    "isFree": false
+  },
+  {
+    "id": 230,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.82109,
+      "lng": -79.4741208
+    },
+    "zone": 8,
+    "name": "Highway 7",
+    "isFree": false
+  },
+  {
+    "id": 231,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.784511,
+      "lng": -79.5275618
+    },
+    "zone": 7,
+    "name": "Vaughan",
+    "isFree": false
+  },
+  {
+    "id": 232,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9159634,
+      "lng": -78.7668365
+    },
+    "zone": 12,
+    "name": "Highway 418",
+    "isFree": true
+  },
+  {
+    "id": 233,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6539512,
+      "lng": -79.7179758
+    },
+    "zone": 5,
+    "name": "Hurontario Street",
+    "isFree": false
+  },
+  {
+    "id": 234,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9819741,
+      "lng": -78.745162
+    },
+    "zone": 12,
+    "name": "Bowmanville Avenue",
+    "isFree": true
+  },
+  {
+    "id": 235,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7511148,
+      "lng": -79.6395693
+    },
+    "zone": 6,
+    "name": "Highway 50",
+    "isFree": false
+  },
+  {
+    "id": 236,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7368035,
+      "lng": -79.6589832
+    },
+    "zone": 6,
+    "name": "Brampton",
+    "isFree": false
+  },
+  {
+    "id": 237,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7345594,
+      "lng": -79.6619121
+    },
+    "zone": 6,
+    "name": "Goreway Drive",
+    "isFree": false
+  },
+  {
+    "id": 238,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.5730053,
+      "lng": -79.7886166
+    },
+    "zone": 2,
+    "name": "Derry Road West",
+    "isFree": false
+  },
+  {
+    "id": 239,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9512751,
+      "lng": -79.0168744
+    },
+    "zone": 12,
+    "name": "Halls Road North",
+    "isFree": true
+  },
+  {
+    "id": 240,
+    "type": "Virtual",
+    "location": {
+      "lat": 44.021816,
+      "lng": -78.6136327
+    },
+    "zone": 12,
+    "name": "Highway 35/115",
+    "isFree": true
+  },
+  {
+    "id": 241,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.752463,
+      "lng": -79.6392421
+    },
+    "zone": 6,
+    "name": "Highway 50",
+    "isFree": false
+  },
+  {
+    "id": 242,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.5933676,
+      "lng": -79.8091753
+    },
+    "zone": 2,
+    "name": "Halton Hills",
+    "isFree": false
+  },
+  {
+    "id": 243,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.5312067,
+      "lng": -79.7333429
+    },
+    "zone": 4,
+    "name": "Milton",
+    "isFree": false
+  },
+  {
+    "id": 244,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.5524779,
+      "lng": -79.7644348
+    },
+    "zone": 3,
+    "name": "Britannia Road West",
+    "isFree": false
+  },
+  {
+    "id": 245,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.4439452,
+      "lng": -79.7912306
+    },
+    "zone": 2,
+    "name": "Oakville",
+    "isFree": false
+  },
+  {
+    "id": 246,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6849058,
+      "lng": -79.6912177
+    },
+    "zone": 6,
+    "name": "Dixie Road",
+    "isFree": false
+  },
+  {
+    "id": 247,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.871832,
+      "lng": -78.9759394
+    },
+    "zone": 12,
+    "name": "Highway 412",
+    "isFree": true
+  },
+  {
+    "id": 248,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8328638,
+      "lng": -79.4288656
+    },
+    "zone": 9,
+    "name": "Yonge Street",
+    "isFree": false
+  },
+  {
+    "id": 249,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8414941,
+      "lng": -79.3501728
+    },
+    "zone": 10,
+    "name": "Markham",
+    "isFree": false
+  },
+  {
+    "id": 250,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9634052,
+      "lng": -78.814428
+    },
+    "zone": 12,
+    "name": "Clarington",
+    "isFree": true
+  },
+  {
+    "id": 251,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9566904,
+      "lng": -78.764688
+    },
+    "zone": 12,
+    "name": "Highway 418",
+    "isFree": true
+  },
+  {
+    "id": 252,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.6173492,
+      "lng": -79.7645165
+    },
+    "zone": 3,
+    "name": "Mississauga Road",
+    "isFree": false
+  },
+  {
+    "id": 253,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9525368,
+      "lng": -78.9418716
+    },
+    "zone": 12,
+    "name": "Thickson Road",
+    "isFree": true
+  },
+  {
+    "id": 254,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7819907,
+      "lng": -79.5487917
+    },
+    "zone": 7,
+    "name": "Auto Park Circle",
+    "isFree": false
+  },
+  {
+    "id": 255,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.4457222,
+      "lng": -79.7888181
+    },
+    "zone": 2,
+    "name": "Bronte Road",
+    "isFree": false
+  },
+  {
+    "id": 256,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7723479,
+      "lng": -79.5725661
+    },
+    "zone": 7,
+    "name": "Woodbridge",
+    "isFree": false
+  },
+  {
+    "id": 257,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8649478,
+      "lng": -79.2555715
+    },
+    "zone": 11,
+    "name": "Rouge Haven Way",
+    "isFree": false
+  },
+  {
+    "id": 258,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.950941,
+      "lng": -78.9394901
+    },
+    "zone": 12,
+    "name": "Thickson Road",
+    "isFree": true
+  },
+  {
+    "id": 259,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9480547,
+      "lng": -79.0234103
+    },
+    "zone": 12,
+    "name": "Pickering",
+    "isFree": true
+  },
+  {
+    "id": 260,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9496258,
+      "lng": -79.015598
+    },
+    "zone": 12,
+    "name": "Whitby",
+    "isFree": true
+  },
+  {
+    "id": 261,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8464628,
+      "lng": -79.3284346
+    },
+    "zone": 10,
+    "name": "Unionville",
+    "isFree": false
+  },
+  {
+    "id": 262,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8380934,
+      "lng": -79.3767586
+    },
+    "zone": 10,
+    "name": "Commerce Valley Drive East",
+    "isFree": false
+  },
+  {
+    "id": 263,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7558696,
+      "lng": -79.6222259
+    },
+    "zone": 6,
+    "name": "Steeles Avenue West",
+    "isFree": false
+  },
+  {
+    "id": 264,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7021137,
+      "lng": -79.6829284
+    },
+    "zone": 6,
+    "name": "Brampton",
+    "isFree": false
+  },
+  {
+    "id": 265,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8935996,
+      "lng": -79.1848362
+    },
+    "zone": 12,
+    "name": "York-Durham Line",
+    "isFree": false
+  },
+  {
+    "id": 266,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8376221,
+      "lng": -79.4073647
+    },
+    "zone": 9,
+    "name": "Langstaff Road East",
+    "isFree": false
+  },
+  {
+    "id": 267,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8407119,
+      "lng": -79.3603928
+    },
+    "zone": 10,
+    "name": "Markham",
+    "isFree": false
+  },
+  {
+    "id": 268,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7806285,
+      "lng": -79.547336
+    },
+    "zone": 7,
+    "name": "Vaughan",
+    "isFree": false
+  },
+  {
+    "id": 269,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9191745,
+      "lng": -79.0959711
+    },
+    "zone": 12,
+    "name": "Brock Road",
+    "isFree": false
+  },
+  {
+    "id": 270,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8502292,
+      "lng": -79.3058735
+    },
+    "zone": 10,
+    "name": "Kennedy Road",
+    "isFree": false
+  },
+  {
+    "id": 271,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9528319,
+      "lng": -78.9391588
+    },
+    "zone": 12,
+    "name": "Brooklin",
+    "isFree": true
+  },
+  {
+    "id": 272,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8450376,
+      "lng": -79.3332284
+    },
+    "zone": 10,
+    "name": "Unionville",
+    "isFree": false
+  },
+  {
+    "id": 273,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8180725,
+      "lng": -79.4759778
+    },
+    "zone": 8,
+    "name": "Dufferin Street",
+    "isFree": false
+  },
+  {
+    "id": 274,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9054105,
+      "lng": -78.9952525
+    },
+    "zone": 12,
+    "name": "Highway 412",
+    "isFree": true
+  },
+  {
+    "id": 275,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8551399,
+      "lng": -79.2838385
+    },
+    "zone": 10,
+    "name": "Unionville",
+    "isFree": false
+  },
+  {
+    "id": 276,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.920735,
+      "lng": -79.0967663
+    },
+    "zone": 12,
+    "name": "Highway 7",
+    "isFree": false
+  },
+  {
+    "id": 277,
+    "type": "Virtual",
+    "location": {
+      "lat": 44.0022084,
+      "lng": -78.6656674
+    },
+    "zone": 12,
+    "name": "Brown Road",
+    "isFree": true
+  },
+  {
+    "id": 278,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9831215,
+      "lng": -78.8653858
+    },
+    "zone": 12,
+    "name": "Rural Area",
+    "isFree": true
+  },
+  {
+    "id": 279,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.4135043,
+      "lng": -79.8208582
+    },
+    "zone": 2,
+    "name": "Palladium Way",
+    "isFree": false
+  },
+  {
+    "id": 280,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.9063787,
+      "lng": -79.1421611
+    },
+    "zone": 12,
+    "name": "Pickering",
+    "isFree": false
+  },
+  {
+    "id": 281,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.8265161,
+      "lng": -79.4528741
+    },
+    "zone": 8,
+    "name": "Bathurst Street",
+    "isFree": false
+  },
+  {
+    "id": 282,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.5107312,
+      "lng": -79.7467088
+    },
+    "zone": 4,
+    "name": "Milton",
+    "isFree": false
+  },
+  {
+    "id": 283,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7913954,
+      "lng": -79.4987113
+    },
+    "zone": 8,
+    "name": "Keele Street",
+    "isFree": false
+  },
+  {
+    "id": 284,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.642641,
+      "lng": -79.7363093
+    },
+    "zone": 4,
+    "name": "Tumbleweed Trail",
+    "isFree": false
+  },
+  {
+    "id": 285,
+    "type": "Virtual",
+    "location": {
+      "lat": 43.7273235,
+      "lng": -79.6718931
+    },
+    "zone": 6,
+    "name": "Airport Road",
+    "isFree": false
+  }
+]

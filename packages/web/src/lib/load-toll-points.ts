@@ -1,46 +1,23 @@
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
-import type { TollPoint, Interchange, OnRamp, Direction } from "@407-etr/core";
+import type { Interchange, OnRamp, Direction } from "@407-etr/core";
+import { interchanges as rawInterchanges } from "@/data";
 
-const DATA_DIR = join(process.cwd(), "..", "..", "data");
-
-// Module-level caches. Populated once on first access, reused for the process lifetime.
-let cachedTollPoints: TollPoint[] | null = null;
-let cachedInterchanges: Interchange[] | null = null;
 let cachedInterchangeMap: Map<string, Interchange> | null = null;
 let cachedOnRamps: Record<Direction, OnRamp[]> | null = null;
-
-export function loadTollPoints(): TollPoint[] {
-  if (cachedTollPoints) return cachedTollPoints;
-  cachedTollPoints = JSON.parse(
-    readFileSync(join(DATA_DIR, "407-toll-points.json"), "utf-8"),
-  ) as TollPoint[];
-  return cachedTollPoints;
-}
-
-export function loadInterchanges(): Interchange[] {
-  if (cachedInterchanges) return cachedInterchanges;
-  cachedInterchanges = JSON.parse(
-    readFileSync(join(DATA_DIR, "interchanges.json"), "utf-8"),
-  ) as Interchange[];
-  return cachedInterchanges;
-}
 
 export function getInterchangeById(id: string): Interchange | undefined {
   if (!cachedInterchangeMap) {
     cachedInterchangeMap = new Map(
-      loadInterchanges().map((ic) => [ic.id, ic]),
+      rawInterchanges.map((ic) => [ic.id, ic]),
     );
   }
   return cachedInterchangeMap.get(id);
 }
 
 function buildOnRampsByDirection(): Record<Direction, OnRamp[]> {
-  const interchanges = loadInterchanges();
   const eb: OnRamp[] = [];
   const wb: OnRamp[] = [];
 
-  for (const ic of interchanges) {
+  for (const ic of rawInterchanges) {
     if (ic.isFree) continue;
     const ramp: OnRamp = {
       id: ic.id,
