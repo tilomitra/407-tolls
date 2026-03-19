@@ -127,6 +127,9 @@ export const TollInputSchema = z.object({
 });
 export type TollInput = z.infer<typeof TollInputSchema>;
 
+export const RouteInputSchema = TollInputSchema.omit({ timeSlot: true });
+export type RouteInput = z.infer<typeof RouteInputSchema>;
+
 // ── Toll breakdown ───────────────────────────────────────────────────────────
 
 export const ZoneTollDetailSchema = z.object({
@@ -147,6 +150,21 @@ export const TollBreakdownSchema = z.object({
   timeSlot: ResolvedTimeSlotSchema,
 });
 export type TollBreakdown = z.infer<typeof TollBreakdownSchema>;
+
+// ── Time slot cost (for time-of-day chart) ───────────────────────────────────
+
+export const TimeSlotCostSchema = z.object({
+  slot: z.string(),
+  dayType: z.string(),
+  label: z.string(),
+  totalCents: z.number(),
+});
+export type TimeSlotCost = z.infer<typeof TimeSlotCostSchema>;
+
+export const TollResponseSchema = TollBreakdownSchema.extend({
+  byTimeSlot: z.array(TimeSlotCostSchema),
+});
+export type TollResponse = z.infer<typeof TollResponseSchema>;
 
 // ── Directions ───────────────────────────────────────────────────────────────
 
