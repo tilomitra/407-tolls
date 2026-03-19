@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { TollResponse, Direction, ResolvedTimeSlot, Zone, DayType, WeekdaySlot, WeekendSlot } from "@407-etr/core";
+import type { TollResponse, CommuteEstimate, DayOfWeek, Direction, ResolvedTimeSlot, Zone, DayType, WeekdaySlot, WeekendSlot } from "@407-etr/core";
 import { Card, CardBody } from "../ui/card";
 import { Select } from "../ui/select";
 import { Button } from "../ui/button";
@@ -84,6 +84,16 @@ const WEEKEND_BOUNDARIES: Array<[number, WeekendSlot]> = [
   [510, "830am"], [600, "10am"], [1140, "7pm"], [1260, "9pm"],
 ];
 
+const ALL_DAYS: { value: DayOfWeek; label: string }[] = [
+  { value: 1, label: "Mon" },
+  { value: 2, label: "Tue" },
+  { value: 3, label: "Wed" },
+  { value: 4, label: "Thu" },
+  { value: 5, label: "Fri" },
+  { value: 6, label: "Sat" },
+  { value: 0, label: "Sun" },
+];
+
 function resolveCurrentSlot(): { dayType: DayType; slot: string } {
   const now = new Date();
   const day = now.getDay();
@@ -102,10 +112,60 @@ function resolveCurrentSlot(): { dayType: DayType; slot: string } {
   return { dayType: isWeekend ? "weekend_or_holiday" : "weekday", slot: "9pm" };
 }
 
+function getDirection(entry: { zone: Zone }, exit: { zone: Zone }, entryIdx: number, exitIdx: number): Direction {
+  return exit.zone > entry.zone || (exit.zone === entry.zone && exitIdx > entryIdx)
+    ? "eastbound"
+    : "westbound";
+}
+
+export type FormMode = "single" | "commute";
+
+function DayPicker({ selected, onChange }: { selected: DayOfWeek[]; onChange: (days: DayOfWeek[]) => void }) {
+  function toggle(day: DayOfWeek) {
+    if (selected.includes(day)) {
+      if (selected.length === 1) return; // must have at least 1
+      onChange(selected.filter((d) => d !== day));
+    } else {
+      onChange([...selected, day]);
+    }
+  }
+
+  return (
+    <div className="grid grid-cols-7 gap-1.5">
+      {ALL_DAYS.map((d, i) => {
+        const active = selected.includes(d.value);
+        return (
+          <button
+            key={i}
+            type="button"
+            onClick={() => toggle(d.value)}
+            className={`
+              flex h-9 items-center justify-center rounded-lg text-xs font-medium
+              transition-colors duration-150
+              ${active
+                ? "bg-blue-600 text-white shadow-sm"
+                : "border border-slate-200 text-slate-500 hover:border-slate-300 hover:bg-slate-50"
+              }
+            `}
+          >
+            {d.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 export function RouteForm({
   onTollResult,
+  onCommuteResult,
+  mode,
+  onModeChange,
 }: {
   onTollResult: (args: { result: TollResponse; entryId: string; exitId: string }) => void;
+  onCommuteResult: (args: { result: CommuteEstimate; entryId: string; exitId: string; entryName: string; exitName: string; commuteDays: DayOfWeek[]; hasTransponder: boolean; shareParams: { goSlot: string; returnSlot: string; weekendGoSlot: string; weekendReturnSlot: string } }) => void;
+  mode: FormMode;
+  onModeChange: (mode: FormMode) => void;
 }) {
   const currentSlot = resolveCurrentSlot();
 
@@ -120,12 +180,22 @@ export function RouteForm({
   const [weekendSlot, setWeekendSlot] = useState<WeekendSlot>(
     currentSlot.dayType === "weekend_or_holiday" ? currentSlot.slot as WeekendSlot : "10am",
   );
+
+  // Commute-specific state
+  const [commuteDays, setCommuteDays] = useState<DayOfWeek[]>([1, 2, 3, 4, 5]);
+  const [goWeekdaySlot, setGoWeekdaySlot] = useState<WeekdaySlot>("7am");
+  const [returnWeekdaySlot, setReturnWeekdaySlot] = useState<WeekdaySlot>("330pm");
+  const [goWeekendSlot, setGoWeekendSlot] = useState<WeekendSlot>("10am");
+  const [returnWeekendSlot, setReturnWeekendSlot] = useState<WeekendSlot>("7pm");
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const entry = INTERCHANGES.find((ic) => ic.id === entryId)!;
   const exit = INTERCHANGES.find((ic) => ic.id === exitId)!;
   const sameInterchange = entryId === exitId;
+
+  const hasWeekendDays = commuteDays.includes(0) || commuteDays.includes(6);
 
   function getTimeSlot(): ResolvedTimeSlot {
     if (timeMode === "now") {
@@ -152,31 +222,66 @@ export function RouteForm({
     setLoading(true);
     setError(null);
 
-    const direction: Direction =
-      exit.zone > entry.zone ||
-      (exit.zone === entry.zone && INTERCHANGES.indexOf(exit) > INTERCHANGES.indexOf(entry))
-        ? "eastbound"
-        : "westbound";
+    const direction = getDirection(entry, exit, INTERCHANGES.indexOf(entry), INTERCHANGES.indexOf(exit));
 
     try {
-      const res = await fetch("/api/toll", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      if (mode === "commute") {
+        const res = await fetch("/api/commute", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            entryId,
+            exitId,
+            direction,
+            goTimeSlot: { dayType: "weekday", slot: goWeekdaySlot },
+            returnTimeSlot: { dayType: "weekday", slot: returnWeekdaySlot },
+            weekendGoTimeSlot: { dayType: "weekend_or_holiday", slot: goWeekendSlot },
+            weekendReturnTimeSlot: { dayType: "weekend_or_holiday", slot: returnWeekendSlot },
+            commuteDays,
+            hasTransponder,
+          }),
+        });
+
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(typeof data.error === "string" ? data.error : "Request failed");
+        }
+
+        onCommuteResult({
+          result: await res.json(),
           entryId,
           exitId,
-          direction,
-          timeSlot: getTimeSlot(),
+          entryName: entry.name,
+          exitName: exit.name,
+          commuteDays,
           hasTransponder,
-        }),
-      });
+          shareParams: {
+            goSlot: goWeekdaySlot,
+            returnSlot: returnWeekdaySlot,
+            weekendGoSlot: goWeekendSlot,
+            weekendReturnSlot: returnWeekendSlot,
+          },
+        });
+      } else {
+        const res = await fetch("/api/toll", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            entryId,
+            exitId,
+            direction,
+            timeSlot: getTimeSlot(),
+            hasTransponder,
+          }),
+        });
 
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(typeof data.error === "string" ? data.error : "Request failed");
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(typeof data.error === "string" ? data.error : "Request failed");
+        }
+
+        onTollResult({ result: await res.json(), entryId, exitId });
       }
-
-      onTollResult({ result: await res.json(), entryId, exitId });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
@@ -188,6 +293,15 @@ export function RouteForm({
     <Card>
       <CardBody>
         <form onSubmit={handleSubmit} className="space-y-5">
+          <RadioGroup
+            value={mode}
+            onChange={(v) => onModeChange(v as FormMode)}
+            options={[
+              { value: "single", label: "Single Trip" },
+              { value: "commute", label: "Commute" },
+            ]}
+          />
+
           <div className="relative">
             <div className="rounded-xl border border-slate-200">
               <div className="px-3 pb-2 pt-3">
@@ -199,7 +313,7 @@ export function RouteForm({
                 >
                   {INTERCHANGE_OPTIONS.map((opt) => (
                     <option key={opt.value} value={opt.value}>
-                      {opt.label}{opt.detail ? ` — ${opt.detail}` : ""}
+                      {opt.label}{opt.detail ? ` (${opt.detail})` : ""}
                     </option>
                   ))}
                 </select>
@@ -216,7 +330,7 @@ export function RouteForm({
                 >
                   {INTERCHANGE_OPTIONS.map((opt) => (
                     <option key={opt.value} value={opt.value}>
-                      {opt.label}{opt.detail ? ` — ${opt.detail}` : ""}
+                      {opt.label}{opt.detail ? ` (${opt.detail})` : ""}
                     </option>
                   ))}
                 </select>
@@ -242,49 +356,96 @@ export function RouteForm({
             </button>
           </div>
 
-          <div className="space-y-3">
-            <span className="block text-sm font-medium text-slate-700">When</span>
-            <RadioGroup
-              value={timeMode}
-              onChange={(v) => setTimeMode(v as "now" | "custom")}
-              options={[
-                { value: "now", label: "Now" },
-                { value: "custom", label: "Pick a time" },
-              ]}
-            />
+          {mode === "single" ? (
+            <div className="space-y-3">
+              <span className="block text-sm font-medium text-slate-700">When</span>
+              <RadioGroup
+                value={timeMode}
+                onChange={(v) => setTimeMode(v as "now" | "custom")}
+                options={[
+                  { value: "now", label: "Now" },
+                  { value: "custom", label: "Pick a time" },
+                ]}
+              />
 
-            {timeMode === "custom" && (
-              <div className="grid grid-cols-2 gap-3">
-                <Select
-                  label="Day"
-                  value={dayType}
-                  onChange={(v) => setDayType(v as DayType)}
-                  options={[
-                    { value: "weekday", label: "Weekday" },
-                    { value: "weekend_or_holiday", label: "Weekend / Holiday" },
-                  ]}
-                />
-                <Select
-                  label="Time"
-                  value={dayType === "weekday" ? weekdaySlot : weekendSlot}
-                  onChange={(v) => {
-                    if (dayType === "weekday") setWeekdaySlot(v as WeekdaySlot);
-                    else setWeekendSlot(v as WeekendSlot);
-                  }}
-                  options={dayType === "weekday" ? WEEKDAY_TIME_OPTIONS : WEEKEND_TIME_OPTIONS}
-                />
+              {timeMode === "custom" && (
+                <div className="grid grid-cols-2 gap-3">
+                  <Select
+                    label="Day"
+                    value={dayType}
+                    onChange={(v) => setDayType(v as DayType)}
+                    options={[
+                      { value: "weekday", label: "Weekday" },
+                      { value: "weekend_or_holiday", label: "Weekend / Holiday" },
+                    ]}
+                  />
+                  <Select
+                    label="Time"
+                    value={dayType === "weekday" ? weekdaySlot : weekendSlot}
+                    onChange={(v) => {
+                      if (dayType === "weekday") setWeekdaySlot(v as WeekdaySlot);
+                      else setWeekendSlot(v as WeekendSlot);
+                    }}
+                    options={dayType === "weekday" ? WEEKDAY_TIME_OPTIONS : WEEKEND_TIME_OPTIONS}
+                  />
+                </div>
+              )}
+
+              <p className="text-xs text-slate-400">{getTimeLabel()}</p>
+            </div>
+          ) : (
+            <>
+              <div className="space-y-3">
+                <span className="block text-sm font-medium text-slate-700">Days</span>
+                <DayPicker selected={commuteDays} onChange={setCommuteDays} />
               </div>
-            )}
 
-            <p className="text-xs text-slate-400">{getTimeLabel()}</p>
-          </div>
+              <div className="space-y-3">
+                <span className="block text-sm font-medium text-slate-700">Weekday schedule</span>
+                <div className="grid grid-cols-2 gap-3">
+                  <Select
+                    label="Departure"
+                    value={goWeekdaySlot}
+                    onChange={(v) => setGoWeekdaySlot(v as WeekdaySlot)}
+                    options={WEEKDAY_TIME_OPTIONS}
+                  />
+                  <Select
+                    label="Return"
+                    value={returnWeekdaySlot}
+                    onChange={(v) => setReturnWeekdaySlot(v as WeekdaySlot)}
+                    options={WEEKDAY_TIME_OPTIONS}
+                  />
+                </div>
+              </div>
+
+              {hasWeekendDays && (
+                <div className="space-y-3">
+                  <span className="block text-sm font-medium text-slate-700">Weekend schedule</span>
+                  <div className="grid grid-cols-2 gap-3">
+                    <Select
+                      label="Departure"
+                      value={goWeekendSlot}
+                      onChange={(v) => setGoWeekendSlot(v as WeekendSlot)}
+                      options={WEEKEND_TIME_OPTIONS}
+                    />
+                    <Select
+                      label="Return"
+                      value={returnWeekendSlot}
+                      onChange={(v) => setReturnWeekendSlot(v as WeekendSlot)}
+                      options={WEEKEND_TIME_OPTIONS}
+                    />
+                  </div>
+                </div>
+              )}
+            </>
+          )}
 
           <div className="border-t border-slate-100 pt-4">
             <Toggle
               checked={hasTransponder}
               onChange={setHasTransponder}
               label="I have a transponder"
-              detail={!hasTransponder ? "+$4.35 camera charge" : undefined}
+              detail={!hasTransponder ? "+$5.30 camera charge per trip" : undefined}
             />
           </div>
 
@@ -294,7 +455,7 @@ export function RouteForm({
             loading={loading}
             className="w-full"
           >
-            Calculate Toll
+            {mode === "commute" ? "Estimate Commute" : "Calculate Toll"}
           </Button>
 
           {sameInterchange && (

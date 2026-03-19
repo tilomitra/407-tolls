@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import type { TollPoint, Interchange, TollResponse } from "@407-etr/core";
+import type { TollPoint, Interchange, TollResponse, CommuteEstimate } from "@407-etr/core";
+import type { DayOfWeek } from "@407-etr/core";
 import { HighwayMap } from "./map/highway-map";
 import { ZoneLegend } from "./map/zone-legend";
-import { RouteForm } from "./form/route-form";
+import { RouteForm, type FormMode } from "./form/route-form";
 import { TollBreakdownView } from "./results/toll-breakdown";
 import { TimeChart } from "./results/time-chart";
+import { CommuteBreakdown } from "./results/commute-breakdown";
 import { FreeSectionCallout } from "./results/free-section-callout";
 import { Card } from "./ui/card";
 
@@ -19,7 +21,16 @@ export function ClientApp({
   interchanges: Interchange[];
   highwayGeometry: Array<[number, number]>;
 }) {
+  const [mode, setMode] = useState<FormMode>("single");
   const [tollResult, setTollResult] = useState<TollResponse | null>(null);
+  const [commuteResult, setCommuteResult] = useState<{
+    estimate: CommuteEstimate;
+    entryName: string;
+    exitName: string;
+    commuteDays: DayOfWeek[];
+    hasTransponder: boolean;
+    shareParams: { goSlot: string; returnSlot: string; weekendGoSlot: string; weekendReturnSlot: string };
+  } | null>(null);
   const [selectedRoute, setSelectedRoute] = useState<{
     entryId: string;
     exitId: string;
@@ -35,7 +46,38 @@ export function ClientApp({
     exitId: string;
   }) {
     setTollResult(result);
+    setCommuteResult(null);
     setSelectedRoute({ entryId, exitId });
+  }
+
+  function handleCommuteResult({
+    result,
+    entryId,
+    exitId,
+    entryName,
+    exitName,
+    commuteDays,
+    hasTransponder,
+    shareParams,
+  }: {
+    result: CommuteEstimate;
+    entryId: string;
+    exitId: string;
+    entryName: string;
+    exitName: string;
+    commuteDays: DayOfWeek[];
+    hasTransponder: boolean;
+    shareParams: { goSlot: string; returnSlot: string; weekendGoSlot: string; weekendReturnSlot: string };
+  }) {
+    setCommuteResult({ estimate: result, entryName, exitName, commuteDays, hasTransponder, shareParams });
+    setTollResult(null);
+    setSelectedRoute({ entryId, exitId });
+  }
+
+  function handleModeChange(newMode: FormMode) {
+    setMode(newMode);
+    setTollResult(null);
+    setCommuteResult(null);
   }
 
   return (
@@ -60,12 +102,17 @@ export function ClientApp({
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
         <div className="lg:col-span-2">
-          <RouteForm onTollResult={handleTollResult} />
+          <RouteForm
+            mode={mode}
+            onModeChange={handleModeChange}
+            onTollResult={handleTollResult}
+            onCommuteResult={handleCommuteResult}
+          />
         </div>
         <div className="lg:col-span-3 space-y-6">
-          {tollResult ? (
+          {mode === "single" && tollResult ? (
             <>
-              <TollBreakdownView breakdown={tollResult} />
+              <TollBreakdownView breakdown={tollResult} entryId={selectedRoute?.entryId} exitId={selectedRoute?.exitId} />
               {tollResult.byTimeSlot.length > 0 && (
                 <TimeChart
                   data={tollResult.byTimeSlot}
@@ -74,6 +121,17 @@ export function ClientApp({
                 />
               )}
             </>
+          ) : mode === "commute" && commuteResult ? (
+            <CommuteBreakdown
+              estimate={commuteResult.estimate}
+              entryName={commuteResult.entryName}
+              exitName={commuteResult.exitName}
+              commuteDays={commuteResult.commuteDays}
+              hasTransponder={commuteResult.hasTransponder}
+              entryId={selectedRoute?.entryId}
+              exitId={selectedRoute?.exitId}
+              shareParams={commuteResult.shareParams}
+            />
           ) : (
             <Card className="flex h-full items-center justify-center p-12">
               <div className="text-center">
@@ -84,7 +142,9 @@ export function ClientApp({
                 </div>
                 <p className="text-sm font-medium text-slate-500">Select your route</p>
                 <p className="mt-1 text-xs text-slate-400">
-                  Pick entry and exit interchanges to see the toll breakdown
+                  {mode === "commute"
+                    ? "Set your commute details to see the cost breakdown"
+                    : "Pick entry and exit interchanges to see the toll breakdown"}
                 </p>
               </div>
             </Card>
