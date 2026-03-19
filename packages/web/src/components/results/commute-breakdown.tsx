@@ -65,7 +65,7 @@ export function CommuteBreakdown({
   const perWeekCents = Math.round(perYearCents / 52);
 
   const shareUrl = entryId && exitId && shareParams
-    ? `/commute/${entryId}-to-${exitId}?days=${commuteDays.join(",")}&go=${shareParams.goSlot}&ret=${shareParams.returnSlot}&wgo=${shareParams.weekendGoSlot}&wret=${shareParams.weekendReturnSlot}&transponder=${hasTransponder}`
+    ? `/commute/${entryId}-to-${exitId}?days=${commuteDays.join(",")}&departure=${shareParams.goSlot}&return=${shareParams.returnSlot}&weekendDeparture=${shareParams.weekendGoSlot}&weekendReturn=${shareParams.weekendReturnSlot}&transponder=${hasTransponder}`
     : undefined;
 
   return (

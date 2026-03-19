@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { computeCommuteEstimate } from "@407-etr/core";
-import type { Direction, WeekdaySlot, WeekendSlot, ResolvedTimeSlot, DayOfWeek } from "@407-etr/core";
-import { getInterchangeById } from "@/lib/load-toll-points";
+import type { WeekdaySlot, WeekendSlot, DayOfWeek } from "@407-etr/core";
+import { buildRouteInput } from "@/lib/load-toll-points";
 import { CommutePageClient } from "./commute-page-client";
 
 export const revalidate = 86400;
@@ -34,6 +34,30 @@ function formatDollars(cents: number): string {
   return `$${(cents / 100).toFixed(2)}`;
 }
 
+function buildCommuteInput(query: Record<string, string | string[] | undefined>, transponder: boolean, entryId: string, exitId: string) {
+  const resolved = buildRouteInput(entryId, exitId, transponder);
+  if (!resolved) return null;
+
+  const days = parseDays(typeof query.days === "string" ? query.days : undefined);
+  const goSlot = parseSlot(typeof query.departure === "string" ? query.departure : undefined, VALID_WEEKDAY_SLOTS, "7am");
+  const returnSlot = parseSlot(typeof query.return === "string" ? query.return : undefined, VALID_WEEKDAY_SLOTS, "330pm");
+  const wkndGoSlot = parseSlot(typeof query.weekendDeparture === "string" ? query.weekendDeparture : undefined, VALID_WEEKEND_SLOTS, "10am");
+  const wkndRetSlot = parseSlot(typeof query.weekendReturn === "string" ? query.weekendReturn : undefined, VALID_WEEKEND_SLOTS, "7pm");
+
+  return {
+    ...resolved,
+    days,
+    commuteInput: {
+      route: resolved.route,
+      goTimeSlot: { dayType: "weekday" as const, slot: goSlot as WeekdaySlot },
+      returnTimeSlot: { dayType: "weekday" as const, slot: returnSlot as WeekdaySlot },
+      weekendGoTimeSlot: { dayType: "weekend_or_holiday" as const, slot: wkndGoSlot as WeekendSlot },
+      weekendReturnTimeSlot: { dayType: "weekend_or_holiday" as const, slot: wkndRetSlot as WeekendSlot },
+      commuteDays: days,
+    },
+  };
+}
+
 interface PageProps {
   params: Promise<{ route: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -45,40 +69,19 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   const parsed = parseRoute(decodeURIComponent(route));
   if (!parsed) return { title: "Commute not found" };
 
-  const entry = getInterchangeById(parsed.entryId);
-  const exit = getInterchangeById(parsed.exitId);
-  if (!entry || !exit) return { title: "Commute not found" };
+  const transponder = query.transponder !== "false";
+  const resolved = buildCommuteInput(query, transponder, parsed.entryId, parsed.exitId);
+  if (!resolved) return { title: "Commute not found" };
 
-  const days = parseDays(typeof query.days === "string" ? query.days : undefined);
-  const dayLabels = days
+  const estimate = computeCommuteEstimate(resolved.commuteInput);
+
+  const dayLabels = resolved.days
     .sort((a, b) => (a === 0 ? 7 : a) - (b === 0 ? 7 : b))
     .map((d) => DAY_NAMES[d])
     .join(", ");
 
-  const transponder = query.transponder !== "false";
-  const direction: Direction = exit.zone > entry.zone || (exit.zone === entry.zone && exit.km > entry.km)
-    ? "eastbound" : "westbound";
-
-  const goSlot = parseSlot(typeof query.go === "string" ? query.go : undefined, VALID_WEEKDAY_SLOTS, "7am");
-  const returnSlot = parseSlot(typeof query.ret === "string" ? query.ret : undefined, VALID_WEEKDAY_SLOTS, "330pm");
-  const wkndGoSlot = parseSlot(typeof query.wgo === "string" ? query.wgo : undefined, VALID_WEEKEND_SLOTS, "10am");
-  const wkndRetSlot = parseSlot(typeof query.wret === "string" ? query.wret : undefined, VALID_WEEKEND_SLOTS, "7pm");
-
-  const estimate = computeCommuteEstimate({
-    route: {
-      entryZone: entry.zone, exitZone: exit.zone,
-      entryKm: entry.km, exitKm: exit.km,
-      direction, hasTransponder: transponder,
-    },
-    goTimeSlot: { dayType: "weekday", slot: goSlot as WeekdaySlot },
-    returnTimeSlot: { dayType: "weekday", slot: returnSlot as WeekdaySlot },
-    weekendGoTimeSlot: { dayType: "weekend_or_holiday", slot: wkndGoSlot as WeekendSlot },
-    weekendReturnTimeSlot: { dayType: "weekend_or_holiday", slot: wkndRetSlot as WeekendSlot },
-    commuteDays: days,
-  });
-
-  const title = `${entry.name} to ${exit.name} commute: ${formatDollars(estimate.perMonthCents)}/mo`;
-  const description = `407 ETR commute estimate: ${formatDollars(estimate.perMonthCents)}/month for ${entry.name} to ${exit.name}, ${dayLabels}.`;
+  const title = `${resolved.entry.name} to ${resolved.exit.name} commute: ${formatDollars(estimate.perMonthCents)}/mo`;
+  const description = `407 ETR commute estimate: ${formatDollars(estimate.perMonthCents)}/month for ${resolved.entry.name} to ${resolved.exit.name}, ${dayLabels}.`;
 
   return {
     title,
@@ -93,32 +96,11 @@ export default async function CommutePage({ params, searchParams }: PageProps) {
   const parsed = parseRoute(decodeURIComponent(route));
   if (!parsed) notFound();
 
-  const entry = getInterchangeById(parsed.entryId);
-  const exit = getInterchangeById(parsed.exitId);
-  if (!entry || !exit) notFound();
-
-  const days = parseDays(typeof query.days === "string" ? query.days : undefined);
   const transponder = query.transponder !== "false";
-  const direction: Direction = exit.zone > entry.zone || (exit.zone === entry.zone && exit.km > entry.km)
-    ? "eastbound" : "westbound";
+  const resolved = buildCommuteInput(query, transponder, parsed.entryId, parsed.exitId);
+  if (!resolved) notFound();
 
-  const goSlot = parseSlot(typeof query.go === "string" ? query.go : undefined, VALID_WEEKDAY_SLOTS, "7am");
-  const returnSlot = parseSlot(typeof query.ret === "string" ? query.ret : undefined, VALID_WEEKDAY_SLOTS, "330pm");
-  const wkndGoSlot = parseSlot(typeof query.wgo === "string" ? query.wgo : undefined, VALID_WEEKEND_SLOTS, "10am");
-  const wkndRetSlot = parseSlot(typeof query.wret === "string" ? query.wret : undefined, VALID_WEEKEND_SLOTS, "7pm");
-
-  const estimate = computeCommuteEstimate({
-    route: {
-      entryZone: entry.zone, exitZone: exit.zone,
-      entryKm: entry.km, exitKm: exit.km,
-      direction, hasTransponder: transponder,
-    },
-    goTimeSlot: { dayType: "weekday", slot: goSlot as WeekdaySlot },
-    returnTimeSlot: { dayType: "weekday", slot: returnSlot as WeekdaySlot },
-    weekendGoTimeSlot: { dayType: "weekend_or_holiday", slot: wkndGoSlot as WeekendSlot },
-    weekendReturnTimeSlot: { dayType: "weekend_or_holiday", slot: wkndRetSlot as WeekendSlot },
-    commuteDays: days,
-  });
+  const estimate = computeCommuteEstimate(resolved.commuteInput);
 
   return (
     <div className="min-h-screen">
@@ -138,9 +120,9 @@ export default async function CommutePage({ params, searchParams }: PageProps) {
       <main className="mx-auto max-w-3xl px-4 py-6 sm:px-6">
         <CommutePageClient
           estimate={estimate}
-          entryName={entry.name}
-          exitName={exit.name}
-          commuteDays={days}
+          entryName={resolved.entry.name}
+          exitName={resolved.exit.name}
+          commuteDays={resolved.days}
           hasTransponder={transponder}
         />
       </main>

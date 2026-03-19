@@ -1,67 +1,50 @@
 import { NextResponse } from "next/server";
-import { z } from "zod/v4";
-import {
-  DirectionSchema,
-  ResolvedTimeSlotSchema,
-  calculateToll,
-  computeAllTimeSlotCosts,
-} from "@407-etr/core";
-import { getInterchangeById } from "@/lib/load-toll-points";
+import { calculateToll, computeAllTimeSlotCosts } from "@407-etr/core";
+import type { WeekdaySlot, WeekendSlot } from "@407-etr/core";
+import { buildRouteInput } from "@/lib/load-toll-points";
 
-const TollRequestSchema = z.object({
-  entryId: z.string(),
-  exitId: z.string(),
-  direction: DirectionSchema,
-  timeSlot: ResolvedTimeSlotSchema,
-  hasTransponder: z.boolean().default(true),
-});
+const VALID_WEEKDAY_SLOTS = new Set(["5am", "7am", "930am", "1030am", "230pm", "330pm", "6pm", "9pm"]);
+const VALID_WEEKEND_SLOTS = new Set(["830am", "10am", "7pm", "9pm"]);
 
-export async function POST(req: Request) {
+export async function GET(req: Request) {
   try {
-    const body = await req.json();
-    const parsed = TollRequestSchema.safeParse(body);
+    const url = new URL(req.url);
+    const entryId = url.searchParams.get("entry");
+    const exitId = url.searchParams.get("exit");
+    const day = url.searchParams.get("day") ?? "weekday";
+    const slot = url.searchParams.get("slot") ?? "7am";
+    const transponder = url.searchParams.get("transponder") !== "false";
 
-    if (!parsed.success) {
-      return NextResponse.json(
-        { error: z.prettifyError(parsed.error) },
-        { status: 400 },
-      );
+    if (!entryId || !exitId) {
+      return NextResponse.json({ error: "Missing entry or exit" }, { status: 400 });
     }
 
-    const { entryId, exitId, direction, timeSlot, hasTransponder } = parsed.data;
-    const entry = getInterchangeById(entryId);
-    const exit = getInterchangeById(exitId);
-
-    if (!entry || !exit) {
-      return NextResponse.json(
-        { error: "Invalid interchange ID" },
-        { status: 400 },
-      );
+    const resolved = buildRouteInput(entryId, exitId, transponder);
+    if (!resolved) {
+      return NextResponse.json({ error: "Invalid interchange ID" }, { status: 400 });
     }
 
-    const shared = {
-      entryZone: entry.zone,
-      exitZone: exit.zone,
-      entryKm: entry.km,
-      exitKm: exit.km,
-      direction,
-      hasTransponder,
-    };
+    const isWeekend = day === "weekend";
+    if (isWeekend && !VALID_WEEKEND_SLOTS.has(slot)) {
+      return NextResponse.json({ error: "Invalid time slot" }, { status: 400 });
+    }
+    if (!isWeekend && !VALID_WEEKDAY_SLOTS.has(slot)) {
+      return NextResponse.json({ error: "Invalid time slot" }, { status: 400 });
+    }
 
-    const result = calculateToll({ ...shared, timeSlot });
-    const byTimeSlot = computeAllTimeSlotCosts(shared);
+    const timeSlot = isWeekend
+      ? { dayType: "weekend_or_holiday" as const, slot: slot as WeekendSlot }
+      : { dayType: "weekday" as const, slot: slot as WeekdaySlot };
+
+    const result = calculateToll({ ...resolved.route, timeSlot });
+    const byTimeSlot = computeAllTimeSlotCosts(resolved.route);
 
     return NextResponse.json({ ...result, byTimeSlot }, {
       headers: {
-        // Rates are static for the year. Cache in browser for 1 hour,
-        // allow CDN to serve stale while revalidating for up to 24 hours.
         "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400",
       },
     });
   } catch {
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

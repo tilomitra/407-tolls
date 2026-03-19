@@ -1,4 +1,4 @@
-import type { Interchange, OnRamp, Direction } from "@407-etr/core";
+import type { Interchange, OnRamp, Direction, RouteInput } from "@407-etr/core";
 import { interchanges as rawInterchanges } from "@/data";
 
 let cachedInterchangeMap: Map<string, Interchange> | null = null;
@@ -41,4 +41,27 @@ export function getOnRampsForDirection({
 }): OnRamp[] {
   if (!cachedOnRamps) cachedOnRamps = buildOnRampsByDirection();
   return cachedOnRamps[direction];
+}
+
+export function buildRouteInput(
+  entryId: string,
+  exitId: string,
+  hasTransponder: boolean,
+): { route: RouteInput; entry: Interchange; exit: Interchange } | null {
+  const entry = getInterchangeById(entryId);
+  const exit = getInterchangeById(exitId);
+  if (!entry || !exit) return null;
+
+  return {
+    route: {
+      entryZone: entry.zone,
+      exitZone: exit.zone,
+      entryKm: entry.km,
+      exitKm: exit.km,
+      direction: exit.km > entry.km ? "eastbound" : "westbound",
+      hasTransponder,
+    },
+    entry,
+    exit,
+  };
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { TollResponse, CommuteEstimate, DayOfWeek, Interchange, Direction, ResolvedTimeSlot, Zone, DayType, WeekdaySlot, WeekendSlot } from "@407-etr/core";
+import type { TollResponse, CommuteEstimate, DayOfWeek, Interchange, ResolvedTimeSlot, DayType, WeekdaySlot, WeekendSlot } from "@407-etr/core";
 import { Card, CardBody } from "../ui/card";
 import { Select } from "../ui/select";
 import { Button } from "../ui/button";
@@ -61,10 +61,6 @@ function resolveCurrentSlot(): { dayType: DayType; slot: string } {
     }
   }
   return { dayType: isWeekend ? "weekend_or_holiday" : "weekday", slot: "9pm" };
-}
-
-function getDirection(entry: { km: number }, exit: { km: number }): Direction {
-  return exit.km > entry.km ? "eastbound" : "westbound";
 }
 
 export type FormMode = "single" | "commute";
@@ -180,26 +176,20 @@ export function RouteForm({
     setLoading(true);
     setError(null);
 
-    const direction = getDirection(entry, exit);
-
     try {
       if (mode === "commute") {
-        const res = await fetch("/api/commute", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            entryId,
-            exitId,
-            direction,
-            goTimeSlot: { dayType: "weekday", slot: goWeekdaySlot },
-            returnTimeSlot: { dayType: "weekday", slot: returnWeekdaySlot },
-            weekendGoTimeSlot: { dayType: "weekend_or_holiday", slot: goWeekendSlot },
-            weekendReturnTimeSlot: { dayType: "weekend_or_holiday", slot: returnWeekendSlot },
-            commuteDays,
-            hasTransponder,
-          }),
+        const params = new URLSearchParams({
+          entry: entryId,
+          exit: exitId,
+          days: commuteDays.join(","),
+          departure: goWeekdaySlot,
+          return: returnWeekdaySlot,
+          weekendDeparture: goWeekendSlot,
+          weekendReturn: returnWeekendSlot,
+          transponder: String(hasTransponder),
         });
 
+        const res = await fetch(`/api/commute?${params}`);
         if (!res.ok) {
           const data = await res.json();
           throw new Error(typeof data.error === "string" ? data.error : "Request failed");
@@ -221,18 +211,16 @@ export function RouteForm({
           },
         });
       } else {
-        const res = await fetch("/api/toll", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            entryId,
-            exitId,
-            direction,
-            timeSlot: getTimeSlot(),
-            hasTransponder,
-          }),
+        const ts = getTimeSlot();
+        const params = new URLSearchParams({
+          entry: entryId,
+          exit: exitId,
+          day: ts.dayType === "weekday" ? "weekday" : "weekend",
+          slot: ts.slot,
+          transponder: String(hasTransponder),
         });
 
+        const res = await fetch(`/api/toll?${params}`);
         if (!res.ok) {
           const data = await res.json();
           throw new Error(typeof data.error === "string" ? data.error : "Request failed");
