@@ -367,7 +367,10 @@ export const RATES_2026: Readonly<Record<RateKey, number>> = {
 export const TRIP_CHARGE_CENTS = 100; // $1.00
 
 /** Additional charge per trip if vehicle has no transponder (camera toll). */
-export const CAMERA_CHARGE_CENTS = 435; // $4.35
+export const CAMERA_CHARGE_CENTS = 530; // $5.30
+
+/** Monthly account fee for non-transponder users. */
+export const NO_TRANSPONDER_MONTHLY_FEE_CENTS = 500; // $5.00
 
 // ── Accessor ─────────────────────────────────────────────────────────────────
 
