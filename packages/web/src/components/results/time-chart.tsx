@@ -20,7 +20,7 @@ export function TimeChart({
   const [open, setOpen] = useState(false);
 
   const weekday = data.filter((d) => d.dayType === "weekday");
-  const weekend = data.filter((d) => d.dayType === "weekend");
+  const weekend = data.filter((d) => d.dayType !== "weekday");
 
   const minCost = Math.min(...data.map((d) => d.totalCents));
   const maxCost = Math.max(...data.map((d) => d.totalCents));
@@ -28,7 +28,7 @@ export function TimeChart({
     (d) =>
       d.slot === currentSlot &&
       ((currentDayType === "weekday" && d.dayType === "weekday") ||
-        (currentDayType !== "weekday" && d.dayType === "weekend")),
+        (currentDayType !== "weekday" && d.dayType !== "weekday")),
   );
   const currentCost = currentEntry?.totalCents ?? 0;
   const canSave = currentCost > minCost;
@@ -53,7 +53,9 @@ export function TimeChart({
                 <p className="text-sm font-medium text-slate-900">
                   Save up to {formatDollars(savings)} on this trip
                 </p>
-                <p className="text-xs text-slate-500">Compare prices across all time slots</p>
+                <p className="text-xs text-slate-500">
+                  Lowest: {formatDollars(minCost)} (off-peak) vs {formatDollars(maxCost)} (peak)
+                </p>
               </div>
             </>
           ) : (

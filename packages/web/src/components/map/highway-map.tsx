@@ -11,13 +11,22 @@ function getZoneColor(zone: number): string {
   return zoneColors[zone as keyof typeof zoneColors]?.dot ?? "#94a3b8";
 }
 
+function getAccessLabel(ic: Interchange): string {
+  const eb = ic.eastbound.hasOnRamp || ic.eastbound.hasOffRamp;
+  const wb = ic.westbound.hasOnRamp || ic.westbound.hasOffRamp;
+  if (eb && wb) return "";
+  if (eb) return "Eastbound only";
+  if (wb) return "Westbound only";
+  return "";
+}
+
 export function HighwayMap({
-  tollPoints,
+  gantries,
   interchanges,
   highwayGeometry,
   selectedRoute,
 }: {
-  tollPoints: TollPoint[];
+  gantries: TollPoint[];
   interchanges: Interchange[];
   highwayGeometry: Array<[number, number]>;
   selectedRoute: { entryId: string; exitId: string } | null;
@@ -76,7 +85,7 @@ export function HighwayMap({
         id: "selected-route-outline",
         type: "line",
         source: "selected-route",
-        paint: { "line-color": "#1e293b", "line-width": 7, "line-opacity": 0.2 },
+        paint: { "line-color": "#1e293b", "line-width": 7, "line-opacity": 0.15 },
       });
       map.addLayer({
         id: "selected-route-line",
@@ -118,7 +127,7 @@ export function HighwayMap({
         type: "geojson",
         data: {
           type: "FeatureCollection",
-          features: tollPoints.map((p) => ({
+          features: gantries.map((p) => ({
             type: "Feature" as const,
             geometry: { type: "Point" as const, coordinates: [p.location.lng, p.location.lat] },
             properties: { color: p.isFree ? FREE_DOT_COLOR : getZoneColor(p.zone) },
@@ -132,22 +141,38 @@ export function HighwayMap({
         paint: { "circle-radius": 2.5, "circle-color": ["get", "color"], "circle-opacity": 0.4 },
       });
 
-      // Interchange dots
+      // Classify interchanges for rendering
+      const icFeatures = interchanges.map((ic) => {
+        const eb = ic.eastbound.hasOnRamp || ic.eastbound.hasOffRamp;
+        const wb = ic.westbound.hasOnRamp || ic.westbound.hasOffRamp;
+        const access = eb && wb ? "full" : eb ? "eb-only" : wb ? "wb-only" : "none";
+        const accessLabel = getAccessLabel(ic);
+
+        return {
+          type: "Feature" as const,
+          geometry: { type: "Point" as const, coordinates: [ic.location.lng, ic.location.lat] },
+          properties: {
+            id: ic.id,
+            name: ic.name,
+            zone: ic.zone,
+            color: ic.isFree ? FREE_DOT_COLOR : getZoneColor(ic.zone),
+            access,
+            accessLabel,
+          },
+        };
+      });
+
       map.addSource("interchanges", {
         type: "geojson",
-        data: {
-          type: "FeatureCollection",
-          features: interchanges.map((ic) => ({
-            type: "Feature" as const,
-            geometry: { type: "Point" as const, coordinates: [ic.location.lng, ic.location.lat] },
-            properties: { id: ic.id, name: ic.name, zone: ic.zone, color: ic.isFree ? FREE_DOT_COLOR : getZoneColor(ic.zone) },
-          })),
-        },
+        data: { type: "FeatureCollection", features: icFeatures },
       });
+
+      // Full interchanges: solid circle
       map.addLayer({
         id: "interchanges-dots",
         type: "circle",
         source: "interchanges",
+        filter: ["==", ["get", "access"], "full"],
         paint: {
           "circle-radius": ["interpolate", ["linear"], ["zoom"], 8, 4, 12, 7],
           "circle-color": ["get", "color"],
@@ -156,7 +181,57 @@ export function HighwayMap({
         },
       });
 
-      // Interchange labels (on zoom)
+      // Partial interchanges (EB-only or WB-only): smaller dot with dashed ring
+      map.addLayer({
+        id: "interchanges-partial-outer",
+        type: "circle",
+        source: "interchanges",
+        filter: ["any", ["==", ["get", "access"], "eb-only"], ["==", ["get", "access"], "wb-only"]],
+        paint: {
+          "circle-radius": ["interpolate", ["linear"], ["zoom"], 8, 5, 12, 9],
+          "circle-color": "transparent",
+          "circle-stroke-color": ["get", "color"],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-opacity": 0.5,
+        },
+      });
+      map.addLayer({
+        id: "interchanges-partial-inner",
+        type: "circle",
+        source: "interchanges",
+        filter: ["any", ["==", ["get", "access"], "eb-only"], ["==", ["get", "access"], "wb-only"]],
+        paint: {
+          "circle-radius": ["interpolate", ["linear"], ["zoom"], 8, 3, 12, 5],
+          "circle-color": ["get", "color"],
+          "circle-stroke-color": "#ffffff",
+          "circle-stroke-width": 1,
+        },
+      });
+
+      // Direction arrows for partial interchanges (show at higher zoom)
+      map.addLayer({
+        id: "interchanges-direction-labels",
+        type: "symbol",
+        source: "interchanges",
+        filter: ["any", ["==", ["get", "access"], "eb-only"], ["==", ["get", "access"], "wb-only"]],
+        layout: {
+          "text-field": ["case",
+            ["==", ["get", "access"], "eb-only"], "→",
+            ["==", ["get", "access"], "wb-only"], "←",
+            "",
+          ],
+          "text-size": 14,
+          "text-offset": [1.2, 0],
+          "text-allow-overlap": true,
+        },
+        paint: {
+          "text-color": ["get", "color"],
+          "text-opacity": 0.7,
+        },
+        minzoom: 10,
+      });
+
+      // Interchange name labels (on zoom)
       map.addLayer({
         id: "interchanges-labels",
         type: "symbol",
@@ -173,23 +248,39 @@ export function HighwayMap({
         minzoom: 10.5,
       });
 
-      // Hover popup
+      // Hover popup with access info
       const popup = new maplibregl.Popup({ closeButton: false, closeOnClick: false, offset: 12 });
-      map.on("mouseenter", "interchanges-dots", (e) => {
+
+      function showPopup(e: maplibregl.MapMouseEvent & { features?: maplibregl.MapGeoJSONFeature[] }) {
         map.getCanvas().style.cursor = "pointer";
         const f = e.features?.[0];
         if (!f || f.geometry.type !== "Point") return;
+        const accessLabel = f.properties.accessLabel;
+        const accessHtml = accessLabel
+          ? `<div style="font-size:10px;color:#f59e0b;font-weight:500;margin-top:2px">${accessLabel}</div>`
+          : "";
         popup
           .setLngLat(f.geometry.coordinates.slice() as [number, number])
-          .setHTML(`<div style="font-size:13px;font-weight:500">${f.properties.name}</div><div style="font-size:11px;color:#64748b">Zone ${f.properties.zone}</div>`)
+          .setHTML(
+            `<div style="font-size:13px;font-weight:500">${f.properties.name}</div>` +
+            `<div style="font-size:11px;color:#64748b">Zone ${f.properties.zone}</div>` +
+            accessHtml,
+          )
           .addTo(map);
-      });
-      map.on("mouseleave", "interchanges-dots", () => {
+      }
+
+      function hidePopup() {
         map.getCanvas().style.cursor = "";
         popup.remove();
-      });
+      }
 
-      // Define the updateRoute function now that sources exist
+      // Attach hover to all interchange layers
+      for (const layerId of ["interchanges-dots", "interchanges-partial-inner"]) {
+        map.on("mouseenter", layerId, showPopup);
+        map.on("mouseleave", layerId, hidePopup);
+      }
+
+      // Update route function
       updateRouteRef.current = () => {
         const route = selectedRouteRef.current;
         const routeSource = map.getSource("selected-route") as maplibregl.GeoJSONSource;
@@ -240,15 +331,13 @@ export function HighwayMap({
         }
       };
 
-      // Run it immediately in case selectedRoute was set before map loaded
       updateRouteRef.current();
     });
 
     mapRef.current = map;
     return () => { map.remove(); mapRef.current = null; updateRouteRef.current = null; };
-  }, [tollPoints, interchanges, highwayGeometry]);
+  }, [gantries, interchanges, highwayGeometry]);
 
-  // When selectedRoute changes, call updateRoute
   useEffect(() => {
     updateRouteRef.current?.();
   }, [selectedRoute]);
