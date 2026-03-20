@@ -15,10 +15,8 @@ import {
 } from "@/lib/params";
 import { formatDollars } from "@/lib/format";
 import { CommutePageClient } from "./commute-page-client";
-import { PAGE_REVALIDATE_SECONDS } from "@/lib/cache";
-
-// Next.js requires this exact export name for page-level caching.
-export const revalidate = PAGE_REVALIDATE_SECONDS;
+// Next.js statically analyzes this value, so it must be a literal.
+export const revalidate = 86400;
 
 type Query = Record<string, string | string[] | undefined>;
 

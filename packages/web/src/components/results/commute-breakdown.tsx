@@ -34,6 +34,31 @@ function CostRow({
   );
 }
 
+function DayCostSection({
+  label,
+  goCostCents,
+  returnCostCents,
+  isRoundTrip,
+}: {
+  label: string;
+  goCostCents: number;
+  returnCostCents: number;
+  isRoundTrip: boolean;
+}) {
+  return (
+    <div className="rounded-lg bg-slate-50 px-4 py-1">
+      <CostRow label="Departure" value={fmt(goCostCents)} sub={label} />
+      {isRoundTrip && <CostRow label="Return" value={fmt(returnCostCents)} sub={label} />}
+      <div className="border-t border-slate-200" />
+      <CostRow
+        label={isRoundTrip ? "Per day (round trip)" : "Per day (one way)"}
+        value={fmt(goCostCents + returnCostCents)}
+        bold
+      />
+    </div>
+  );
+}
+
 export function CommuteBreakdown({
   estimate,
   entryName,
@@ -81,6 +106,7 @@ export function CommuteBreakdown({
     .join(", ");
 
   const isRoundTrip = tripType === "round_trip";
+  const hasWeekdayDays = commuteDays.some((d) => d >= 1 && d <= 5);
   const hasWeekendDays = commuteDays.includes(0) || commuteDays.includes(6);
   const perWeekCents = Math.round(perYearCents / 52);
   const totalDaysPerYear = weekdayDaysPerYear + weekendDaysPerYear;
@@ -118,32 +144,22 @@ export function CommuteBreakdown({
 
         {children && <div>{children}</div>}
 
-        <div className="rounded-lg bg-slate-50 px-4 py-1">
-          <CostRow label="Departure" value={fmt(weekdayGoCostCents)} sub="weekday" />
-          {isRoundTrip && (
-            <CostRow label="Return" value={fmt(weekdayReturnCostCents)} sub="weekday" />
-          )}
-          <div className="border-t border-slate-200" />
-          <CostRow
-            label={isRoundTrip ? "Per day (round trip)" : "Per day (one way)"}
-            value={fmt(weekdayGoCostCents + weekdayReturnCostCents)}
-            bold
+        {hasWeekdayDays && (
+          <DayCostSection
+            label="weekday"
+            goCostCents={weekdayGoCostCents}
+            returnCostCents={weekdayReturnCostCents}
+            isRoundTrip={isRoundTrip}
           />
-        </div>
+        )}
 
         {hasWeekendDays && (
-          <div className="rounded-lg bg-slate-50 px-4 py-1">
-            <CostRow label="Departure" value={fmt(weekendGoCostCents)} sub="weekend" />
-            {isRoundTrip && (
-              <CostRow label="Return" value={fmt(weekendReturnCostCents)} sub="weekend" />
-            )}
-            <div className="border-t border-slate-200" />
-            <CostRow
-              label={isRoundTrip ? "Per day (round trip)" : "Per day (one way)"}
-              value={fmt(weekendGoCostCents + weekendReturnCostCents)}
-              bold
-            />
-          </div>
+          <DayCostSection
+            label="weekend"
+            goCostCents={weekendGoCostCents}
+            returnCostCents={weekendReturnCostCents}
+            isRoundTrip={isRoundTrip}
+          />
         )}
 
         <div className="space-y-0.5">
@@ -163,7 +179,9 @@ export function CommuteBreakdown({
 
         <div className="rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-500 space-y-0.5">
           <p>
-            {weekdayDaysPerYear} weekday + {weekendDaysPerYear} weekend/holiday days per year (
+            {hasWeekdayDays && `${weekdayDaysPerYear} weekday`}
+            {hasWeekdayDays && hasWeekendDays && " + "}
+            {hasWeekendDays && `${weekendDaysPerYear} weekend/holiday`} days per year (
             {totalTripsPerYear} {isRoundTrip ? "round trips" : "one-way trips"})
           </p>
           {holidayDaysPerYear > 0 && (

@@ -27,6 +27,7 @@ function findAdjacentInterchanges({
   const anchorIdx = indexById.get(anchor.id);
   if (anchorIdx === undefined) return [];
 
+  // Two pointers expanding outward from the anchor, nearest first.
   const candidates: Interchange[] = [];
   let left = anchorIdx - 1;
   let right = anchorIdx + 1;
@@ -37,7 +38,11 @@ function findAdjacentInterchanges({
     const leftDist = leftIc ? Math.abs(leftIc.km - anchor.km) : Infinity;
     const rightDist = rightIc ? Math.abs(rightIc.km - anchor.km) : Infinity;
 
-    if (leftDist <= rightDist) { left--; } else { right++; }
+    if (leftDist <= rightDist) {
+      left--;
+    } else {
+      right++;
+    }
     const next = leftDist <= rightDist ? leftIc : rightIc;
 
     if (!next || next.isFree) continue;
@@ -61,13 +66,21 @@ function buildAlternativeRoute({
   interchange: Interchange;
   role: "entry" | "exit";
 }): RouteInput {
+  // Swap in the alternate interchange for the role being tested, keep the other end unchanged.
   const entryKm = role === "entry" ? interchange.km : originalRoute.entryKm;
   const exitKm = role === "exit" ? interchange.km : originalRoute.exitKm;
   const entryZone = role === "entry" ? interchange.zone : originalRoute.entryZone;
   const exitZone = role === "exit" ? interchange.zone : originalRoute.exitZone;
   const direction: Direction = exitKm > entryKm ? "eastbound" : "westbound";
 
-  return { entryKm, exitKm, entryZone, exitZone, direction, hasTransponder: originalRoute.hasTransponder };
+  return {
+    entryKm,
+    exitKm,
+    entryZone,
+    exitZone,
+    direction,
+    hasTransponder: originalRoute.hasTransponder,
+  };
 }
 
 export function computeNearbyComparison({
@@ -89,6 +102,8 @@ export function computeNearbyComparison({
   const indexById = new Map(sorted.map((ic, i) => [ic.id, i]));
   const originalDistanceKm = Math.abs(route.exitKm - route.entryKm);
 
+  // "entry" = find nearby on-ramps to replace the entry, keep the exit fixed.
+  // "exit" = find nearby off-ramps to replace the exit, keep the entry fixed.
   const roles = [
     { anchor: entryInterchange, role: "entry" as const },
     { anchor: exitInterchange, role: "exit" as const },
@@ -106,10 +121,13 @@ export function computeNearbyComparison({
     });
 
     for (const ic of adjacent) {
+      if (ic.id === entryInterchange.id || ic.id === exitInterchange.id) continue;
+
       const altRoute = buildAlternativeRoute({ originalRoute: route, interchange: ic, role });
+      if (altRoute.direction !== route.direction) continue;
+
       const altEstimate = computeCommuteEstimate({ route: altRoute, ...schedule });
       const deltaMonthCents = altEstimate.perMonthCents - estimate.perMonthCents;
-
       if (deltaMonthCents >= 0) continue;
 
       alternatives.push({

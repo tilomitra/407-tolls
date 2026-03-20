@@ -312,14 +312,46 @@ export function RouteForm({
     <Card>
       <CardBody>
         <form onSubmit={handleSubmit} className="space-y-5">
-          <RadioGroup
-            value={mode}
-            onChange={(v) => onModeChange(v as FormMode)}
-            options={[
-              { value: "single", label: "Single Trip" },
-              { value: "commute", label: "Commute" },
-            ]}
-          />
+          <div className="flex items-center justify-between">
+            <RadioGroup
+              value={mode}
+              onChange={(v) => onModeChange(v as FormMode)}
+              options={[
+                { value: "single", label: "Single Trip" },
+                { value: "commute", label: "Commute" },
+              ]}
+            />
+            {mode === "commute" && (
+              <RadioGroup
+                value={tripType}
+                onChange={(v) => setTripType(v as TripType)}
+                size="sm"
+                options={[
+                  {
+                    value: "round_trip",
+                    label: "Round trip",
+                    icon: (
+                      <svg className="h-3 w-3" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M1 5.5a.5.5 0 0 1 .5-.5h11.793l-2.147-2.146a.5.5 0 0 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L13.293 6H1.5a.5.5 0 0 1-.5-.5zm14 5a.5.5 0 0 1-.5.5H2.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L2.707 10H14.5a.5.5 0 0 1 .5.5z" />
+                      </svg>
+                    ),
+                  },
+                  {
+                    value: "one_way",
+                    label: "One way",
+                    icon: (
+                      <svg className="h-3 w-3" viewBox="0 0 16 16" fill="currentColor">
+                        <path
+                          fillRule="evenodd"
+                          d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
+                        />
+                      </svg>
+                    ),
+                  },
+                ]}
+              />
+            )}
+          </div>
 
           <div className="relative">
             <div className="rounded-xl border border-slate-200">
@@ -405,23 +437,6 @@ export function RouteForm({
             </div>
           ) : (
             <>
-              <div className="flex items-center gap-3">
-                {(["round_trip", "one_way"] as const).map((t) => (
-                  <button
-                    key={t}
-                    type="button"
-                    onClick={() => setTripType(t)}
-                    className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
-                      tripType === t
-                        ? "bg-slate-900 text-white"
-                        : "bg-slate-100 text-slate-500 hover:bg-slate-200"
-                    }`}
-                  >
-                    {t === "round_trip" ? "Round trip" : "One way"}
-                  </button>
-                ))}
-              </div>
-
               <div className="space-y-3">
                 <span className="block text-sm font-medium text-slate-700">Days</span>
                 <DayPicker selected={commuteDays} onChange={setCommuteDays} />

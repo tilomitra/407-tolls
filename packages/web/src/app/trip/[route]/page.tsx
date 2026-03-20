@@ -5,10 +5,9 @@ import { buildRouteInput } from "@/lib/load-toll-points";
 import { parseRoute, parseTimeSlot } from "@/lib/params";
 import { formatDollars } from "@/lib/format";
 import { TripPageClient } from "./trip-page-client";
-import { PAGE_REVALIDATE_SECONDS } from "@/lib/cache";
 
-// Next.js requires this exact export name for page-level caching.
-export const revalidate = PAGE_REVALIDATE_SECONDS;
+// Next.js statically analyzes this value, so it must be a literal.
+export const revalidate = 86400;
 
 interface PageProps {
   params: Promise<{ route: string }>;
