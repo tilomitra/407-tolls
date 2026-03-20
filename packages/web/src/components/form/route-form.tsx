@@ -145,7 +145,6 @@ export function RouteForm({
   const [entryId, setEntryId] = useLocalStorage("407-entry", interchanges.length > 0 ? "25" : "");
   const [exitId, setExitId] = useLocalStorage("407-exit", interchanges.length > 0 ? "33" : "");
   const [hasTransponder, setHasTransponder] = useLocalStorage("407-transponder", true);
-  const [timeMode, setTimeMode] = useState<"now" | "custom">("now");
   const [dayType, setDayType] = useState<DayType>(currentSlot.dayType);
   const [weekdaySlot, setWeekdaySlot] = useState<WeekdaySlot>(
     currentSlot.dayType === "weekday" ? currentSlot.slot as WeekdaySlot : "7am",
@@ -186,23 +185,9 @@ export function RouteForm({
   const hasWeekendDays = commuteDays.includes(0) || commuteDays.includes(6);
 
   function getTimeSlot(): ResolvedTimeSlot {
-    if (timeMode === "now") {
-      const c = resolveCurrentSlot();
-      return c.dayType === "weekday"
-        ? { dayType: "weekday", slot: c.slot as WeekdaySlot }
-        : { dayType: "weekend_or_holiday", slot: c.slot as WeekendSlot };
-    }
     return dayType === "weekday"
       ? { dayType: "weekday", slot: weekdaySlot }
       : { dayType: "weekend_or_holiday", slot: weekendSlot };
-  }
-
-  function getTimeLabel(): string {
-    const ts = getTimeSlot();
-    const options = ts.dayType === "weekday" ? WEEKDAY_TIME_OPTIONS : WEEKEND_TIME_OPTIONS;
-    const match = options.find((o) => o.value === ts.slot);
-    const prefix = ts.dayType === "weekday" ? "Weekday" : "Weekend";
-    return `${prefix} ${match?.label ?? ts.slot}`;
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -330,40 +315,26 @@ export function RouteForm({
 
           {mode === "single" ? (
             <div className="space-y-3">
-              <span className="block text-sm font-medium text-slate-700">When</span>
-              <RadioGroup
-                value={timeMode}
-                onChange={(v) => setTimeMode(v as "now" | "custom")}
-                options={[
-                  { value: "now", label: "Now" },
-                  { value: "custom", label: "Pick a time" },
-                ]}
-              />
-
-              {timeMode === "custom" && (
-                <div className="grid grid-cols-2 gap-3">
-                  <StyledSelect
-                    label="Day"
-                    value={dayType}
-                    onChange={(v) => setDayType(v as DayType)}
-                    options={[
-                      { value: "weekday", label: "Weekday" },
-                      { value: "weekend_or_holiday", label: "Weekend / Holiday" },
-                    ]}
-                  />
-                  <StyledSelect
-                    label="Time"
-                    value={dayType === "weekday" ? weekdaySlot : weekendSlot}
-                    onChange={(v) => {
-                      if (dayType === "weekday") setWeekdaySlot(v as WeekdaySlot);
-                      else setWeekendSlot(v as WeekendSlot);
-                    }}
-                    options={dayType === "weekday" ? WEEKDAY_TIME_OPTIONS : WEEKEND_TIME_OPTIONS}
-                  />
-                </div>
-              )}
-
-              <p className="text-xs text-slate-400">{getTimeLabel()}</p>
+              <div className="grid grid-cols-2 gap-3">
+                <StyledSelect
+                  label="Day"
+                  value={dayType}
+                  onChange={(v) => setDayType(v as DayType)}
+                  options={[
+                    { value: "weekday", label: "Weekday" },
+                    { value: "weekend_or_holiday", label: "Weekend / Holiday" },
+                  ]}
+                />
+                <StyledSelect
+                  label="Time"
+                  value={dayType === "weekday" ? weekdaySlot : weekendSlot}
+                  onChange={(v) => {
+                    if (dayType === "weekday") setWeekdaySlot(v as WeekdaySlot);
+                    else setWeekendSlot(v as WeekendSlot);
+                  }}
+                  options={dayType === "weekday" ? WEEKDAY_TIME_OPTIONS : WEEKEND_TIME_OPTIONS}
+                />
+              </div>
             </div>
           ) : (
             <>
