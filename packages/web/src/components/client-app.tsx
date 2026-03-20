@@ -1,7 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import type { TollPoint, Interchange, TollResponse, CommuteEstimate, NearbyComparison } from "@407-etr/core";
+import type {
+  TollPoint,
+  Interchange,
+  TollResponse,
+  CommuteEstimate,
+  NearbyComparison,
+  TripType,
+} from "@407-etr/core";
 import type { DayOfWeek } from "@407-etr/core";
 import { HighwayMap } from "./map/highway-map";
 import { ZoneLegend } from "./map/zone-legend";
@@ -31,13 +38,14 @@ export function ClientApp({
     exitId: string;
     entryName: string;
     exitName: string;
+    tripType: TripType;
     commuteDays: DayOfWeek[];
     hasTransponder: boolean;
     shareParams: {
       goSlot: string;
-      returnSlot: string;
+      returnSlot?: string;
       weekendGoSlot: string;
-      weekendReturnSlot: string;
+      weekendReturnSlot?: string;
     };
   } | null>(null);
   const [selectedRoute, setSelectedRoute] = useState<{
@@ -66,6 +74,7 @@ export function ClientApp({
     exitId,
     entryName,
     exitName,
+    tripType,
     commuteDays,
     hasTransponder,
     shareParams,
@@ -76,13 +85,14 @@ export function ClientApp({
     exitId: string;
     entryName: string;
     exitName: string;
+    tripType: TripType;
     commuteDays: DayOfWeek[];
     hasTransponder: boolean;
     shareParams: {
       goSlot: string;
-      returnSlot: string;
+      returnSlot?: string;
       weekendGoSlot: string;
-      weekendReturnSlot: string;
+      weekendReturnSlot?: string;
     };
   }) {
     setCommuteResult({
@@ -92,6 +102,7 @@ export function ClientApp({
       exitId,
       entryName,
       exitName,
+      tripType,
       commuteDays,
       hasTransponder,
       shareParams,
@@ -141,8 +152,8 @@ export function ClientApp({
             <>
               <TollBreakdownView
                 breakdown={tollResult}
-                entryId={selectedRoute?.entryId}
-                exitId={selectedRoute?.exitId}
+                entryId={selectedRoute!.entryId}
+                exitId={selectedRoute!.exitId}
               />
               {tollResult.byTimeSlot.length > 0 && (
                 <TimeChart
@@ -158,10 +169,11 @@ export function ClientApp({
                 estimate={commuteResult.estimate}
                 entryName={commuteResult.entryName}
                 exitName={commuteResult.exitName}
+                tripType={commuteResult.tripType}
                 commuteDays={commuteResult.commuteDays}
                 hasTransponder={commuteResult.hasTransponder}
-                entryId={selectedRoute?.entryId}
-                exitId={selectedRoute?.exitId}
+                entryId={commuteResult.entryId}
+                exitId={commuteResult.exitId}
                 shareParams={commuteResult.shareParams}
               />
               <NearbyComparisonView

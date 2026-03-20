@@ -1,10 +1,4 @@
-import type {
-  CommuteInput,
-  CommuteEstimate,
-  ResolvedTimeSlot,
-  RouteInput,
-  DayOfWeek,
-} from "../types";
+import type { CommuteInput, CommuteEstimate, RouteInput, DayOfWeek } from "../types";
 import { getAllBreakdowns, findBreakdown } from "./toll-cache";
 import { flipDirection } from "../geo/direction";
 import { isOntarioHoliday } from "../rates/holidays";
@@ -53,89 +47,60 @@ function countCommuteDays(commuteDays: DayOfWeek[]): DayCounts {
   return result;
 }
 
-interface YearlyCostInput {
-  route: RouteInput;
-  goTimeSlot: ResolvedTimeSlot;
-  returnTimeSlot: ResolvedTimeSlot;
-  weekendGoTimeSlot: ResolvedTimeSlot;
-  weekendReturnTimeSlot: ResolvedTimeSlot;
-  weekdayDays: number;
-  weekendDays: number;
-  hasTransponder: boolean;
-}
-
-function computeYearlyCost(input: YearlyCostInput): number {
-  const r: RouteInput = { ...input.route, hasTransponder: input.hasTransponder };
-  const returnR: RouteInput = { ...r, direction: flipDirection(r.direction) };
-
-  const goBreakdowns = getAllBreakdowns(r);
-  const returnBreakdowns = getAllBreakdowns(returnR);
-
-  const weekdayGo = findBreakdown(goBreakdowns, input.goTimeSlot).totalCents;
-  const weekdayReturn = findBreakdown(returnBreakdowns, input.returnTimeSlot).totalCents;
-  const weekendGo = findBreakdown(goBreakdowns, input.weekendGoTimeSlot).totalCents;
-  const weekendReturn = findBreakdown(returnBreakdowns, input.weekendReturnTimeSlot).totalCents;
-
-  return (
-    (weekdayGo + weekdayReturn) * input.weekdayDays +
-    (weekendGo + weekendReturn) * input.weekendDays
-  );
-}
-
-export function computeCommuteEstimate(input: CommuteInput): CommuteEstimate {
-  const {
-    route,
-    goTimeSlot,
-    returnTimeSlot,
-    weekendGoTimeSlot,
-    weekendReturnTimeSlot,
-    commuteDays,
-  } = input;
-  const { weekdayDays, weekendDays, holidayDays } = countCommuteDays(commuteDays);
-
-  const returnRoute: RouteInput = { ...route, direction: flipDirection(route.direction) };
-
+function computeTripCosts(input: CommuteInput, dayCounts: DayCounts, hasTransponder: boolean) {
+  const route: RouteInput = { ...input.route, hasTransponder };
   const goBreakdowns = getAllBreakdowns(route);
-  const returnBreakdowns = getAllBreakdowns(returnRoute);
+  const weekdayGoCostCents = findBreakdown(goBreakdowns, input.goTimeSlot).totalCents;
+  const weekendGoCostCents = findBreakdown(goBreakdowns, input.weekendGoTimeSlot).totalCents;
 
-  const weekdayGoCostCents = findBreakdown(goBreakdowns, goTimeSlot).totalCents;
-  const weekdayReturnCostCents = findBreakdown(returnBreakdowns, returnTimeSlot).totalCents;
-  const weekendGoCostCents = findBreakdown(goBreakdowns, weekendGoTimeSlot).totalCents;
-  const weekendReturnCostCents = findBreakdown(returnBreakdowns, weekendReturnTimeSlot).totalCents;
+  let weekdayReturnCostCents = 0;
+  let weekendReturnCostCents = 0;
 
-  const monthlyAccountFee = route.hasTransponder ? 0 : NO_TRANSPONDER_MONTHLY_FEE_CENTS;
+  if (input.tripType === "round_trip") {
+    const returnRoute: RouteInput = { ...route, direction: flipDirection(route.direction) };
+    const returnBreakdowns = getAllBreakdowns(returnRoute);
+    weekdayReturnCostCents = findBreakdown(returnBreakdowns, input.returnTimeSlot).totalCents;
+    weekendReturnCostCents = findBreakdown(
+      returnBreakdowns,
+      input.weekendReturnTimeSlot,
+    ).totalCents;
+  }
 
   const tripYearCents =
-    (weekdayGoCostCents + weekdayReturnCostCents) * weekdayDays +
-    (weekendGoCostCents + weekendReturnCostCents) * weekendDays;
-  const perYearCents = tripYearCents + monthlyAccountFee * 12;
-  const perMonthCents = Math.round(perYearCents / 12);
+    (weekdayGoCostCents + weekdayReturnCostCents) * dayCounts.weekdayDays +
+    (weekendGoCostCents + weekendReturnCostCents) * dayCounts.weekendDays;
 
-  const yearlyCostInput: YearlyCostInput = {
-    route,
-    goTimeSlot,
-    returnTimeSlot,
-    weekendGoTimeSlot,
-    weekendReturnTimeSlot,
-    weekdayDays,
-    weekendDays,
-    hasTransponder: !route.hasTransponder,
-  };
-  const altTripYearCents = computeYearlyCost(yearlyCostInput);
-  const altMonthlyFee = route.hasTransponder ? NO_TRANSPONDER_MONTHLY_FEE_CENTS : 0;
-  const altYearCents = altTripYearCents + altMonthlyFee * 12;
-  const altMonthCents = Math.round(altYearCents / 12);
+  const monthlyAccountFee = hasTransponder ? 0 : NO_TRANSPONDER_MONTHLY_FEE_CENTS;
+  const perYearCents = tripYearCents + monthlyAccountFee * 12;
 
   return {
     weekdayGoCostCents,
     weekdayReturnCostCents,
     weekendGoCostCents,
     weekendReturnCostCents,
-    perMonthCents,
     perYearCents,
-    weekdayDaysPerYear: weekdayDays,
-    weekendDaysPerYear: weekendDays,
-    holidayDaysPerYear: holidayDays,
+  };
+}
+
+export function computeCommuteEstimate(input: CommuteInput): CommuteEstimate {
+  const dayCounts = countCommuteDays(input.commuteDays);
+
+  const primary = computeTripCosts(input, dayCounts, input.route.hasTransponder);
+  const alt = computeTripCosts(input, dayCounts, !input.route.hasTransponder);
+
+  const perMonthCents = Math.round(primary.perYearCents / 12);
+  const altMonthCents = Math.round(alt.perYearCents / 12);
+
+  return {
+    weekdayGoCostCents: primary.weekdayGoCostCents,
+    weekdayReturnCostCents: primary.weekdayReturnCostCents,
+    weekendGoCostCents: primary.weekendGoCostCents,
+    weekendReturnCostCents: primary.weekendReturnCostCents,
+    perMonthCents,
+    perYearCents: primary.perYearCents,
+    weekdayDaysPerYear: dayCounts.weekdayDays,
+    weekendDaysPerYear: dayCounts.weekendDays,
+    holidayDaysPerYear: dayCounts.holidayDays,
     altTransponderMonthCents: altMonthCents,
     transponderSavingsMonthCents: Math.abs(perMonthCents - altMonthCents),
   };

@@ -5,8 +5,10 @@ import { buildRouteInput } from "@/lib/load-toll-points";
 import { parseRoute, parseTimeSlot } from "@/lib/params";
 import { formatDollars } from "@/lib/format";
 import { TripPageClient } from "./trip-page-client";
+import { PAGE_REVALIDATE_SECONDS } from "@/lib/cache";
 
-export const revalidate = 86400;
+// Next.js requires this exact export name for page-level caching.
+export const revalidate = PAGE_REVALIDATE_SECONDS;
 
 interface PageProps {
   params: Promise<{ route: string }>;
@@ -33,10 +35,16 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   const trip = resolveTrip((await params).route, await searchParams);
   if (!trip) return { title: "Trip not found" };
 
-  const result = calculateToll({ ...trip.route, timeSlot: trip.timeSlot, hasTransponder: trip.transponder });
+  const result = calculateToll({
+    ...trip.route,
+    timeSlot: trip.timeSlot,
+    hasTransponder: trip.transponder,
+  });
   const title = `${trip.entry.name} to ${trip.exit.name} - ${formatDollars(result.totalCents)}`;
   const km = result.perZone.reduce((s, z) => s + z.distanceKm, 0).toFixed(1);
-  const description = `407 ETR toll estimate: ${formatDollars(result.totalCents)} for ${trip.entry.name} to ${trip.exit.name}. ${km} km across ${result.perZone.length} zones.`;
+  const description = `407 ETR toll estimate: ${formatDollars(result.totalCents)} for ${
+    trip.entry.name
+  } to ${trip.exit.name}. ${km} km across ${result.perZone.length} zones.`;
 
   return { title, description, openGraph: { title, description, type: "website" } };
 }

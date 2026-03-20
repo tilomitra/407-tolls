@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { computeCommuteEstimate, computeNearbyComparison, DAY_NAMES } from "@407-etr/core";
-import type { WeekdaySlot, WeekendSlot } from "@407-etr/core";
+import type { WeekdaySlot, WeekendSlot, CommuteInput } from "@407-etr/core";
 import { buildRouteInput } from "@/lib/load-toll-points";
 import { interchanges } from "@/data";
 import {
@@ -10,67 +10,74 @@ import {
   parseRoute,
   parseSlot,
   parseDays,
+  parseTripType,
+  getString,
 } from "@/lib/params";
 import { formatDollars } from "@/lib/format";
 import { CommutePageClient } from "./commute-page-client";
+import { PAGE_REVALIDATE_SECONDS } from "@/lib/cache";
 
-export const revalidate = 86400;
+// Next.js requires this exact export name for page-level caching.
+export const revalidate = PAGE_REVALIDATE_SECONDS;
 
-function buildCommuteInput(
-  query: Record<string, string | string[] | undefined>,
-  transponder: boolean,
-  entryId: string,
-  exitId: string,
-) {
+type Query = Record<string, string | string[] | undefined>;
+
+function buildCommuteInput(query: Query, transponder: boolean, entryId: string, exitId: string) {
   const resolved = buildRouteInput(entryId, exitId, transponder);
   if (!resolved.ok) return null;
 
-  const days = parseDays(typeof query.days === "string" ? query.days : undefined);
+  const tripType = parseTripType(getString(query, "tripType"));
+  const days = parseDays(getString(query, "days"));
   const goSlot = parseSlot(
-    typeof query.departure === "string" ? query.departure : undefined,
+    getString(query, "departure"),
     VALID_WEEKDAY_SLOTS,
     "7am",
-  );
-  const returnSlot = parseSlot(
-    typeof query.return === "string" ? query.return : undefined,
-    VALID_WEEKDAY_SLOTS,
-    "330pm",
-  );
+  ) as WeekdaySlot;
   const wkndGoSlot = parseSlot(
-    typeof query.weekendDeparture === "string" ? query.weekendDeparture : undefined,
+    getString(query, "weekendDeparture"),
     VALID_WEEKEND_SLOTS,
     "10am",
-  );
-  const wkndRetSlot = parseSlot(
-    typeof query.weekendReturn === "string" ? query.weekendReturn : undefined,
-    VALID_WEEKEND_SLOTS,
-    "7pm",
-  );
+  ) as WeekendSlot;
 
-  return {
-    entry: resolved.entry,
-    exit: resolved.exit,
-    days,
-    commuteInput: {
-      route: resolved.route,
-      goTimeSlot: { dayType: "weekday" as const, slot: goSlot as WeekdaySlot },
-      returnTimeSlot: { dayType: "weekday" as const, slot: returnSlot as WeekdaySlot },
-      weekendGoTimeSlot: {
-        dayType: "weekend_or_holiday" as const,
-        slot: wkndGoSlot as WeekendSlot,
-      },
-      weekendReturnTimeSlot: {
-        dayType: "weekend_or_holiday" as const,
-        slot: wkndRetSlot as WeekendSlot,
-      },
-      commuteDays: days,
-    },
-  };
+  const commuteInput: CommuteInput =
+    tripType === "round_trip"
+      ? {
+          tripType: "round_trip",
+          route: resolved.route,
+          goTimeSlot: { dayType: "weekday", slot: goSlot },
+          returnTimeSlot: {
+            dayType: "weekday",
+            slot: parseSlot(
+              getString(query, "return"),
+              VALID_WEEKDAY_SLOTS,
+              "330pm",
+            ) as WeekdaySlot,
+          },
+          weekendGoTimeSlot: { dayType: "weekend_or_holiday", slot: wkndGoSlot },
+          weekendReturnTimeSlot: {
+            dayType: "weekend_or_holiday",
+            slot: parseSlot(
+              getString(query, "weekendReturn"),
+              VALID_WEEKEND_SLOTS,
+              "7pm",
+            ) as WeekendSlot,
+          },
+          commuteDays: days,
+        }
+      : {
+          tripType: "one_way",
+          route: resolved.route,
+          goTimeSlot: { dayType: "weekday", slot: goSlot },
+          weekendGoTimeSlot: { dayType: "weekend_or_holiday", slot: wkndGoSlot },
+          commuteDays: days,
+        };
+
+  return { entry: resolved.entry, exit: resolved.exit, days, tripType, commuteInput };
 }
 
 interface PageProps {
   params: Promise<{ route: string }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  searchParams: Promise<Query>;
 }
 
 export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
@@ -114,9 +121,11 @@ export default async function CommutePage({ params, searchParams }: PageProps) {
   const resolved = buildCommuteInput(query, true, parsed.entryId, parsed.exitId);
   if (!resolved) notFound();
 
-  // Pre-compute both transponder variants
   const inputWith = resolved.commuteInput;
-  const inputWithout = { ...inputWith, route: { ...inputWith.route, hasTransponder: false } };
+  const inputWithout: CommuteInput = {
+    ...inputWith,
+    route: { ...inputWith.route, hasTransponder: false },
+  };
 
   const estimate = computeCommuteEstimate(inputWith);
   const estimateWithout = computeCommuteEstimate(inputWithout);
@@ -132,12 +141,18 @@ export default async function CommutePage({ params, searchParams }: PageProps) {
     schedule,
   });
 
-  const shareParams = {
-    goSlot: inputWith.goTimeSlot.slot,
-    returnSlot: inputWith.returnTimeSlot.slot,
-    weekendGoSlot: inputWith.weekendGoTimeSlot.slot,
-    weekendReturnSlot: inputWith.weekendReturnTimeSlot.slot,
-  };
+  const shareParams =
+    inputWith.tripType === "round_trip"
+      ? {
+          goSlot: inputWith.goTimeSlot.slot,
+          returnSlot: inputWith.returnTimeSlot.slot,
+          weekendGoSlot: inputWith.weekendGoTimeSlot.slot,
+          weekendReturnSlot: inputWith.weekendReturnTimeSlot.slot,
+        }
+      : {
+          goSlot: inputWith.goTimeSlot.slot,
+          weekendGoSlot: inputWith.weekendGoTimeSlot.slot,
+        };
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-6 sm:px-6">
@@ -146,6 +161,7 @@ export default async function CommutePage({ params, searchParams }: PageProps) {
         estimateWithout={estimateWithout}
         entryName={resolved.entry.name}
         exitName={resolved.exit.name}
+        tripType={resolved.tripType}
         commuteDays={resolved.days}
         hasTransponder={transponder}
         shareParams={shareParams}

@@ -3,6 +3,7 @@ import { calculateToll, computeAllTimeSlotCosts } from "@407-etr/core";
 import type { WeekdaySlot, WeekendSlot } from "@407-etr/core";
 import { buildRouteInput } from "@/lib/load-toll-points";
 import { VALID_WEEKDAY_SLOTS, VALID_WEEKEND_SLOTS } from "@/lib/params";
+import { API_CACHE_HEADERS } from "@/lib/cache";
 
 export async function GET(req: Request) {
   try {
@@ -37,11 +38,12 @@ export async function GET(req: Request) {
     const result = calculateToll({ ...resolved.route, timeSlot });
     const byTimeSlot = computeAllTimeSlotCosts(resolved.route);
 
-    return NextResponse.json({ ...result, byTimeSlot }, {
-      headers: {
-        "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400",
+    return NextResponse.json(
+      { ...result, byTimeSlot },
+      {
+        headers: API_CACHE_HEADERS,
       },
-    });
+    );
   } catch {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }

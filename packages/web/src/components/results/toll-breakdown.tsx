@@ -10,7 +10,10 @@ import { TransponderCallout } from "../ui/transponder-callout";
 function DirectionBadge({ direction }: { direction: string }) {
   const isEast = direction === "eastbound";
   return (
-    <Badge variant="info" className={isEast ? "bg-blue-50 text-blue-700" : "bg-violet-50 text-violet-700"}>
+    <Badge
+      variant="info"
+      className={isEast ? "bg-blue-50 text-blue-700" : "bg-violet-50 text-violet-700"}
+    >
       {isEast ? "Eastbound →" : "← Westbound"}
     </Badge>
   );
@@ -32,13 +35,11 @@ export function TollBreakdownView({
   children,
 }: {
   breakdown: TollBreakdown;
-  entryId?: string;
-  exitId?: string;
+  entryId: string;
+  exitId: string;
   children?: React.ReactNode;
 }) {
-  const isPeak =
-    breakdown.timeSlot.slot === "7am" ||
-    breakdown.timeSlot.slot === "330pm";
+  const isPeak = breakdown.timeSlot.slot === "7am" || breakdown.timeSlot.slot === "330pm";
 
   const totalDistanceKm = breakdown.perZone.reduce((sum, z) => sum + z.distanceKm, 0);
 
@@ -53,25 +54,20 @@ export function TollBreakdownView({
               {isPeak && <Badge variant="warning">Peak</Badge>}
             </div>
             <p className="mt-0.5 text-xs text-slate-400">
-              {totalDistanceKm.toFixed(1)} km across {breakdown.perZone.length} {breakdown.perZone.length === 1 ? "zone" : "zones"}
+              {totalDistanceKm.toFixed(1)} km across {breakdown.perZone.length}{" "}
+              {breakdown.perZone.length === 1 ? "zone" : "zones"}
             </p>
           </div>
           <div className="flex shrink-0 items-center gap-2">
             <span className="text-2xl font-bold tracking-tight text-slate-900">
               {formatDollars(breakdown.totalCents)}
             </span>
-            {entryId && exitId && (
-              <ShareButton url={buildTripShareUrl(entryId, exitId, breakdown)} />
-            )}
+            <ShareButton url={buildTripShareUrl(entryId, exitId, breakdown)} />
           </div>
         </div>
       </CardHeader>
 
-      {children && (
-        <div className="border-b border-slate-100 px-6 py-3">
-          {children}
-        </div>
-      )}
+      {children && <div className="border-b border-slate-100 px-6 py-3">{children}</div>}
 
       <CardBody className="p-0">
         <table className="w-full text-sm">
@@ -133,7 +129,8 @@ export function TollBreakdownView({
           </div>
 
           <p className="mt-2 text-[11px] text-slate-400">
-            Estimate based on 2026 rates. Trip charge ({formatDollars(breakdown.tripChargeCents)}) included in every trip.
+            Estimate based on 2026 rates. Trip charge ({formatDollars(breakdown.tripChargeCents)})
+            included in every trip.
           </p>
         </div>
       </CardBody>

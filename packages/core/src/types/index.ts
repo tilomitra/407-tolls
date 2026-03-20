@@ -223,28 +223,57 @@ export const DAY_NAMES: Record<DayOfWeek, string> = {
   6: "Sat",
 };
 
-export const CommuteScheduleSchema = z.object({
-  goTimeSlot: ResolvedTimeSlotSchema,
-  returnTimeSlot: ResolvedTimeSlotSchema,
-  weekendGoTimeSlot: ResolvedTimeSlotSchema,
-  weekendReturnTimeSlot: ResolvedTimeSlotSchema,
-  commuteDays: z.array(
-    z.union([
-      z.literal(0),
-      z.literal(1),
-      z.literal(2),
-      z.literal(3),
-      z.literal(4),
-      z.literal(5),
-      z.literal(6),
-    ]),
-  ),
-});
+export const TripTypeSchema = z.enum(["round_trip", "one_way"]);
+export type TripType = z.infer<typeof TripTypeSchema>;
+
+const DaysSchema = z.array(
+  z.union([
+    z.literal(0),
+    z.literal(1),
+    z.literal(2),
+    z.literal(3),
+    z.literal(4),
+    z.literal(5),
+    z.literal(6),
+  ]),
+);
+
+export const CommuteScheduleSchema = z.discriminatedUnion("tripType", [
+  z.object({
+    tripType: z.literal("round_trip"),
+    goTimeSlot: ResolvedTimeSlotSchema,
+    returnTimeSlot: ResolvedTimeSlotSchema,
+    weekendGoTimeSlot: ResolvedTimeSlotSchema,
+    weekendReturnTimeSlot: ResolvedTimeSlotSchema,
+    commuteDays: DaysSchema,
+  }),
+  z.object({
+    tripType: z.literal("one_way"),
+    goTimeSlot: ResolvedTimeSlotSchema,
+    weekendGoTimeSlot: ResolvedTimeSlotSchema,
+    commuteDays: DaysSchema,
+  }),
+]);
 export type CommuteSchedule = z.infer<typeof CommuteScheduleSchema>;
 
-export const CommuteInputSchema = CommuteScheduleSchema.extend({
-  route: RouteInputSchema,
-});
+export const CommuteInputSchema = z.discriminatedUnion("tripType", [
+  z.object({
+    tripType: z.literal("round_trip"),
+    route: RouteInputSchema,
+    goTimeSlot: ResolvedTimeSlotSchema,
+    returnTimeSlot: ResolvedTimeSlotSchema,
+    weekendGoTimeSlot: ResolvedTimeSlotSchema,
+    weekendReturnTimeSlot: ResolvedTimeSlotSchema,
+    commuteDays: DaysSchema,
+  }),
+  z.object({
+    tripType: z.literal("one_way"),
+    route: RouteInputSchema,
+    goTimeSlot: ResolvedTimeSlotSchema,
+    weekendGoTimeSlot: ResolvedTimeSlotSchema,
+    commuteDays: DaysSchema,
+  }),
+]);
 export type CommuteInput = z.infer<typeof CommuteInputSchema>;
 
 export const CommuteEstimateSchema = z.object({

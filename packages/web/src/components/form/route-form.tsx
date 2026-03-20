@@ -9,6 +9,7 @@ import type {
   Interchange,
   ResolvedTimeSlot,
   DayType,
+  TripType,
   WeekdaySlot,
   WeekendSlot,
 } from "@407-etr/core";
@@ -146,13 +147,14 @@ export function RouteForm({
     exitId: string;
     entryName: string;
     exitName: string;
+    tripType: TripType;
     commuteDays: DayOfWeek[];
     hasTransponder: boolean;
     shareParams: {
       goSlot: string;
-      returnSlot: string;
+      returnSlot?: string;
       weekendGoSlot: string;
-      weekendReturnSlot: string;
+      weekendReturnSlot?: string;
     };
   }) => void;
   mode: FormMode;
@@ -199,7 +201,7 @@ export function RouteForm({
     currentSlot.dayType === "weekend_or_holiday" ? (currentSlot.slot as WeekendSlot) : "10am",
   );
 
-  // Commute-specific state
+  const [tripType, setTripType] = useState<TripType>("round_trip");
   const [commuteDays, setCommuteDays] = useState<DayOfWeek[]>([1, 2, 3, 4, 5]);
   const [goWeekdaySlot, setGoWeekdaySlot] = useState<WeekdaySlot>("7am");
   const [returnWeekdaySlot, setReturnWeekdaySlot] = useState<WeekdaySlot>("330pm");
@@ -233,6 +235,7 @@ export function RouteForm({
     return null;
   })();
 
+  const isRoundTrip = tripType === "round_trip";
   const hasWeekdayDays = commuteDays.some((d) => d >= 1 && d <= 5);
   const hasWeekendDays = commuteDays.includes(0) || commuteDays.includes(6);
 
@@ -252,13 +255,16 @@ export function RouteForm({
         const params = new URLSearchParams({
           entry: entryId,
           exit: exitId,
+          tripType,
           days: commuteDays.join(","),
           departure: goWeekdaySlot,
-          return: returnWeekdaySlot,
           weekendDeparture: goWeekendSlot,
-          weekendReturn: returnWeekendSlot,
           transponder: String(hasTransponder),
         });
+        if (isRoundTrip) {
+          params.set("return", returnWeekdaySlot);
+          params.set("weekendReturn", returnWeekendSlot);
+        }
 
         const { estimate, nearby } = await fetchJson<{
           estimate: CommuteEstimate;
@@ -272,13 +278,14 @@ export function RouteForm({
           exitId,
           entryName: entry.name,
           exitName: exit.name,
+          tripType,
           commuteDays,
           hasTransponder,
           shareParams: {
             goSlot: goWeekdaySlot,
-            returnSlot: returnWeekdaySlot,
+            ...(isRoundTrip ? { returnSlot: returnWeekdaySlot } : {}),
             weekendGoSlot: goWeekendSlot,
-            weekendReturnSlot: returnWeekendSlot,
+            ...(isRoundTrip ? { weekendReturnSlot: returnWeekendSlot } : {}),
           },
         });
       } else {
@@ -398,6 +405,23 @@ export function RouteForm({
             </div>
           ) : (
             <>
+              <div className="flex items-center gap-3">
+                {(["round_trip", "one_way"] as const).map((t) => (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={() => setTripType(t)}
+                    className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                      tripType === t
+                        ? "bg-slate-900 text-white"
+                        : "bg-slate-100 text-slate-500 hover:bg-slate-200"
+                    }`}
+                  >
+                    {t === "round_trip" ? "Round trip" : "One way"}
+                  </button>
+                ))}
+              </div>
+
               <div className="space-y-3">
                 <span className="block text-sm font-medium text-slate-700">Days</span>
                 <DayPicker selected={commuteDays} onChange={setCommuteDays} />
@@ -406,19 +430,21 @@ export function RouteForm({
               {hasWeekdayDays && (
                 <div className="space-y-3">
                   <span className="block text-sm font-medium text-slate-700">Weekday schedule</span>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className={`grid gap-3 ${isRoundTrip ? "grid-cols-2" : "grid-cols-1"}`}>
                     <StyledSelect
                       label="Departure"
                       value={goWeekdaySlot}
                       onChange={(v) => setGoWeekdaySlot(v as WeekdaySlot)}
                       options={WEEKDAY_TIME_OPTIONS}
                     />
-                    <StyledSelect
-                      label="Return"
-                      value={returnWeekdaySlot}
-                      onChange={(v) => setReturnWeekdaySlot(v as WeekdaySlot)}
-                      options={WEEKDAY_TIME_OPTIONS}
-                    />
+                    {isRoundTrip && (
+                      <StyledSelect
+                        label="Return"
+                        value={returnWeekdaySlot}
+                        onChange={(v) => setReturnWeekdaySlot(v as WeekdaySlot)}
+                        options={WEEKDAY_TIME_OPTIONS}
+                      />
+                    )}
                   </div>
                 </div>
               )}
@@ -426,19 +452,21 @@ export function RouteForm({
               {hasWeekendDays && (
                 <div className="space-y-3">
                   <span className="block text-sm font-medium text-slate-700">Weekend schedule</span>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className={`grid gap-3 ${isRoundTrip ? "grid-cols-2" : "grid-cols-1"}`}>
                     <StyledSelect
                       label="Departure"
                       value={goWeekendSlot}
                       onChange={(v) => setGoWeekendSlot(v as WeekendSlot)}
                       options={WEEKEND_TIME_OPTIONS}
                     />
-                    <StyledSelect
-                      label="Return"
-                      value={returnWeekendSlot}
-                      onChange={(v) => setReturnWeekendSlot(v as WeekendSlot)}
-                      options={WEEKEND_TIME_OPTIONS}
-                    />
+                    {isRoundTrip && (
+                      <StyledSelect
+                        label="Return"
+                        value={returnWeekendSlot}
+                        onChange={(v) => setReturnWeekendSlot(v as WeekendSlot)}
+                        options={WEEKEND_TIME_OPTIONS}
+                      />
+                    )}
                   </div>
                 </div>
               )}

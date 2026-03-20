@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { CommuteEstimate, DayOfWeek, NearbyComparison } from "@407-etr/core";
+import type { CommuteEstimate, DayOfWeek, NearbyComparison, TripType } from "@407-etr/core";
 import { CommuteBreakdown } from "@/components/results/commute-breakdown";
 import { NearbyComparisonView } from "@/components/results/nearby-comparison";
 import { Toggle } from "@/components/ui/toggle";
@@ -11,6 +11,7 @@ export function CommutePageClient({
   estimateWithout,
   entryName,
   exitName,
+  tripType,
   commuteDays,
   hasTransponder: initialTransponder,
   shareParams,
@@ -22,9 +23,15 @@ export function CommutePageClient({
   estimateWithout: CommuteEstimate;
   entryName: string;
   exitName: string;
+  tripType: TripType;
   commuteDays: DayOfWeek[];
   hasTransponder: boolean;
-  shareParams: { goSlot: string; returnSlot: string; weekendGoSlot: string; weekendReturnSlot: string };
+  shareParams: {
+    goSlot: string;
+    returnSlot?: string;
+    weekendGoSlot: string;
+    weekendReturnSlot?: string;
+  };
   entryId: string;
   exitId: string;
   nearby: NearbyComparison;
@@ -42,6 +49,7 @@ export function CommutePageClient({
         estimate={active}
         entryName={entryName}
         exitName={exitName}
+        tripType={tripType}
         commuteDays={commuteDays}
         hasTransponder={hasTransponder}
         entryId={entryId}
@@ -55,18 +63,20 @@ export function CommutePageClient({
         />
       </CommuteBreakdown>
 
-      <NearbyComparisonView
-        comparison={nearby}
-        entryName={entryName}
-        exitName={exitName}
-      />
+      <NearbyComparisonView comparison={nearby} entryName={entryName} exitName={exitName} />
 
       <a
         href="/"
         className="flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
       >
         Estimate your commute
-        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <svg
+          className="h-3.5 w-3.5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
           <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
         </svg>
       </a>
