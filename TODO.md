@@ -1,25 +1,65 @@
 # Roadmap
 
-## Savings comparison
-Show 2-3 alternate on-ramp options with cost and time tradeoffs. "Enter at Pine Valley instead of Jane St, save $4.20 for 2 extra minutes." Core differentiator — no other tool does this.
+## Done
 
-## Time-of-day cost chart
-Bar chart showing what the same trip costs at each time slot. Helps drivers decide whether to leave at 3 PM vs 6 PM.
+- Time-of-day cost chart
+- Monthly/yearly commute estimator with holiday-aware scheduling
+- Shareable trip and commute links with OG tags
+- Transponder toggle on shared pages
 
-## Monthly commute estimator
-Input your commute (entry, exit, time, days per week) and get a projected monthly 407 bill. Useful for budgeting and deciding whether a transponder is worth it.
+## In progress
 
-## 407 vs 401 comparison
-Compare the 407 toll cost + travel time against taking the 401 (free, slower). Show cost per minute saved. Requires Google Directions API.
+- UI/UX polish (mobile responsiveness, searchable interchange picker)
 
-## Bill verifier
-Paste details from a real 407 ETR bill. We recalculate and flag discrepancies between the billed amount and our estimate.
+## Next up
 
-## Shareable trip links
-Generate a URL like `/trip/goreway-to-weston?time=7am` that shows the full breakdown. Useful for carpoolers splitting costs or sharing with someone planning a trip.
+### Nearby interchange comparison (commute)
 
-## Rate change impact
-When new rates are published each year, show how your saved commute cost changes. "Your daily commute goes up $0.42 in February."
+"Enter at Goreway instead of Highway 410, save $80/month for 2 extra minutes."
+Show 2-3 nearby on-ramp alternatives with monthly cost and time tradeoffs.
+Biggest differentiator. No other tool does this.
 
-## Community-sourced distance corrections
-Let users submit their actual 407 ETR bill data (entry, exit, billed distance, billed amount). Once enough submissions for a route reach consensus, auto-correct our distance estimates for that segment. Crowdsourced accuracy that improves over time without needing proprietary gantry data.
+### Schedule shift savings (commute)
+
+"Leave 10 minutes earlier (before 7am) and save $X/day = $Y/month."
+Show the cost of adjacent time slots so commuters with flexible schedules
+can see if a small shift saves real money.
+
+### 407 vs 401 comparison
+
+Compare 407 toll + travel time against the 401 (free, slower).
+Show cost per minute saved. Needs Google Directions API for drive times.
+
+### Bill verifier
+
+Upload or paste a 407 ETR bill. We recalculate and flag discrepancies.
+"Your bill says $12.97, we calculate $12.97, matches."
+Could use OCR (photo upload) or manual entry.
+
+### One-way trip support
+
+Some users only take the 407 one direction (e.g. morning only,
+return via 401). The commute estimator assumes round trips.
+
+## Later
+
+### Rate change impact
+
+When new rates drop each January, show how saved commutes are affected.
+"Your daily commute goes up $0.42 this year."
+
+### Community distance corrections
+
+Let users submit actual bill data (entry, exit, billed distance).
+Once enough submissions agree, calibrate our distances.
+Crowdsourced accuracy without needing proprietary gantry data.
+
+### Natural language search
+
+"How much is Goreway to Weston at 7am?" parsed into a toll lookup.
+Could use an LLM or simple keyword extraction.
+
+### Bill photo verification
+
+Take a photo of a 407 ETR bill, OCR extracts trip details,
+we compare against our calculation and flag overcharges.
