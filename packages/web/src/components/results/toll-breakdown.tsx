@@ -5,6 +5,7 @@ import { ShareButton } from "../ui/share-button";
 import { zoneColors } from "@/lib/design/tokens";
 import { formatDollars } from "@/lib/format";
 import { buildTripShareUrl } from "@/lib/params";
+import { TransponderCallout } from "../ui/transponder-callout";
 
 function DirectionBadge({ direction }: { direction: string }) {
   const isEast = direction === "eastbound";
@@ -125,14 +126,12 @@ export function TollBreakdownView({
             </div>
           </div>
 
-          {breakdown.cameraChargeCents !== null && (
-            <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-700">
-              <p>With a transponder: {formatDollars(breakdown.totalCents - breakdown.cameraChargeCents)} (save {formatDollars(breakdown.cameraChargeCents)}/trip + $5/month account fee)</p>
-            </div>
-          )}
+          <div className="mt-2">
+            <TransponderCallout hasTransponder={breakdown.cameraChargeCents === null} />
+          </div>
 
           <p className="mt-2 text-[11px] text-slate-400">
-            Trip charge ({formatDollars(breakdown.tripChargeCents)}) included in every trip. Estimate based on 2026 rates.
+            Estimate based on 2026 rates. Trip charge ({formatDollars(breakdown.tripChargeCents)}) included in every trip.
           </p>
         </div>
       </CardBody>

@@ -5,6 +5,7 @@ import { DAY_NAMES } from "@407-etr/core";
 import { Card, CardBody } from "../ui/card";
 import { ShareButton } from "../ui/share-button";
 import { formatDollars as fmt, formatLargeDollars as fmtLarge } from "@/lib/format";
+import { TransponderCallout } from "../ui/transponder-callout";
 
 function Row({ label, value, bold, sub }: { label: string; value: string; bold?: boolean; sub?: string }) {
   return (
@@ -55,7 +56,6 @@ export function CommuteBreakdown({
     weekendDaysPerYear,
     holidayDaysPerYear,
     transponderSavingsMonthCents,
-    altTransponderMonthCents,
   } = estimate;
 
   const dayLabels = commuteDays
@@ -65,6 +65,8 @@ export function CommuteBreakdown({
 
   const hasWeekendDays = commuteDays.includes(0) || commuteDays.includes(6);
   const perWeekCents = Math.round(perYearCents / 52);
+
+  const totalTripsPerYear = (weekdayDaysPerYear + weekendDaysPerYear) * 2;
 
   const shareUrl = entryId && exitId && shareParams
     ? `/commute/${entryId}-to-${exitId}?days=${commuteDays.join(",")}&departure=${shareParams.goSlot}&return=${shareParams.returnSlot}&weekendDeparture=${shareParams.weekendGoSlot}&weekendReturn=${shareParams.weekendReturnSlot}&transponder=${hasTransponder}`
@@ -116,37 +118,22 @@ export function CommuteBreakdown({
           <Row label="Per year" value={fmtLarge(perYearCents)} />
         </div>
 
-        <div className="rounded-lg bg-slate-50 px-4 py-3 text-xs text-slate-500 space-y-1">
-          <p className="font-medium text-slate-600 mb-1">How this breaks down</p>
-          <p>{weekdayDaysPerYear} weekday trips + {weekendDaysPerYear} weekend/holiday trips per year</p>
-          <p>Each trip includes a $1.00 fixed trip charge ({(weekdayDaysPerYear + weekendDaysPerYear) * 2} trips/yr = {fmtLarge((weekdayDaysPerYear + weekendDaysPerYear) * 2 * 100)}/yr in trip charges alone)</p>
-          {!hasTransponder && (
-            <>
-              <p className="text-amber-600">Each trip also includes a $5.30 camera charge without a transponder</p>
-              <p className="text-amber-600">Plus a $5.00/month account fee ($60/yr)</p>
-            </>
-          )}
+        {transponderSavingsMonthCents > 0 && (
+          <TransponderCallout
+            hasTransponder={hasTransponder}
+            summary={`${fmt(transponderSavingsMonthCents)}/mo (${fmtLarge(transponderSavingsMonthCents * 12)}/yr)`}
+          />
+        )}
+
+        <div className="rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-500 space-y-0.5">
+          <p>{weekdayDaysPerYear} weekday + {weekendDaysPerYear} weekend/holiday days per year ({totalTripsPerYear} round trips)</p>
           {holidayDaysPerYear > 0 && (
             <p>{holidayDaysPerYear} Ontario statutory holidays use lower weekend rates</p>
           )}
         </div>
 
-        {transponderSavingsMonthCents > 0 && (
-          <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3">
-            <p className="text-sm font-medium text-emerald-800">
-              {hasTransponder ? "Transponder saves you" : "Get a transponder, save"}{" "}
-              {fmt(transponderSavingsMonthCents)}/mo
-            </p>
-            <p className="mt-0.5 text-xs text-emerald-600">
-              {hasTransponder ? "Without" : "With"} transponder: {fmt(altTransponderMonthCents)}/mo
-              {" "}({fmtLarge(Math.abs(perYearCents - altTransponderMonthCents * 12))}/yr difference)
-            </p>
-          </div>
-        )}
-
         <p className="text-[11px] text-slate-400">
-          Based on Feb 2026 rates. Actual bills may vary due to distance measurement differences.
-          Holidays that fall on weekends are not double-counted.
+          Estimate based on 2026 rates. Actual charges may vary.
         </p>
       </CardBody>
     </Card>
