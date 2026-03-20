@@ -13,57 +13,57 @@ interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
-  const { route } = await params;
-  const query = await searchParams;
-  const parsed = parseRoute(decodeURIComponent(route));
-  if (!parsed) return { title: "Trip not found" };
+function resolveTrip(routeParam: string, query: Record<string, string | string[] | undefined>) {
+  const parsed = parseRoute(decodeURIComponent(routeParam));
+  if (!parsed) return null;
+
+  const resolved = buildRouteInput(parsed.entryId, parsed.exitId, true);
+  if (!resolved.ok) return null;
 
   const transponder = query.transponder !== "false";
-  const resolved = buildRouteInput(parsed.entryId, parsed.exitId, transponder);
-  if (!resolved.ok) return { title: "Trip not found" };
-
   const timeSlot = parseTimeSlot(
     typeof query.time === "string" ? query.time : undefined,
     typeof query.day === "string" ? query.day : undefined,
   );
 
-  const result = calculateToll({ ...resolved.route, timeSlot });
+  return { ...parsed, ...resolved, transponder, timeSlot };
+}
 
-  const title = `${resolved.entry.name} to ${resolved.exit.name} - ${formatDollars(result.totalCents)}`;
-  const description = `407 ETR toll estimate: ${formatDollars(result.totalCents)} for ${resolved.entry.name} to ${resolved.exit.name}. ${result.perZone.reduce((s, z) => s + z.distanceKm, 0).toFixed(1)} km across ${result.perZone.length} zones.`;
+export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
+  const trip = resolveTrip((await params).route, await searchParams);
+  if (!trip) return { title: "Trip not found" };
 
-  return {
-    title,
-    description,
-    openGraph: { title, description, type: "website" },
-  };
+  const result = calculateToll({ ...trip.route, timeSlot: trip.timeSlot, hasTransponder: trip.transponder });
+  const title = `${trip.entry.name} to ${trip.exit.name} - ${formatDollars(result.totalCents)}`;
+  const km = result.perZone.reduce((s, z) => s + z.distanceKm, 0).toFixed(1);
+  const description = `407 ETR toll estimate: ${formatDollars(result.totalCents)} for ${trip.entry.name} to ${trip.exit.name}. ${km} km across ${result.perZone.length} zones.`;
+
+  return { title, description, openGraph: { title, description, type: "website" } };
 }
 
 export default async function TripPage({ params, searchParams }: PageProps) {
-  const { route } = await params;
-  const query = await searchParams;
-  const parsed = parseRoute(decodeURIComponent(route));
-  if (!parsed) notFound();
+  const trip = resolveTrip((await params).route, await searchParams);
+  if (!trip) notFound();
 
-  const transponder = query.transponder !== "false";
-  const resolved = buildRouteInput(parsed.entryId, parsed.exitId, transponder);
-  if (!resolved.ok) notFound();
+  // Pre-compute both transponder variants so the client can toggle instantly
+  const routeWith = trip.route;
+  const routeWithout = { ...trip.route, hasTransponder: false };
 
-  const timeSlot = parseTimeSlot(
-    typeof query.time === "string" ? query.time : undefined,
-    typeof query.day === "string" ? query.day : undefined,
-  );
-
-  const result = calculateToll({ ...resolved.route, timeSlot });
-  const byTimeSlot = computeAllTimeSlotCosts(resolved.route);
+  const resultWith = calculateToll({ ...routeWith, timeSlot: trip.timeSlot });
+  const resultWithout = calculateToll({ ...routeWithout, timeSlot: trip.timeSlot });
+  const byTimeSlotWith = computeAllTimeSlotCosts(routeWith);
+  const byTimeSlotWithout = computeAllTimeSlotCosts(routeWithout);
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-6 sm:px-6">
       <TripPageClient
-        breakdown={{ ...result, byTimeSlot }}
-        entryName={resolved.entry.name}
-        exitName={resolved.exit.name}
+        breakdown={{ ...resultWith, byTimeSlot: byTimeSlotWith }}
+        breakdownWithout={{ ...resultWithout, byTimeSlot: byTimeSlotWithout }}
+        entryName={trip.entry.name}
+        exitName={trip.exit.name}
+        entryId={trip.entryId}
+        exitId={trip.exitId}
+        hasTransponder={trip.transponder}
       />
     </main>
   );

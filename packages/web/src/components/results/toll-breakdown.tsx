@@ -4,6 +4,7 @@ import { Badge } from "../ui/badge";
 import { ShareButton } from "../ui/share-button";
 import { zoneColors } from "@/lib/design/tokens";
 import { formatDollars } from "@/lib/format";
+import { buildTripShareUrl } from "@/lib/params";
 
 function DirectionBadge({ direction }: { direction: string }) {
   const isEast = direction === "eastbound";
@@ -23,21 +24,16 @@ function ZoneBadge({ zone }: { zone: Zone }) {
   );
 }
 
-function buildShareUrl(entryId: string, exitId: string, breakdown: TollBreakdown): string {
-  const { dayType, slot } = breakdown.timeSlot;
-  const day = dayType === "weekday" ? "weekday" : "weekend";
-  const transponder = breakdown.cameraChargeCents === null;
-  return `/trip/${entryId}-to-${exitId}?day=${day}&time=${slot}&transponder=${transponder}`;
-}
-
 export function TollBreakdownView({
   breakdown,
   entryId,
   exitId,
+  children,
 }: {
   breakdown: TollBreakdown;
   entryId?: string;
   exitId?: string;
+  children?: React.ReactNode;
 }) {
   const isPeak =
     breakdown.timeSlot.slot === "7am" ||
@@ -63,10 +59,16 @@ export function TollBreakdownView({
             {formatDollars(breakdown.totalCents)}
           </span>
           {entryId && exitId && (
-            <ShareButton url={buildShareUrl(entryId, exitId, breakdown)} />
+            <ShareButton url={buildTripShareUrl(entryId, exitId, breakdown)} />
           )}
         </div>
       </CardHeader>
+
+      {children && (
+        <div className="border-b border-slate-100 px-6 py-3">
+          {children}
+        </div>
+      )}
 
       <CardBody className="p-0">
         <table className="w-full text-sm">
@@ -123,23 +125,14 @@ export function TollBreakdownView({
             </div>
           </div>
 
-          <div className="mt-3 rounded-lg bg-slate-50 px-3 py-2.5 text-xs text-slate-500">
-            <p className="font-medium text-slate-600 mb-1">Fee breakdown</p>
-            <p>Trip charge ({formatDollars(breakdown.tripChargeCents)}) applies to every trip regardless of transponder.</p>
-            {breakdown.cameraChargeCents !== null && (
-              <>
-                <p className="text-amber-600 mt-0.5">
-                  Camera charge ({formatDollars(breakdown.cameraChargeCents)}) applies because you don't have a transponder. With a transponder, this trip would be {formatDollars(breakdown.totalCents - breakdown.cameraChargeCents)}.
-                </p>
-                <p className="text-amber-600 mt-0.5">
-                  Without a transponder, 407 ETR also charges a $5.00/month account fee on your bill.
-                </p>
-              </>
-            )}
-          </div>
+          {breakdown.cameraChargeCents !== null && (
+            <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-700">
+              <p>With a transponder: {formatDollars(breakdown.totalCents - breakdown.cameraChargeCents)} (save {formatDollars(breakdown.cameraChargeCents)}/trip + $5/month account fee)</p>
+            </div>
+          )}
 
-          <p className="mt-3 text-xs leading-relaxed text-slate-400">
-            Estimate based on 2026 published rates. Actual charges may vary.
+          <p className="mt-2 text-[11px] text-slate-400">
+            Trip charge ({formatDollars(breakdown.tripChargeCents)}) included in every trip. Estimate based on 2026 rates.
           </p>
         </div>
       </CardBody>
