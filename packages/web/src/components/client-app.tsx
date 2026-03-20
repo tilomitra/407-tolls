@@ -29,7 +29,12 @@ export function ClientApp({
     exitName: string;
     commuteDays: DayOfWeek[];
     hasTransponder: boolean;
-    shareParams: { goSlot: string; returnSlot: string; weekendGoSlot: string; weekendReturnSlot: string };
+    shareParams: {
+      goSlot: string;
+      returnSlot: string;
+      weekendGoSlot: string;
+      weekendReturnSlot: string;
+    };
   } | null>(null);
   const [selectedRoute, setSelectedRoute] = useState<{
     entryId: string;
@@ -67,9 +72,21 @@ export function ClientApp({
     exitName: string;
     commuteDays: DayOfWeek[];
     hasTransponder: boolean;
-    shareParams: { goSlot: string; returnSlot: string; weekendGoSlot: string; weekendReturnSlot: string };
+    shareParams: {
+      goSlot: string;
+      returnSlot: string;
+      weekendGoSlot: string;
+      weekendReturnSlot: string;
+    };
   }) {
-    setCommuteResult({ estimate: result, entryName, exitName, commuteDays, hasTransponder, shareParams });
+    setCommuteResult({
+      estimate: result,
+      entryName,
+      exitName,
+      commuteDays,
+      hasTransponder,
+      shareParams,
+    });
     setTollResult(null);
     setSelectedRoute({ entryId, exitId });
   }
@@ -113,7 +130,11 @@ export function ClientApp({
         <div className="lg:col-span-3 space-y-6">
           {mode === "single" && tollResult ? (
             <>
-              <TollBreakdownView breakdown={tollResult} entryId={selectedRoute?.entryId} exitId={selectedRoute?.exitId} />
+              <TollBreakdownView
+                breakdown={tollResult}
+                entryId={selectedRoute?.entryId}
+                exitId={selectedRoute?.exitId}
+              />
               {tollResult.byTimeSlot.length > 0 && (
                 <TimeChart
                   data={tollResult.byTimeSlot}
@@ -137,8 +158,18 @@ export function ClientApp({
             <Card className="flex h-full items-center justify-center p-12">
               <div className="text-center">
                 <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-slate-100">
-                  <svg className="h-6 w-6 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  <svg
+                    className="h-6 w-6 text-slate-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                    />
                   </svg>
                 </div>
                 <p className="text-sm font-medium text-slate-500">Select your route</p>

@@ -4,22 +4,29 @@ import { flipDirection } from "../geo/direction";
 import { isOntarioHoliday } from "../rates/holidays";
 import { NO_TRANSPONDER_MONTHLY_FEE_CENTS, RATE_YEAR } from "../rates";
 
-// Re-export for backwards compat until all consumers import from types
-export type { CommuteInput, CommuteEstimate, DayOfWeek } from "../types";
-
 /**
  * Walk every day in the rate year (Jan 1 to Dec 31) and count
+ * Cached because there are only 128 possible inputs (2^7 day combinations).
  * how many of the user's commute days fall on weekdays, weekends, or holidays.
  * Exact counts, not averages.
  */
+const commuteDaysCache = new Map<
+  string,
+  { weekdayDays: number; weekendDays: number; holidayDays: number }
+>();
+
 function countCommuteDays(commuteDays: DayOfWeek[]) {
+  const key = commuteDays.slice().sort().join(",");
+  const cached = commuteDaysCache.get(key);
+  if (cached) return cached;
+
   const daySet = new Set(commuteDays);
   let weekdayDays = 0;
   let weekendDays = 0;
   let holidayDays = 0;
 
-  const start = new Date(RATE_YEAR, 0, 1);   // Jan 1
-  const end = new Date(RATE_YEAR, 11, 31);   // Dec 31
+  const start = new Date(RATE_YEAR, 0, 1); // Jan 1
+  const end = new Date(RATE_YEAR, 11, 31); // Dec 31
 
   for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
     const dow = d.getDay() as DayOfWeek;
@@ -38,7 +45,9 @@ function countCommuteDays(commuteDays: DayOfWeek[]) {
     }
   }
 
-  return { weekdayDays, weekendDays, holidayDays };
+  const result = { weekdayDays, weekendDays, holidayDays };
+  commuteDaysCache.set(key, result);
+  return result;
 }
 
 /**
@@ -87,7 +96,14 @@ export function computeCommuteEstimate(input: {
   weekendReturnTimeSlot: ResolvedTimeSlot;
   commuteDays: DayOfWeek[];
 }) {
-  const { route, goTimeSlot, returnTimeSlot, weekendGoTimeSlot, weekendReturnTimeSlot, commuteDays } = input;
+  const {
+    route,
+    goTimeSlot,
+    returnTimeSlot,
+    weekendGoTimeSlot,
+    weekendReturnTimeSlot,
+    commuteDays,
+  } = input;
 
   const { weekdayDays, weekendDays, holidayDays } = countCommuteDays(commuteDays);
 
@@ -114,7 +130,14 @@ export function computeCommuteEstimate(input: {
   const perMonthCents = Math.round(perYearCents / 12);
 
   // Same calculation but with the opposite transponder setting
-  const sharedSlots = { goTimeSlot, returnTimeSlot, weekendGoTimeSlot, weekendReturnTimeSlot, weekdayDays, weekendDays };
+  const sharedSlots = {
+    goTimeSlot,
+    returnTimeSlot,
+    weekendGoTimeSlot,
+    weekendReturnTimeSlot,
+    weekdayDays,
+    weekendDays,
+  };
   const altTripYearCents = computeYearlyCost({
     ...sharedSlots,
     route,

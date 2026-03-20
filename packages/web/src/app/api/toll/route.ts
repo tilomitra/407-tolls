@@ -11,12 +11,12 @@ export async function GET(req: Request) {
     const exitId = url.searchParams.get("exit");
     const day = url.searchParams.get("day") ?? "weekday";
     const slot = url.searchParams.get("slot") ?? "7am";
-    const transponder = url.searchParams.get("transponder") !== "false";
 
     if (!entryId || !exitId) {
       return NextResponse.json({ error: "Missing entry or exit" }, { status: 400 });
     }
 
+    const transponder = url.searchParams.get("transponder") !== "false";
     const resolved = buildRouteInput(entryId, exitId, transponder);
     if (!resolved.ok) {
       return NextResponse.json({ error: resolved.error }, { status: 400 });

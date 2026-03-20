@@ -1,7 +1,16 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import type { TollResponse, CommuteEstimate, DayOfWeek, Interchange, ResolvedTimeSlot, DayType, WeekdaySlot, WeekendSlot } from "@407-etr/core";
+import type {
+  TollResponse,
+  CommuteEstimate,
+  DayOfWeek,
+  Interchange,
+  ResolvedTimeSlot,
+  DayType,
+  WeekdaySlot,
+  WeekendSlot,
+} from "@407-etr/core";
 import { Card, CardBody } from "../ui/card";
 import { SearchableSelect } from "../ui/searchable-select";
 import { StyledSelect } from "../ui/styled-select";
@@ -29,12 +38,21 @@ const WEEKEND_TIME_OPTIONS = [
 ];
 
 const WEEKDAY_BOUNDARIES: Array<[number, WeekdaySlot]> = [
-  [300, "5am"], [420, "7am"], [570, "930am"], [630, "1030am"],
-  [870, "230pm"], [930, "330pm"], [1080, "6pm"], [1260, "9pm"],
+  [300, "5am"],
+  [420, "7am"],
+  [570, "930am"],
+  [630, "1030am"],
+  [870, "230pm"],
+  [930, "330pm"],
+  [1080, "6pm"],
+  [1260, "9pm"],
 ];
 
 const WEEKEND_BOUNDARIES: Array<[number, WeekendSlot]> = [
-  [510, "830am"], [600, "10am"], [1140, "7pm"], [1260, "9pm"],
+  [510, "830am"],
+  [600, "10am"],
+  [1140, "7pm"],
+  [1260, "9pm"],
 ];
 
 const ALL_DAYS: { value: DayOfWeek; label: string }[] = [
@@ -67,7 +85,13 @@ function resolveCurrentSlot(): { dayType: DayType; slot: string } {
 
 export type FormMode = "single" | "commute";
 
-function DayPicker({ selected, onChange }: { selected: DayOfWeek[]; onChange: (days: DayOfWeek[]) => void }) {
+function DayPicker({
+  selected,
+  onChange,
+}: {
+  selected: DayOfWeek[];
+  onChange: (days: DayOfWeek[]) => void;
+}) {
   function toggle(day: DayOfWeek) {
     if (selected.includes(day)) {
       if (selected.length === 1) return; // must have at least 1
@@ -89,9 +113,10 @@ function DayPicker({ selected, onChange }: { selected: DayOfWeek[]; onChange: (d
             className={`
               flex h-9 items-center justify-center rounded-lg text-xs font-medium
               transition-colors duration-150
-              ${active
-                ? "bg-blue-600 text-white shadow-sm"
-                : "border border-slate-200 text-slate-500 hover:border-slate-300 hover:bg-slate-50"
+              ${
+                active
+                  ? "bg-blue-600 text-white shadow-sm"
+                  : "border border-slate-200 text-slate-500 hover:border-slate-300 hover:bg-slate-50"
               }
             `}
           >
@@ -112,19 +137,37 @@ export function RouteForm({
 }: {
   interchanges: Interchange[];
   onTollResult: (args: { result: TollResponse; entryId: string; exitId: string }) => void;
-  onCommuteResult: (args: { result: CommuteEstimate; entryId: string; exitId: string; entryName: string; exitName: string; commuteDays: DayOfWeek[]; hasTransponder: boolean; shareParams: { goSlot: string; returnSlot: string; weekendGoSlot: string; weekendReturnSlot: string } }) => void;
+  onCommuteResult: (args: {
+    result: CommuteEstimate;
+    entryId: string;
+    exitId: string;
+    entryName: string;
+    exitName: string;
+    commuteDays: DayOfWeek[];
+    hasTransponder: boolean;
+    shareParams: {
+      goSlot: string;
+      returnSlot: string;
+      weekendGoSlot: string;
+      weekendReturnSlot: string;
+    };
+  }) => void;
   mode: FormMode;
   onModeChange: (mode: FormMode) => void;
 }) {
-  const interchangeOptions = useMemo(() => interchanges.map((ic) => ({
-    id: ic.id,
-    label: ic.name,
-    searchText: `${ic.name} zone ${ic.zone}`,
-    zone: ic.zone,
-    note: ic.note ?? null,
-  })), [interchanges]);
+  const interchangeOptions = useMemo(
+    () =>
+      interchanges.map((ic) => ({
+        id: ic.id,
+        label: ic.name,
+        searchText: `${ic.name} zone ${ic.zone}`,
+        zone: ic.zone,
+        note: ic.note ?? null,
+      })),
+    [interchanges],
+  );
 
-  const renderInterchangeOption = (o: typeof interchangeOptions[number]) => (
+  const renderInterchangeOption = (o: (typeof interchangeOptions)[number]) => (
     <>
       <div className="text-sm font-medium text-slate-900">{o.label}</div>
       <div className="flex items-center gap-2 text-xs text-slate-400">
@@ -147,10 +190,10 @@ export function RouteForm({
   const [hasTransponder, setHasTransponder] = useLocalStorage("407-transponder", true);
   const [dayType, setDayType] = useState<DayType>(currentSlot.dayType);
   const [weekdaySlot, setWeekdaySlot] = useState<WeekdaySlot>(
-    currentSlot.dayType === "weekday" ? currentSlot.slot as WeekdaySlot : "7am",
+    currentSlot.dayType === "weekday" ? (currentSlot.slot as WeekdaySlot) : "7am",
   );
   const [weekendSlot, setWeekendSlot] = useState<WeekendSlot>(
-    currentSlot.dayType === "weekend_or_holiday" ? currentSlot.slot as WeekendSlot : "10am",
+    currentSlot.dayType === "weekend_or_holiday" ? (currentSlot.slot as WeekendSlot) : "10am",
   );
 
   // Commute-specific state
@@ -163,22 +206,27 @@ export function RouteForm({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const entry = useMemo(() => interchanges.find((ic) => ic.id === entryId)!, [interchanges, entryId]);
+  const entry = useMemo(
+    () => interchanges.find((ic) => ic.id === entryId)!,
+    [interchanges, entryId],
+  );
   const exit = useMemo(() => interchanges.find((ic) => ic.id === exitId)!, [interchanges, exitId]);
   const sameInterchange = entryId === exitId;
 
   // Validate ramp access for the computed direction
-  const direction: "eastbound" | "westbound" | null = entry && exit && !sameInterchange
-    ? (exit.km > entry.km ? "eastbound" : "westbound")
-    : null;
+  const direction: "eastbound" | "westbound" | null =
+    entry && exit && !sameInterchange ? (exit.km > entry.km ? "eastbound" : "westbound") : null;
 
   const routeError = (() => {
     if (!direction || !entry || !exit) return null;
-    const ramps = direction === "eastbound"
-      ? { entry: entry.eastbound, exit: exit.eastbound }
-      : { entry: entry.westbound, exit: exit.westbound };
-    if (!ramps.entry.hasOnRamp) return entry.note ?? `${entry.name} does not have a ${direction} on-ramp.`;
-    if (!ramps.exit.hasOffRamp) return exit.note ?? `${exit.name} does not have a ${direction} off-ramp.`;
+    const ramps =
+      direction === "eastbound"
+        ? { entry: entry.eastbound, exit: exit.eastbound }
+        : { entry: entry.westbound, exit: exit.westbound };
+    if (!ramps.entry.hasOnRamp)
+      return entry.note ?? `${entry.name} does not have a ${direction} on-ramp.`;
+    if (!ramps.exit.hasOffRamp)
+      return exit.note ?? `${exit.name} does not have a ${direction} off-ramp.`;
     return null;
   })();
 
@@ -296,7 +344,10 @@ export function RouteForm({
 
             <button
               type="button"
-              onClick={() => { setEntryId(exitId); setExitId(entryId); }}
+              onClick={() => {
+                setEntryId(exitId);
+                setExitId(entryId);
+              }}
               aria-label="Swap entry and exit"
               className="
                 absolute right-3 top-1/2 -translate-y-1/2
@@ -307,8 +358,18 @@ export function RouteForm({
                 active:scale-90
               "
             >
-              <svg className="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+              <svg
+                className="h-4 w-4 text-slate-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"
+                />
               </svg>
             </button>
           </div>
@@ -408,15 +469,11 @@ export function RouteForm({
           )}
 
           {routeError && !sameInterchange && (
-            <p className="text-center text-xs text-amber-600">
-              {routeError}
-            </p>
+            <p className="text-center text-xs text-amber-600">{routeError}</p>
           )}
 
           {error && (
-            <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
-              {error}
-            </div>
+            <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>
           )}
         </form>
       </CardBody>
