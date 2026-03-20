@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import type {
   TollResponse,
   CommuteEstimate,
+  NearbyComparison,
   DayOfWeek,
   Interchange,
   ResolvedTimeSlot,
@@ -18,6 +19,7 @@ import { Button } from "../ui/button";
 import { Toggle } from "../ui/toggle";
 import { RadioGroup } from "../ui/radio-group";
 import { useLocalStorage } from "@/lib/use-local-storage";
+import { fetchJson } from "@/lib/api";
 
 const WEEKDAY_TIME_OPTIONS = [
   { value: "5am", label: "5:00am - 7:00am" },
@@ -138,7 +140,8 @@ export function RouteForm({
   interchanges: Interchange[];
   onTollResult: (args: { result: TollResponse; entryId: string; exitId: string }) => void;
   onCommuteResult: (args: {
-    result: CommuteEstimate;
+    estimate: CommuteEstimate;
+    nearby: NearbyComparison;
     entryId: string;
     exitId: string;
     entryName: string;
@@ -257,14 +260,14 @@ export function RouteForm({
           transponder: String(hasTransponder),
         });
 
-        const res = await fetch(`/api/commute?${params}`);
-        if (!res.ok) {
-          const data = await res.json();
-          throw new Error(typeof data.error === "string" ? data.error : "Request failed");
-        }
+        const { estimate, nearby } = await fetchJson<{
+          estimate: CommuteEstimate;
+          nearby: NearbyComparison;
+        }>(`/api/commute?${params}`);
 
         onCommuteResult({
-          result: await res.json(),
+          estimate,
+          nearby,
           entryId,
           exitId,
           entryName: entry.name,
@@ -288,13 +291,8 @@ export function RouteForm({
           transponder: String(hasTransponder),
         });
 
-        const res = await fetch(`/api/toll?${params}`);
-        if (!res.ok) {
-          const data = await res.json();
-          throw new Error(typeof data.error === "string" ? data.error : "Request failed");
-        }
-
-        onTollResult({ result: await res.json(), entryId, exitId });
+        const result = await fetchJson<TollResponse>(`/api/toll?${params}`);
+        onTollResult({ result, entryId, exitId });
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { TollPoint, Interchange, TollResponse, CommuteEstimate } from "@407-etr/core";
+import type { TollPoint, Interchange, TollResponse, CommuteEstimate, NearbyComparison } from "@407-etr/core";
 import type { DayOfWeek } from "@407-etr/core";
 import { HighwayMap } from "./map/highway-map";
 import { ZoneLegend } from "./map/zone-legend";
@@ -9,6 +9,7 @@ import { RouteForm, type FormMode } from "./form/route-form";
 import { TollBreakdownView } from "./results/toll-breakdown";
 import { TimeChart } from "./results/time-chart";
 import { CommuteBreakdown } from "./results/commute-breakdown";
+import { NearbyComparisonView } from "./results/nearby-comparison";
 import { FreeSectionCallout } from "./results/free-section-callout";
 import { Card } from "./ui/card";
 
@@ -25,6 +26,9 @@ export function ClientApp({
   const [tollResult, setTollResult] = useState<TollResponse | null>(null);
   const [commuteResult, setCommuteResult] = useState<{
     estimate: CommuteEstimate;
+    nearby: NearbyComparison;
+    entryId: string;
+    exitId: string;
     entryName: string;
     exitName: string;
     commuteDays: DayOfWeek[];
@@ -56,7 +60,8 @@ export function ClientApp({
   }
 
   function handleCommuteResult({
-    result,
+    estimate,
+    nearby,
     entryId,
     exitId,
     entryName,
@@ -65,7 +70,8 @@ export function ClientApp({
     hasTransponder,
     shareParams,
   }: {
-    result: CommuteEstimate;
+    estimate: CommuteEstimate;
+    nearby: NearbyComparison;
     entryId: string;
     exitId: string;
     entryName: string;
@@ -80,7 +86,10 @@ export function ClientApp({
     };
   }) {
     setCommuteResult({
-      estimate: result,
+      estimate,
+      nearby,
+      entryId,
+      exitId,
       entryName,
       exitName,
       commuteDays,
@@ -144,16 +153,23 @@ export function ClientApp({
               )}
             </>
           ) : mode === "commute" && commuteResult ? (
-            <CommuteBreakdown
-              estimate={commuteResult.estimate}
-              entryName={commuteResult.entryName}
-              exitName={commuteResult.exitName}
-              commuteDays={commuteResult.commuteDays}
-              hasTransponder={commuteResult.hasTransponder}
-              entryId={selectedRoute?.entryId}
-              exitId={selectedRoute?.exitId}
-              shareParams={commuteResult.shareParams}
-            />
+            <>
+              <CommuteBreakdown
+                estimate={commuteResult.estimate}
+                entryName={commuteResult.entryName}
+                exitName={commuteResult.exitName}
+                commuteDays={commuteResult.commuteDays}
+                hasTransponder={commuteResult.hasTransponder}
+                entryId={selectedRoute?.entryId}
+                exitId={selectedRoute?.exitId}
+                shareParams={commuteResult.shareParams}
+              />
+              <NearbyComparisonView
+                comparison={commuteResult.nearby}
+                entryName={commuteResult.entryName}
+                exitName={commuteResult.exitName}
+              />
+            </>
           ) : (
             <Card className="flex h-full items-center justify-center p-12">
               <div className="text-center">

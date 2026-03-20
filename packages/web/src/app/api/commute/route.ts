@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { computeCommuteEstimate } from "@407-etr/core";
-import type { WeekdaySlot, WeekendSlot } from "@407-etr/core";
+import { computeCommuteEstimate, computeNearbyComparison } from "@407-etr/core";
+import type { WeekdaySlot, WeekendSlot, CommuteSchedule } from "@407-etr/core";
 import { buildRouteInput } from "@/lib/load-toll-points";
+import { interchanges } from "@/data";
 import { VALID_WEEKDAY_SLOTS, VALID_WEEKEND_SLOTS, parseSlot, parseDays } from "@/lib/params";
 
 export async function GET(req: Request) {
@@ -20,22 +21,31 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: resolved.error }, { status: 400 });
     }
 
-    const days = parseDays(url.searchParams.get("days"));
     const goSlot = parseSlot(url.searchParams.get("departure"), VALID_WEEKDAY_SLOTS, "7am");
     const retSlot = parseSlot(url.searchParams.get("return"), VALID_WEEKDAY_SLOTS, "330pm");
     const wkndGoSlot = parseSlot(url.searchParams.get("weekendDeparture"), VALID_WEEKEND_SLOTS, "10am");
     const wkndRetSlot = parseSlot(url.searchParams.get("weekendReturn"), VALID_WEEKEND_SLOTS, "7pm");
 
-    const result = computeCommuteEstimate({
-      route: resolved.route,
+    const schedule: CommuteSchedule = {
       goTimeSlot: { dayType: "weekday", slot: goSlot as WeekdaySlot },
       returnTimeSlot: { dayType: "weekday", slot: retSlot as WeekdaySlot },
       weekendGoTimeSlot: { dayType: "weekend_or_holiday", slot: wkndGoSlot as WeekendSlot },
       weekendReturnTimeSlot: { dayType: "weekend_or_holiday", slot: wkndRetSlot as WeekendSlot },
-      commuteDays: days,
+      commuteDays: parseDays(url.searchParams.get("days")),
+    };
+
+    const estimate = computeCommuteEstimate({ route: resolved.route, ...schedule });
+
+    const nearby = computeNearbyComparison({
+      entryInterchange: resolved.entry,
+      exitInterchange: resolved.exit,
+      interchanges,
+      route: resolved.route,
+      estimate,
+      schedule,
     });
 
-    return NextResponse.json(result, {
+    return NextResponse.json({ estimate, nearby }, {
       headers: {
         "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400",
       },

@@ -1,6 +1,5 @@
 import { z } from "zod/v4";
 
-// ── Zone ─────────────────────────────────────────────────────────────────────
 // 12 toll zones on the 407 ETR, numbered west to east.
 //   Zone 1:  QEW → Dundas
 //   Zone 2:  Dundas → Neyagawa
@@ -14,18 +13,13 @@ import { z } from "zod/v4";
 //   Zone 10: Highway 404 → McCowan
 //   Zone 11: McCowan → York Durham Line
 //   Zone 12: York Durham Line → Brock
-
 export const ZONES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const;
 
 export const ZoneSchema = z.int().min(1).max(12);
 export type Zone = z.infer<typeof ZoneSchema>;
 
-// ── Direction ────────────────────────────────────────────────────────────────
-
 export const DirectionSchema = z.enum(["eastbound", "westbound"]);
 export type Direction = z.infer<typeof DirectionSchema>;
-
-// ── Time slots ───────────────────────────────────────────────────────────────
 
 export const WEEKDAY_SLOTS = [
   "5am",
@@ -55,15 +49,11 @@ export const ResolvedTimeSlotSchema = z.discriminatedUnion("dayType", [
 ]);
 export type ResolvedTimeSlot = z.infer<typeof ResolvedTimeSlotSchema>;
 
-// ── Coordinates ──────────────────────────────────────────────────────────────
-
 export const LatLngSchema = z.object({
   lat: z.number().min(-90).max(90),
   lng: z.number().min(-180).max(180),
 });
 export type LatLng = z.infer<typeof LatLngSchema>;
-
-// ── Toll point (gantry) ─────────────────────────────────────────────────────
 
 export const TollPointTypeSchema = z.enum(["Physical", "Virtual", "Hybrid"]);
 export type TollPointType = z.infer<typeof TollPointTypeSchema>;
@@ -77,8 +67,6 @@ export const TollPointSchema = z.object({
   isFree: z.boolean(),
 });
 export type TollPoint = z.infer<typeof TollPointSchema>;
-
-// ── Interchange (an actual on/off ramp drivers use) ──────────────────────────
 
 export const RampAccessSchema = z.object({
   hasOnRamp: z.boolean(),
@@ -100,7 +88,6 @@ export const InterchangeSchema = z.object({
 });
 export type Interchange = z.infer<typeof InterchangeSchema>;
 
-// OnRamp used in compare logic: flattened view of a directional ramp
 export const OnRampSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -115,8 +102,6 @@ export const RampWithDistanceSchema = OnRampSchema.extend({
   distanceKm: z.number(),
 });
 export type RampWithDistance = z.infer<typeof RampWithDistanceSchema>;
-
-// ── Toll input ───────────────────────────────────────────────────────────────
 
 export const TollInputSchema = z.object({
   entryZone: ZoneSchema,
@@ -135,8 +120,6 @@ export type RouteInput = z.infer<typeof RouteInputSchema>;
 export type RouteResult =
   | { ok: true; route: RouteInput; entry: Interchange; exit: Interchange }
   | { ok: false; error: string };
-
-// ── Toll breakdown ───────────────────────────────────────────────────────────
 
 export const ZoneTollDetailSchema = z.object({
   zone: ZoneSchema,
@@ -157,8 +140,6 @@ export const TollBreakdownSchema = z.object({
 });
 export type TollBreakdown = z.infer<typeof TollBreakdownSchema>;
 
-// ── Time slot cost (for time-of-day chart) ───────────────────────────────────
-
 export const TimeSlotCostSchema = z.object({
   slot: z.string(),
   dayType: z.string(),
@@ -171,8 +152,6 @@ export const TollResponseSchema = TollBreakdownSchema.extend({
   byTimeSlot: z.array(TimeSlotCostSchema),
 });
 export type TollResponse = z.infer<typeof TollResponseSchema>;
-
-// ── Directions ───────────────────────────────────────────────────────────────
 
 export const DirectionsResultSchema = z.object({
   toOnRampMinutes: z.number(),
@@ -189,8 +168,6 @@ export interface DirectionsInput {
 }
 
 export type DirectionsProvider = (input: DirectionsInput) => Promise<DirectionsResult>;
-
-// ── Route comparison ─────────────────────────────────────────────────────────
 
 export const RouteOptionSchema = z.object({
   onRamp: OnRampSchema,
@@ -227,16 +204,12 @@ export const CompareInputSchema = z.object({
 });
 export type CompareInput = z.infer<typeof CompareInputSchema>;
 
-// ── Compare routes args ──────────────────────────────────────────────────────
-
 export interface CompareRoutesArgs {
   input: CompareInput;
   onRamps: readonly OnRamp[];
   offRamps: readonly OnRamp[];
   getDirections: DirectionsProvider;
 }
-
-// ── Commute ───────────────────────────────────────────────────────────────────
 
 export type DayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -250,13 +223,27 @@ export const DAY_NAMES: Record<DayOfWeek, string> = {
   6: "Sat",
 };
 
-export const CommuteInputSchema = z.object({
-  route: RouteInputSchema,
+export const CommuteScheduleSchema = z.object({
   goTimeSlot: ResolvedTimeSlotSchema,
   returnTimeSlot: ResolvedTimeSlotSchema,
   weekendGoTimeSlot: ResolvedTimeSlotSchema,
   weekendReturnTimeSlot: ResolvedTimeSlotSchema,
-  commuteDays: z.array(z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3), z.literal(4), z.literal(5), z.literal(6)])),
+  commuteDays: z.array(
+    z.union([
+      z.literal(0),
+      z.literal(1),
+      z.literal(2),
+      z.literal(3),
+      z.literal(4),
+      z.literal(5),
+      z.literal(6),
+    ]),
+  ),
+});
+export type CommuteSchedule = z.infer<typeof CommuteScheduleSchema>;
+
+export const CommuteInputSchema = CommuteScheduleSchema.extend({
+  route: RouteInputSchema,
 });
 export type CommuteInput = z.infer<typeof CommuteInputSchema>;
 
@@ -275,10 +262,20 @@ export const CommuteEstimateSchema = z.object({
 });
 export type CommuteEstimate = z.infer<typeof CommuteEstimateSchema>;
 
-// ── Rate table shape ─────────────────────────────────────────────────────────
+export const NearbyAlternativeSchema = z.object({
+  role: z.enum(["entry", "exit"]),
+  interchange: InterchangeSchema,
+  estimate: CommuteEstimateSchema,
+  deltaMonthCents: z.number(),
+  deltaDistanceKm: z.number(),
+});
+export type NearbyAlternative = z.infer<typeof NearbyAlternativeSchema>;
 
-export type WeekdayRateKey =
-  `weekday:${Direction}:${WeekdaySlot}:${Zone}`;
-export type WeekendRateKey =
-  `weekend_or_holiday:${Direction}:${WeekendSlot}:${Zone}`;
+export const NearbyComparisonSchema = z.object({
+  alternatives: z.array(NearbyAlternativeSchema),
+});
+export type NearbyComparison = z.infer<typeof NearbyComparisonSchema>;
+
+export type WeekdayRateKey = `weekday:${Direction}:${WeekdaySlot}:${Zone}`;
+export type WeekendRateKey = `weekend_or_holiday:${Direction}:${WeekendSlot}:${Zone}`;
 export type RateKey = WeekdayRateKey | WeekendRateKey;

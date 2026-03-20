@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import type { CommuteEstimate, DayOfWeek } from "@407-etr/core";
+import type { CommuteEstimate, DayOfWeek, NearbyComparison } from "@407-etr/core";
 import { CommuteBreakdown } from "@/components/results/commute-breakdown";
+import { NearbyComparisonView } from "@/components/results/nearby-comparison";
 import { Toggle } from "@/components/ui/toggle";
 
 export function CommutePageClient({
@@ -15,6 +16,7 @@ export function CommutePageClient({
   shareParams,
   entryId,
   exitId,
+  nearby,
 }: {
   estimate: CommuteEstimate;
   estimateWithout: CommuteEstimate;
@@ -25,6 +27,7 @@ export function CommutePageClient({
   shareParams: { goSlot: string; returnSlot: string; weekendGoSlot: string; weekendReturnSlot: string };
   entryId: string;
   exitId: string;
+  nearby: NearbyComparison;
 }) {
   const [hasTransponder, setHasTransponder] = useState(initialTransponder);
   const active = hasTransponder ? estimate : estimateWithout;
@@ -51,6 +54,12 @@ export function CommutePageClient({
           label="I have a transponder"
         />
       </CommuteBreakdown>
+
+      <NearbyComparisonView
+        comparison={nearby}
+        entryName={entryName}
+        exitName={exitName}
+      />
 
       <a
         href="/"

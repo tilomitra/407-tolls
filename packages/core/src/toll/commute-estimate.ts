@@ -1,21 +1,24 @@
-import type { RouteInput, ResolvedTimeSlot, DayOfWeek } from "../types";
+import type {
+  CommuteInput,
+  CommuteEstimate,
+  ResolvedTimeSlot,
+  RouteInput,
+  DayOfWeek,
+} from "../types";
 import { getAllBreakdowns, findBreakdown } from "./toll-cache";
 import { flipDirection } from "../geo/direction";
 import { isOntarioHoliday } from "../rates/holidays";
 import { NO_TRANSPONDER_MONTHLY_FEE_CENTS, RATE_YEAR } from "../rates";
 
-/**
- * Walk every day in the rate year (Jan 1 to Dec 31) and count
- * Cached because there are only 128 possible inputs (2^7 day combinations).
- * how many of the user's commute days fall on weekdays, weekends, or holidays.
- * Exact counts, not averages.
- */
-const commuteDaysCache = new Map<
-  string,
-  { weekdayDays: number; weekendDays: number; holidayDays: number }
->();
+interface DayCounts {
+  weekdayDays: number;
+  weekendDays: number;
+  holidayDays: number;
+}
 
-function countCommuteDays(commuteDays: DayOfWeek[]) {
+const commuteDaysCache = new Map<string, DayCounts>();
+
+function countCommuteDays(commuteDays: DayOfWeek[]): DayCounts {
   const key = commuteDays.slice().sort().join(",");
   const cached = commuteDaysCache.get(key);
   if (cached) return cached;
@@ -25,8 +28,8 @@ function countCommuteDays(commuteDays: DayOfWeek[]) {
   let weekendDays = 0;
   let holidayDays = 0;
 
-  const start = new Date(RATE_YEAR, 0, 1); // Jan 1
-  const end = new Date(RATE_YEAR, 11, 31); // Dec 31
+  const start = new Date(RATE_YEAR, 0, 1);
+  const end = new Date(RATE_YEAR, 11, 31);
 
   for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
     const dow = d.getDay() as DayOfWeek;
@@ -39,7 +42,7 @@ function countCommuteDays(commuteDays: DayOfWeek[]) {
       weekendDays++;
     } else if (isHoliday) {
       holidayDays++;
-      weekendDays++; // holidays use weekend rates
+      weekendDays++;
     } else {
       weekdayDays++;
     }
@@ -50,20 +53,7 @@ function countCommuteDays(commuteDays: DayOfWeek[]) {
   return result;
 }
 
-/**
- * Compute total yearly toll cost for a commute route with a given transponder setting.
- * Used to compare "with transponder" vs "without transponder" costs.
- */
-function computeYearlyCost({
-  route,
-  goTimeSlot,
-  returnTimeSlot,
-  weekendGoTimeSlot,
-  weekendReturnTimeSlot,
-  weekdayDays,
-  weekendDays,
-  hasTransponder,
-}: {
+interface YearlyCostInput {
   route: RouteInput;
   goTimeSlot: ResolvedTimeSlot;
   returnTimeSlot: ResolvedTimeSlot;
@@ -72,30 +62,27 @@ function computeYearlyCost({
   weekdayDays: number;
   weekendDays: number;
   hasTransponder: boolean;
-}): number {
-  const r: RouteInput = { ...route, hasTransponder };
+}
+
+function computeYearlyCost(input: YearlyCostInput): number {
+  const r: RouteInput = { ...input.route, hasTransponder: input.hasTransponder };
   const returnR: RouteInput = { ...r, direction: flipDirection(r.direction) };
 
   const goBreakdowns = getAllBreakdowns(r);
   const returnBreakdowns = getAllBreakdowns(returnR);
 
-  const weekdayGo = findBreakdown(goBreakdowns, goTimeSlot).totalCents;
-  const weekdayReturn = findBreakdown(returnBreakdowns, returnTimeSlot).totalCents;
-  const weekendGo = findBreakdown(goBreakdowns, weekendGoTimeSlot).totalCents;
-  const weekendReturn = findBreakdown(returnBreakdowns, weekendReturnTimeSlot).totalCents;
+  const weekdayGo = findBreakdown(goBreakdowns, input.goTimeSlot).totalCents;
+  const weekdayReturn = findBreakdown(returnBreakdowns, input.returnTimeSlot).totalCents;
+  const weekendGo = findBreakdown(goBreakdowns, input.weekendGoTimeSlot).totalCents;
+  const weekendReturn = findBreakdown(returnBreakdowns, input.weekendReturnTimeSlot).totalCents;
 
-  // (weekday round trip cost x weekday days) + (weekend round trip cost x weekend days)
-  return (weekdayGo + weekdayReturn) * weekdayDays + (weekendGo + weekendReturn) * weekendDays;
+  return (
+    (weekdayGo + weekdayReturn) * input.weekdayDays +
+    (weekendGo + weekendReturn) * input.weekendDays
+  );
 }
 
-export function computeCommuteEstimate(input: {
-  route: RouteInput;
-  goTimeSlot: ResolvedTimeSlot;
-  returnTimeSlot: ResolvedTimeSlot;
-  weekendGoTimeSlot: ResolvedTimeSlot;
-  weekendReturnTimeSlot: ResolvedTimeSlot;
-  commuteDays: DayOfWeek[];
-}) {
+export function computeCommuteEstimate(input: CommuteInput): CommuteEstimate {
   const {
     route,
     goTimeSlot,
@@ -104,13 +91,9 @@ export function computeCommuteEstimate(input: {
     weekendReturnTimeSlot,
     commuteDays,
   } = input;
-
   const { weekdayDays, weekendDays, holidayDays } = countCommuteDays(commuteDays);
 
-  const returnRoute: RouteInput = {
-    ...route,
-    direction: flipDirection(route.direction),
-  };
+  const returnRoute: RouteInput = { ...route, direction: flipDirection(route.direction) };
 
   const goBreakdowns = getAllBreakdowns(route);
   const returnBreakdowns = getAllBreakdowns(returnRoute);
@@ -120,7 +103,6 @@ export function computeCommuteEstimate(input: {
   const weekendGoCostCents = findBreakdown(goBreakdowns, weekendGoTimeSlot).totalCents;
   const weekendReturnCostCents = findBreakdown(returnBreakdowns, weekendReturnTimeSlot).totalCents;
 
-  // Non-transponder users pay $5/month account fee on top of per-trip charges
   const monthlyAccountFee = route.hasTransponder ? 0 : NO_TRANSPONDER_MONTHLY_FEE_CENTS;
 
   const tripYearCents =
@@ -129,20 +111,17 @@ export function computeCommuteEstimate(input: {
   const perYearCents = tripYearCents + monthlyAccountFee * 12;
   const perMonthCents = Math.round(perYearCents / 12);
 
-  // Same calculation but with the opposite transponder setting
-  const sharedSlots = {
+  const yearlyCostInput: YearlyCostInput = {
+    route,
     goTimeSlot,
     returnTimeSlot,
     weekendGoTimeSlot,
     weekendReturnTimeSlot,
     weekdayDays,
     weekendDays,
-  };
-  const altTripYearCents = computeYearlyCost({
-    ...sharedSlots,
-    route,
     hasTransponder: !route.hasTransponder,
-  });
+  };
+  const altTripYearCents = computeYearlyCost(yearlyCostInput);
   const altMonthlyFee = route.hasTransponder ? NO_TRANSPONDER_MONTHLY_FEE_CENTS : 0;
   const altYearCents = altTripYearCents + altMonthlyFee * 12;
   const altMonthCents = Math.round(altYearCents / 12);
