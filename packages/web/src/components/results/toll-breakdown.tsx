@@ -44,24 +44,26 @@ export function TollBreakdownView({
 
   return (
     <Card>
-      <CardHeader className="flex items-center justify-between">
-        <div>
-          <div className="flex items-center gap-3">
-            <h2 className="text-sm font-semibold text-slate-900">Estimated Toll</h2>
-            <DirectionBadge direction={breakdown.direction} />
-            {isPeak && <Badge variant="warning">Peak</Badge>}
+      <CardHeader>
+        <div className="flex items-start justify-between">
+          <div>
+            <div className="flex flex-wrap items-center gap-1.5">
+              <h2 className="text-sm font-semibold text-slate-900">Toll Estimate</h2>
+              <DirectionBadge direction={breakdown.direction} />
+              {isPeak && <Badge variant="warning">Peak</Badge>}
+            </div>
+            <p className="mt-0.5 text-xs text-slate-400">
+              {totalDistanceKm.toFixed(1)} km across {breakdown.perZone.length} {breakdown.perZone.length === 1 ? "zone" : "zones"}
+            </p>
           </div>
-          <p className="mt-0.5 text-xs text-slate-400">
-            {totalDistanceKm.toFixed(1)} km across {breakdown.perZone.length} {breakdown.perZone.length === 1 ? "zone" : "zones"}
-          </p>
-        </div>
-        <div className="flex items-center gap-3">
-          <span className="text-2xl font-bold tracking-tight text-slate-900">
-            {formatDollars(breakdown.totalCents)}
-          </span>
-          {entryId && exitId && (
-            <ShareButton url={buildTripShareUrl(entryId, exitId, breakdown)} />
-          )}
+          <div className="flex shrink-0 items-center gap-2">
+            <span className="text-2xl font-bold tracking-tight text-slate-900">
+              {formatDollars(breakdown.totalCents)}
+            </span>
+            {entryId && exitId && (
+              <ShareButton url={buildTripShareUrl(entryId, exitId, breakdown)} />
+            )}
+          </div>
         </div>
       </CardHeader>
 
