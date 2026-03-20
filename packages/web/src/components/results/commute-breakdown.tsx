@@ -27,6 +27,7 @@ export function CommuteBreakdown({
   entryId,
   exitId,
   shareParams,
+  children,
 }: {
   estimate: CommuteEstimate;
   entryName: string;
@@ -41,6 +42,7 @@ export function CommuteBreakdown({
     weekendGoSlot: string;
     weekendReturnSlot: string;
   };
+  children?: React.ReactNode;
 }) {
   const {
     weekdayGoCostCents,
@@ -89,6 +91,8 @@ export function CommuteBreakdown({
             {shareUrl && <ShareButton url={shareUrl} />}
           </div>
         </div>
+
+        {children && <div>{children}</div>}
 
         <div className="rounded-lg bg-slate-50 px-4 py-1">
           <Row label="Departure" value={fmt(weekdayGoCostCents)} sub="weekday" />

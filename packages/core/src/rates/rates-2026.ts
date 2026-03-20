@@ -1,8 +1,10 @@
 import type { RateKey } from "../types";
 
 // 2026 407 ETR light vehicle toll rates (cents per km).
-// Effective: February 1, 2026
+// Effective: January 1, 2026
 // Source: https://www.407etr.com/en/rate-chart-light
+
+export const RATE_YEAR = 2026;
 //
 // Layout: "dayType:direction:timeSlot:zone" → cents/km
 // Total entries: 288 (2 day types × 2 directions × variable slots × 12 zones)

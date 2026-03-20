@@ -73,19 +73,35 @@ export default async function CommutePage({ params, searchParams }: PageProps) {
   if (!parsed) notFound();
 
   const transponder = query.transponder !== "false";
-  const resolved = buildCommuteInput(query, transponder, parsed.entryId, parsed.exitId);
+  const resolved = buildCommuteInput(query, true, parsed.entryId, parsed.exitId);
   if (!resolved) notFound();
 
-  const estimate = computeCommuteEstimate(resolved.commuteInput);
+  // Pre-compute both transponder variants
+  const inputWith = resolved.commuteInput;
+  const inputWithout = { ...inputWith, route: { ...inputWith.route, hasTransponder: false } };
+
+  const estimate = computeCommuteEstimate(inputWith);
+  const estimateWithout = computeCommuteEstimate(inputWithout);
+
+  const shareParams = {
+    goSlot: inputWith.goTimeSlot.slot,
+    returnSlot: inputWith.returnTimeSlot.slot,
+    weekendGoSlot: inputWith.weekendGoTimeSlot.slot,
+    weekendReturnSlot: inputWith.weekendReturnTimeSlot.slot,
+  };
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-6 sm:px-6">
       <CommutePageClient
         estimate={estimate}
+        estimateWithout={estimateWithout}
         entryName={resolved.entry.name}
         exitName={resolved.exit.name}
         commuteDays={resolved.days}
         hasTransponder={transponder}
+        shareParams={shareParams}
+        entryId={parsed.entryId}
+        exitId={parsed.exitId}
       />
     </main>
   );
