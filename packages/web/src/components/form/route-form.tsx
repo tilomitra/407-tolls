@@ -230,6 +230,7 @@ export function RouteForm({
     return null;
   })();
 
+  const hasWeekdayDays = commuteDays.some((d) => d >= 1 && d <= 5);
   const hasWeekendDays = commuteDays.includes(0) || commuteDays.includes(6);
 
   function getTimeSlot(): ResolvedTimeSlot {
@@ -404,23 +405,25 @@ export function RouteForm({
                 <DayPicker selected={commuteDays} onChange={setCommuteDays} />
               </div>
 
-              <div className="space-y-3">
-                <span className="block text-sm font-medium text-slate-700">Weekday schedule</span>
-                <div className="grid grid-cols-2 gap-3">
-                  <StyledSelect
-                    label="Departure"
-                    value={goWeekdaySlot}
-                    onChange={(v) => setGoWeekdaySlot(v as WeekdaySlot)}
-                    options={WEEKDAY_TIME_OPTIONS}
-                  />
-                  <StyledSelect
-                    label="Return"
-                    value={returnWeekdaySlot}
-                    onChange={(v) => setReturnWeekdaySlot(v as WeekdaySlot)}
-                    options={WEEKDAY_TIME_OPTIONS}
-                  />
+              {hasWeekdayDays && (
+                <div className="space-y-3">
+                  <span className="block text-sm font-medium text-slate-700">Weekday schedule</span>
+                  <div className="grid grid-cols-2 gap-3">
+                    <StyledSelect
+                      label="Departure"
+                      value={goWeekdaySlot}
+                      onChange={(v) => setGoWeekdaySlot(v as WeekdaySlot)}
+                      options={WEEKDAY_TIME_OPTIONS}
+                    />
+                    <StyledSelect
+                      label="Return"
+                      value={returnWeekdaySlot}
+                      onChange={(v) => setReturnWeekdaySlot(v as WeekdaySlot)}
+                      options={WEEKDAY_TIME_OPTIONS}
+                    />
+                  </div>
                 </div>
-              </div>
+              )}
 
               {hasWeekendDays && (
                 <div className="space-y-3">

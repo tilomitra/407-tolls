@@ -344,6 +344,6 @@ export function HighwayMap({
   }, [selectedRoute]);
 
   return (
-    <div ref={containerRef} className="h-[350px] w-full rounded-t-xl sm:h-[400px]" />
+    <div ref={containerRef} className="h-[280px] w-full rounded-t-xl sm:h-[320px]" />
   );
 }
