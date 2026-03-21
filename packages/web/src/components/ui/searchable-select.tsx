@@ -35,7 +35,9 @@ export function SearchableSelect<T extends SearchableSelectOption>({
   return (
     <Combobox
       value={selected}
-      onChange={(o) => { if (o) onChange(o.id); }}
+      onChange={(o) => {
+        if (o) onChange(o.id);
+      }}
       onClose={() => setQuery("")}
       immediate
     >
@@ -48,7 +50,7 @@ export function SearchableSelect<T extends SearchableSelectOption>({
           placeholder={placeholder}
         />
 
-        <ComboboxOptions className="absolute left-0 right-0 z-50 mt-2 max-h-52 overflow-auto rounded-lg border border-slate-200 bg-white shadow-lg">
+        <ComboboxOptions className="absolute left-0 right-0 z-50 mt-2 max-h-52 overflow-y-auto overflow-x-hidden rounded-lg border border-slate-200 bg-white shadow-lg">
           {filtered.length === 0 ? (
             <div className="px-3 py-2 text-xs text-slate-400">No results</div>
           ) : (
@@ -58,7 +60,9 @@ export function SearchableSelect<T extends SearchableSelectOption>({
                 value={o}
                 className="cursor-pointer px-3 py-2 data-[focus]:bg-blue-50 data-[selected]:bg-blue-50"
               >
-                {renderOption ? renderOption(o) : (
+                {renderOption ? (
+                  renderOption(o)
+                ) : (
                   <div className="text-sm text-slate-900">{o.label}</div>
                 )}
               </ComboboxOption>

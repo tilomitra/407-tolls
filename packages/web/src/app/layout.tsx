@@ -15,14 +15,10 @@ export const metadata: Metadata = {
   icons: { icon: "/favicon.svg" },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={inter.className}>
-      <body className="min-h-screen bg-slate-50 text-slate-900">
+      <body className="min-h-screen overflow-x-hidden bg-slate-50 text-slate-900">
         <Header />
         {children}
         <Footer />

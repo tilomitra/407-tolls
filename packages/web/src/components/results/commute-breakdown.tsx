@@ -1,10 +1,14 @@
 "use client";
 
 import type { CommuteEstimate, DayOfWeek, TripType } from "@407-etr/core";
-import { DAY_NAMES } from "@407-etr/core";
 import { Card, CardBody } from "../ui/card";
+import { Badge } from "../ui/badge";
 import { ShareButton } from "../ui/share-button";
-import { formatDollars as fmt, formatLargeDollars as fmtLarge } from "@/lib/format";
+import {
+  formatDollars as fmt,
+  formatLargeDollars as fmtLarge,
+  formatCommuteDays,
+} from "@/lib/format";
 import { buildCommuteShareUrl } from "@/lib/params";
 import { TransponderCallout } from "../ui/transponder-callout";
 
@@ -100,10 +104,7 @@ export function CommuteBreakdown({
     transponderSavingsMonthCents,
   } = estimate;
 
-  const dayLabels = commuteDays
-    .sort((a, b) => (a === 0 ? 7 : a) - (b === 0 ? 7 : b))
-    .map((d) => DAY_NAMES[d])
-    .join(", ");
+  const dayLabels = formatCommuteDays(commuteDays);
 
   const isRoundTrip = tripType === "round_trip";
   const hasWeekdayDays = commuteDays.some((d) => d >= 1 && d <= 5);
@@ -126,10 +127,12 @@ export function CommuteBreakdown({
       <CardBody className="space-y-4">
         <div className="flex items-start justify-between">
           <div>
-            <h3 className="text-base font-semibold text-slate-900">Commute Estimate</h3>
+            <div className="flex flex-wrap items-center gap-1.5">
+              <h3 className="text-base font-semibold text-slate-900">Commute Estimate</h3>
+              <Badge variant="info">{isRoundTrip ? "Round trip" : "One way"}</Badge>
+            </div>
             <p className="mt-0.5 text-xs text-slate-500">
               {entryName} to {exitName}
-              {!isRoundTrip && " (one way)"}
             </p>
             <p className="text-xs text-slate-400">{dayLabels}</p>
           </div>

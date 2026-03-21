@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { computeCommuteEstimate, computeNearbyComparison, DAY_NAMES } from "@407-etr/core";
+import { computeCommuteEstimate, computeNearbyComparison } from "@407-etr/core";
 import type { WeekdaySlot, WeekendSlot, CommuteInput } from "@407-etr/core";
 import { buildRouteInput } from "@/lib/load-toll-points";
 import { interchanges } from "@/data";
@@ -13,8 +13,9 @@ import {
   parseTripType,
   getString,
 } from "@/lib/params";
-import { formatDollars } from "@/lib/format";
+import { formatDollars, formatCommuteDays } from "@/lib/format";
 import { CommutePageClient } from "./commute-page-client";
+
 // Next.js statically analyzes this value, so it must be a literal.
 export const revalidate = 86400;
 
@@ -90,10 +91,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
 
   const estimate = computeCommuteEstimate(resolved.commuteInput);
 
-  const dayLabels = resolved.days
-    .sort((a, b) => (a === 0 ? 7 : a) - (b === 0 ? 7 : b))
-    .map((d) => DAY_NAMES[d])
-    .join(", ");
+  const dayLabels = formatCommuteDays(resolved.days);
 
   const title = `${resolved.entry.name} to ${resolved.exit.name} commute: ${formatDollars(
     estimate.perMonthCents,

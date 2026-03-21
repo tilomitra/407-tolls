@@ -312,12 +312,12 @@ export function RouteForm({
     <Card>
       <CardBody>
         <form onSubmit={handleSubmit} className="space-y-5">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-2">
             <RadioGroup
               value={mode}
               onChange={(v) => onModeChange(v as FormMode)}
               options={[
-                { value: "single", label: "Single Trip" },
+                { value: "single", label: "Trip" },
                 { value: "commute", label: "Commute" },
               ]}
             />
@@ -325,11 +325,10 @@ export function RouteForm({
               <RadioGroup
                 value={tripType}
                 onChange={(v) => setTripType(v as TripType)}
-                size="sm"
                 options={[
                   {
                     value: "round_trip",
-                    label: "Round trip",
+                    label: "Return",
                     icon: (
                       <svg className="h-3 w-3" viewBox="0 0 16 16" fill="currentColor">
                         <path d="M1 5.5a.5.5 0 0 1 .5-.5h11.793l-2.147-2.146a.5.5 0 0 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L13.293 6H1.5a.5.5 0 0 1-.5-.5zm14 5a.5.5 0 0 1-.5.5H2.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L2.707 10H14.5a.5.5 0 0 1 .5.5z" />
