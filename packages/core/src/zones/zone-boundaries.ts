@@ -1,24 +1,26 @@
 import type { Zone } from "../types";
 
-// Zone boundary km values from the 407 ETR toll calculator API.
-// 3 boundaries (Z6/Z7, Z7/Z8, Z9/Z10) are exact from cross-zone API responses.
-// The rest are midpoints between the last interchange in zone N and first in zone N+1.
-export const ZONE_BOUNDARIES: ReadonlyArray<{
-  zone: Zone;
-  startKm: number;
-}> = [
-  { zone: 1, startKm: 0 },
-  { zone: 2, startKm: 7.986 },
-  { zone: 3, startKm: 20.602 },
-  { zone: 4, startKm: 27.282 },
-  { zone: 5, startKm: 37.657 },
-  { zone: 6, startKm: 49.111 },
-  { zone: 7, startKm: 59.502 },     // exact (from API)
-  { zone: 8, startKm: 67.748 },     // exact (from API)
-  { zone: 9, startKm: 79.981 },
-  { zone: 10, startKm: 84.019 },    // exact (from API)
-  { zone: 11, startKm: 92.322 },
-  { zone: 12, startKm: 101.995 },
+// Per-zone distances from the 407 ETR API (QEW-to-Brock full trip response).
+const ZONE_DISTANCES_KM: readonly number[] = [
+  6.062, // Zone 1
+  12.927, // Zone 2
+  6.144, // Zone 3
+  9.879, // Zone 4
+  12.987, // Zone 5
+  11.503, // Zone 6
+  8.246, // Zone 7
+  11.268, // Zone 8
+  5.003, // Zone 9
+  7.252, // Zone 10
+  8.839, // Zone 11
+  7.854, // Zone 12
 ];
 
-export const EASTERN_TERMINUS_KM = 107.964; // Brock Road
+// Cumulative sum of zone distances gives each zone's start km.
+export const ZONE_BOUNDARIES: ReadonlyArray<{ zone: Zone; startKm: number }> =
+  ZONE_DISTANCES_KM.map((_, i) => ({
+    zone: (i + 1) as Zone,
+    startKm: ZONE_DISTANCES_KM.slice(0, i).reduce((sum, d) => sum + d, 0),
+  }));
+
+export const EASTERN_TERMINUS_KM = ZONE_DISTANCES_KM.reduce((sum, d) => sum + d, 0);
