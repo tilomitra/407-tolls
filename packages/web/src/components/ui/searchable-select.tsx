@@ -36,7 +36,11 @@ export function SearchableSelect<T extends SearchableSelectOption>({
     <Combobox
       value={selected}
       onChange={(o) => {
-        if (o) onChange(o.id);
+        if (o) {
+          onChange(o.id);
+          // Blur the input to dismiss the mobile keyboard and restore scroll position.
+          if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
+        }
       }}
       onClose={() => setQuery("")}
       immediate
