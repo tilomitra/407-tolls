@@ -60,7 +60,7 @@ export function TollBreakdownView({
               {isPeak && <Badge variant="warning">Peak</Badge>}
             </div>
             <p className="mt-0.5 text-xs text-slate-400">
-              {totalDistanceKm.toFixed(1)} km across {breakdown.perZone.length}{" "}
+              {vehicleClass.name} · {totalDistanceKm.toFixed(1)} km across {breakdown.perZone.length}{" "}
               {breakdown.perZone.length === 1 ? "zone" : "zones"}
             </p>
           </div>

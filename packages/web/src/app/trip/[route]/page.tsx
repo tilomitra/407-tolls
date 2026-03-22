@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { calculateToll, computeAllTimeSlotCosts } from "@407-etr/core";
+import { calculateToll, computeAllTimeSlotCosts, getVehicleClass } from "@407-etr/core";
 import { buildRouteInput } from "@/lib/load-toll-points";
 import { parseRoute, parseTimeSlot, parseVehicleClass, getString } from "@/lib/params";
 import { formatDollars } from "@/lib/format";
@@ -45,11 +45,14 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
     timeSlot: trip.timeSlot,
     hasTransponder: trip.transponder,
   });
-  const title = `${trip.entry.name} to ${trip.exit.name} - ${formatDollars(result.totalCents)}`;
+  const vehicleClass = getVehicleClass({ id: trip.route.vehicleClassId });
   const km = result.perZone.reduce((s, z) => s + z.distanceKm, 0).toFixed(1);
+  const title = `${trip.entry.name} to ${trip.exit.name} (${vehicleClass.name}) - ${formatDollars(
+    result.totalCents,
+  )}`;
   const description = `407 ETR toll estimate: ${formatDollars(result.totalCents)} for ${
     trip.entry.name
-  } to ${trip.exit.name}. ${km} km across ${result.perZone.length} zones.`;
+  } to ${trip.exit.name}. ${vehicleClass.name}, ${km} km across ${result.perZone.length} zones.`;
 
   return { title, description, openGraph: { title, description, type: "website" } };
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import type { CommuteEstimate, DayOfWeek, TripType, VehicleClassId } from "@407-etr/core";
+import { getVehicleClass } from "@407-etr/core";
 import { Card, CardBody } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { ShareButton } from "../ui/share-button";
@@ -137,7 +138,9 @@ export function CommuteBreakdown({
             <p className="mt-0.5 text-xs text-slate-500">
               {entryName} to {exitName}
             </p>
-            <p className="text-xs text-slate-400">{dayLabels}</p>
+            <p className="text-xs text-slate-400">
+              {getVehicleClass({ id: vehicleClassId }).name} · {dayLabels}
+            </p>
           </div>
           <div className="flex items-center gap-3">
             <div className="text-right">

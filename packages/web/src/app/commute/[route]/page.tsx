@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { computeCommuteEstimate, computeNearbyComparison } from "@407-etr/core";
+import { computeCommuteEstimate, computeNearbyComparison, getVehicleClass } from "@407-etr/core";
 import type { WeekdaySlot, WeekendSlot, CommuteInput } from "@407-etr/core";
 import { buildRouteInput } from "@/lib/load-toll-points";
 import { interchanges } from "@/data";
@@ -97,15 +97,15 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   if (!resolved) return { title: "Commute not found" };
 
   const estimate = computeCommuteEstimate(resolved.commuteInput);
+  const vehicleClass = getVehicleClass({ id: resolved.commuteInput.route.vehicleClassId });
 
   const dayLabels = formatCommuteDays(resolved.days);
-
-  const title = `${resolved.entry.name} to ${resolved.exit.name} commute: ${formatDollars(
+  const title = `${resolved.entry.name} to ${resolved.exit.name} commute (${vehicleClass.name}): ${formatDollars(
     estimate.perMonthCents,
   )}/mo`;
   const description = `407 ETR commute estimate: ${formatDollars(
     estimate.perMonthCents,
-  )}/month for ${resolved.entry.name} to ${resolved.exit.name}, ${dayLabels}.`;
+  )}/month for ${resolved.entry.name} to ${resolved.exit.name}. ${vehicleClass.name}, ${dayLabels}.`;
 
   return {
     title,
