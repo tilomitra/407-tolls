@@ -69,8 +69,7 @@ export function parseDays(value: string): DayOfWeek[] {
 
 export function parseVehicleClass(value: string): VehicleClassId {
   const result = VehicleClassIdSchema.safeParse(value);
-  if (!result.success) throw new Error(`Invalid vehicle class: ${value}`);
-  return result.data;
+  return result.success ? result.data : "light";
 }
 
 export function parseTripType(value: string): TripType {

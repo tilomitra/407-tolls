@@ -4,86 +4,54 @@ import type { VehicleClassId, VehicleClass } from "@407-etr/core";
 import { VEHICLE_CLASSES } from "@407-etr/core";
 import { Tooltip, TooltipProvider } from "../ui/tooltip";
 
+const iconClass = "h-7 w-7";
+
 const vehicleIcons: Record<VehicleClassId, React.ReactNode> = {
   motorcycle: (
-    <svg
-      className="h-6 w-6"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.5}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="5" cy="17" r="3" />
-      <circle cx="19" cy="17" r="3" />
-      <path d="M9 17h6" />
-      <path d="M5 14l4-7h4l3 5" />
-      <path d="M16 12l3 5" />
-      <path d="M9 7l-1 3" />
+    <svg className={iconClass} viewBox="0 0 32 32" fill="currentColor">
+      <circle cx="6" cy="23" r="4" fill="none" stroke="currentColor" strokeWidth="2" />
+      <circle cx="26" cy="23" r="4" fill="none" stroke="currentColor" strokeWidth="2" />
+      <path d="M10 23h12" stroke="currentColor" strokeWidth="2" fill="none" />
+      <path d="M6 19l3-6h3l2 3h6l2-5h2" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M22 11l4 12" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <circle cx="14" cy="10" r="2" fill="currentColor" />
     </svg>
   ),
   light: (
-    <svg
-      className="h-6 w-6"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.5}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M5 17h14M5 17a2 2 0 01-2-2V9a2 2 0 012-2h1l2-3h8l2 3h1a2 2 0 012 2v6a2 2 0 01-2 2M5 17a2 2 0 100 4 2 2 0 000-4zm14 0a2 2 0 100 4 2 2 0 000-4z" />
+    <svg className={iconClass} viewBox="0 0 32 32" fill="currentColor">
+      <path d="M6 22h20v-6l-2-4H8L6 16v6z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+      <path d="M8 12l-2 4h20l-2-4" fill="none" stroke="currentColor" strokeWidth="2" />
+      <line x1="6" y1="16" x2="26" y2="16" stroke="currentColor" strokeWidth="2" />
+      <circle cx="10" cy="22" r="2.5" fill="none" stroke="currentColor" strokeWidth="2" />
+      <circle cx="22" cy="22" r="2.5" fill="none" stroke="currentColor" strokeWidth="2" />
     </svg>
   ),
   medium: (
-    <svg
-      className="h-6 w-6"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.5}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect x="2" y="7" width="16" height="10" rx="2" />
-      <path d="M18 11h2a2 2 0 012 2v2a2 2 0 01-2 2h-2" />
-      <circle cx="6" cy="17" r="2" />
-      <circle cx="14" cy="17" r="2" />
+    <svg className={iconClass} viewBox="0 0 32 32" fill="currentColor">
+      <rect x="3" y="10" width="18" height="12" rx="1" fill="none" stroke="currentColor" strokeWidth="2" />
+      <path d="M21 14h5l3 4v4h-8" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+      <circle cx="8" cy="22" r="2.5" fill="none" stroke="currentColor" strokeWidth="2" />
+      <circle cx="25" cy="22" r="2.5" fill="none" stroke="currentColor" strokeWidth="2" />
     </svg>
   ),
   heavy_single: (
-    <svg
-      className="h-6 w-6"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.5}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect x="1" y="6" width="15" height="11" rx="1" />
-      <path d="M16 9h4l3 4v4h-7V9z" />
-      <circle cx="6" cy="17" r="2" />
-      <circle cx="20" cy="17" r="2" />
+    <svg className={iconClass} viewBox="0 0 32 32" fill="currentColor">
+      <rect x="2" y="8" width="18" height="14" rx="1" fill="none" stroke="currentColor" strokeWidth="2" />
+      <path d="M20 12h6l4 5v5h-10" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+      <line x1="20" y1="8" x2="20" y2="22" stroke="currentColor" strokeWidth="2" />
+      <circle cx="8" cy="22" r="2.5" fill="none" stroke="currentColor" strokeWidth="2" />
+      <circle cx="26" cy="22" r="2.5" fill="none" stroke="currentColor" strokeWidth="2" />
     </svg>
   ),
   heavy_multi: (
-    <svg
-      className="h-6 w-6"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.5}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect x="1" y="8" width="10" height="9" rx="1" />
-      <path d="M11 11h4l3 3v3h-7V11z" />
-      <rect x="18" y="8" width="5" height="9" rx="1" />
-      <circle cx="5" cy="17" r="2" />
-      <circle cx="15" cy="17" r="2" />
-      <circle cx="21" cy="17" r="2" />
+    <svg className={iconClass} viewBox="0 0 36 32" fill="currentColor">
+      <rect x="14" y="8" width="12" height="14" rx="1" fill="none" stroke="currentColor" strokeWidth="2" />
+      <path d="M26 12h5l3 5v5h-8" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+      <rect x="2" y="10" width="12" height="12" rx="1" fill="none" stroke="currentColor" strokeWidth="2" />
+      <line x1="14" y1="10" x2="14" y2="22" stroke="currentColor" strokeWidth="1.5" strokeDasharray="2 2" />
+      <circle cx="7" cy="22" r="2.5" fill="none" stroke="currentColor" strokeWidth="2" />
+      <circle cx="20" cy="22" r="2.5" fill="none" stroke="currentColor" strokeWidth="2" />
+      <circle cx="30" cy="22" r="2.5" fill="none" stroke="currentColor" strokeWidth="2" />
     </svg>
   ),
 };
