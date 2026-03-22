@@ -1,8 +1,8 @@
 import { ImageResponse } from "next/og";
-import { computeCommuteEstimate, getVehicleClass } from "@407-etr/core";
+import { computeCommuteEstimate } from "@407-etr/core";
 import { parseRoute } from "@/lib/params";
 import { buildCommuteInput } from "@/lib/build-commute-input";
-import { formatDollars, formatLargeDollars, formatCommuteDays } from "@/lib/format";
+import { formatDollars, formatLargeDollars, formatCommuteDays, formatTimeSlot } from "@/lib/format";
 import { OG_SIZE, OG_MAX_NAME_LENGTH, loadFonts, OgFallback, OgCard, OgBadge, truncate, searchParamsToQuery } from "@/lib/og";
 
 export const runtime = "nodejs";
@@ -21,7 +21,6 @@ export async function GET(req: Request) {
   if (!resolved) return OgFallback();
 
   const estimate = computeCommuteEstimate(resolved.commuteInput);
-  const vehicleClass = getVehicleClass({ id: resolved.commuteInput.route.vehicleClassId });
 
   const withInput = {
     ...resolved.commuteInput,
@@ -44,6 +43,10 @@ export async function GET(req: Request) {
   const yearly = formatLargeDollars(estimate.perYearCents);
   const dayLabel = formatCommuteDays(resolved.days);
   const tripLabel = resolved.tripType === "round_trip" ? "Round trip" : "One way";
+  const departTime = formatTimeSlot(resolved.commuteInput.goTimeSlot.slot);
+  const returnTime = resolved.commuteInput.tripType === "round_trip"
+    ? formatTimeSlot(resolved.commuteInput.returnTimeSlot.slot)
+    : null;
   const fonts = await loadFonts();
 
   return new ImageResponse(
@@ -51,8 +54,9 @@ export async function GET(req: Request) {
       label="Commute Cost"
       entryName={truncate(resolved.entry.name, OG_MAX_NAME_LENGTH)}
       exitName={truncate(resolved.exit.name, OG_MAX_NAME_LENGTH)}
+      roundTrip={resolved.tripType === "round_trip"}
       priceContent={
-        <>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 18 }}>
           <div style={{ display: "flex", alignItems: "baseline", gap: 20 }}>
             <div style={{ display: "flex", alignItems: "baseline" }}>
               <span
@@ -88,9 +92,15 @@ export async function GET(req: Request) {
             </div>
           </div>
           {savings && <OgBadge variant={savings.variant} text={savings.text} />}
-        </>
+        </div>
       }
-      pills={[dayLabel, vehicleClass.name, tripLabel]}
+      pills={[
+        dayLabel,
+        tripLabel,
+        ...(returnTime
+          ? [`Depart ${departTime}`, `Return ${returnTime}`]
+          : [departTime]),
+      ]}
       ctaText="Calculate your commute →"
     />,
     { ...OG_SIZE, fonts },

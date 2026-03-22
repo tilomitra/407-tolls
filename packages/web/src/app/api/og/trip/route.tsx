@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { calculateToll, getVehicleClass } from "@407-etr/core";
 import { buildTripInput } from "@/lib/build-trip-input";
-import { formatDollars } from "@/lib/format";
+import { formatDollars, formatTimeSlot } from "@/lib/format";
 import { OG_SIZE, OG_MAX_NAME_LENGTH, loadFonts, OgFallback, OgCard, OgBadge, truncate, searchParamsToQuery } from "@/lib/og";
 
 export const runtime = "nodejs";
@@ -50,7 +50,7 @@ export async function GET(req: Request) {
       entryName={truncate(trip.entry.name, OG_MAX_NAME_LENGTH)}
       exitName={truncate(trip.exit.name, OG_MAX_NAME_LENGTH)}
       priceContent={
-        <>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 18 }}>
           <span
             style={{
               fontSize: 136,
@@ -63,9 +63,9 @@ export async function GET(req: Request) {
             {price}
           </span>
           {savings && <OgBadge variant={savings.variant} text={savings.text} />}
-        </>
+        </div>
       }
-      pills={[`${totalKm.toFixed(1)} km`, `${zoneCount} zones`, vehicleClass.name]}
+      pills={[`${totalKm.toFixed(1)} km`, `${zoneCount} zones`, vehicleClass.name, formatTimeSlot(trip.timeSlot.slot)]}
       ctaText="Calculate your toll →"
     />,
     { ...OG_SIZE, fonts },

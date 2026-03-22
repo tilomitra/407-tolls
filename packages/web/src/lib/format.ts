@@ -29,3 +29,12 @@ export function formatDollars(cents: number): string {
 export function formatLargeDollars(cents: number): string {
   return `$${(cents / 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
+
+export function formatTimeSlot(slot: string): string {
+  const match = slot.match(/^(\d{1,2})(\d{2})?(am|pm)$/);
+  if (!match) return slot;
+  const hour = match[1];
+  const minutes = match[2] ?? "00";
+  const period = match[3]!.toUpperCase();
+  return minutes === "00" ? `${hour} ${period}` : `${hour}:${minutes} ${period}`;
+}

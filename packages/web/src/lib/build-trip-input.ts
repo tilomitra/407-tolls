@@ -7,15 +7,14 @@ export function buildTripInput(routeParam: string, query: Query) {
   if (!parsed) return null;
 
   const vehicleClassId = parseVehicleClass(getString(query, "vehicleClass", "light"));
+  const transponder = getString(query, "transponder", "true") !== "false";
   const resolved = buildRouteInput({
     entryId: parsed.entryId,
     exitId: parsed.exitId,
     vehicleClassId,
-    hasTransponder: true,
+    hasTransponder: transponder,
   });
   if (!resolved.ok) return null;
-
-  const transponder = getString(query, "transponder", "true") !== "false";
   const timeSlot = parseTimeSlot(
     getString(query, "time", "7am"),
     getString(query, "day", "weekday"),

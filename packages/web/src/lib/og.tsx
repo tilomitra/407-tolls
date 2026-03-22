@@ -64,7 +64,7 @@ export function OgFallback() {
     >
       407 ETR
     </div>,
-    { ...OG_SIZE },
+    OG_SIZE,
   );
 }
 
@@ -73,11 +73,7 @@ export function truncate(text: string, maxLength: number): string {
 }
 
 export function searchParamsToQuery(searchParams: URLSearchParams): Record<string, string> {
-  const query: Record<string, string> = {};
-  searchParams.forEach((value, key) => {
-    query[key] = value;
-  });
-  return query;
+  return Object.fromEntries(searchParams);
 }
 
 export interface OgBadgeProps {
@@ -119,6 +115,7 @@ export interface OgCardProps {
   label: string;
   entryName: string;
   exitName: string;
+  roundTrip?: boolean;
   priceContent: ReactElement;
   pills: string[];
   ctaText: string;
@@ -128,6 +125,7 @@ export function OgCard({
   label,
   entryName,
   exitName,
+  roundTrip = false,
   priceContent,
   pills,
   ctaText,
@@ -195,7 +193,14 @@ export function OgCard({
 
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
           <span style={{ fontSize: 36, fontWeight: 700, color: "#ffffff" }}>{entryName}</span>
-          <span style={{ fontSize: 22, fontWeight: 700, color: "#3b82f6" }}>→</span>
+          {roundTrip ? (
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+              <span style={{ fontSize: 18, fontWeight: 700, color: "#3b82f6" }}>→</span>
+              <span style={{ fontSize: 18, fontWeight: 700, color: "#818cf8" }}>←</span>
+            </div>
+          ) : (
+            <span style={{ fontSize: 22, fontWeight: 700, color: "#3b82f6" }}>→</span>
+          )}
           <span style={{ fontSize: 36, fontWeight: 700, color: "#ffffff" }}>{exitName}</span>
         </div>
 
