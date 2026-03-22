@@ -1,4 +1,5 @@
-import type { TollBreakdown, Zone } from "@407-etr/core";
+import type { TollBreakdown, Zone, VehicleClassId } from "@407-etr/core";
+import { getVehicleClass } from "@407-etr/core";
 import { Card, CardHeader, CardBody } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { ShareButton } from "../ui/share-button";
@@ -32,13 +33,18 @@ export function TollBreakdownView({
   breakdown,
   entryId,
   exitId,
+  vehicleClassId,
+  hasTransponder,
   children,
 }: {
   breakdown: TollBreakdown;
   entryId: string;
   exitId: string;
+  vehicleClassId: VehicleClassId;
+  hasTransponder: boolean;
   children?: React.ReactNode;
 }) {
+  const vehicleClass = getVehicleClass({ id: vehicleClassId });
   const isPeak = breakdown.timeSlot.slot === "7am" || breakdown.timeSlot.slot === "330pm";
 
   const totalDistanceKm = breakdown.perZone.reduce((sum, z) => sum + z.distanceKm, 0);
@@ -62,7 +68,16 @@ export function TollBreakdownView({
             <span className="text-2xl font-bold tracking-tight text-slate-900">
               {formatDollars(breakdown.totalCents)}
             </span>
-            <ShareButton url={buildTripShareUrl(entryId, exitId, breakdown)} />
+            <ShareButton
+              url={buildTripShareUrl({
+                entryId,
+                exitId,
+                vehicleClassId,
+                hasTransponder,
+                dayType: breakdown.timeSlot.dayType,
+                slot: breakdown.timeSlot.slot,
+              })}
+            />
           </div>
         </div>
       </CardHeader>
@@ -112,7 +127,7 @@ export function TollBreakdownView({
               <span>Trip charge</span>
               <span className="tabular-nums">{formatDollars(breakdown.tripChargeCents)}</span>
             </div>
-            {breakdown.cameraChargeCents !== null && (
+            {breakdown.cameraChargeCents > 0 && (
               <div className="flex justify-between text-sm text-amber-600">
                 <span>Camera charge (no transponder)</span>
                 <span className="tabular-nums">{formatDollars(breakdown.cameraChargeCents)}</span>
@@ -124,9 +139,11 @@ export function TollBreakdownView({
             </div>
           </div>
 
-          <div className="mt-2">
-            <TransponderCallout hasTransponder={breakdown.cameraChargeCents === null} />
-          </div>
+          {vehicleClass.hasTransponderOption && (
+            <div className="mt-2">
+              <TransponderCallout hasTransponder={hasTransponder} />
+            </div>
+          )}
 
           <p className="mt-2 text-[11px] text-slate-400">
             Estimate based on 2026 rates. Trip charge ({formatDollars(breakdown.tripChargeCents)})

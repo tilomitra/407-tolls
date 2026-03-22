@@ -3,16 +3,29 @@ import type {
   WeekendSlot,
   ResolvedTimeSlot,
   DayOfWeek,
-  TollBreakdown,
   TripType,
+  VehicleClassId,
 } from "@407-etr/core";
+import { VehicleClassIdSchema } from "@407-etr/core";
+import type { TollQueryParams, CommuteQueryParams } from "./types";
+
+export function requireParam(url: URL, key: string): string {
+  const value = url.searchParams.get(key);
+  if (!value) throw new Error(`Missing required param: ${key}`);
+  return value;
+}
+
+export function getParam(url: URL, key: string, fallback: string): string {
+  return url.searchParams.get(key) ?? fallback;
+}
 
 export function getString(
   query: Record<string, string | string[] | undefined>,
   key: string,
-): string | undefined {
+  fallback: string,
+): string {
   const val = query[key];
-  return typeof val === "string" ? val : undefined;
+  return typeof val === "string" ? val : fallback;
 }
 
 export const VALID_WEEKDAY_SLOTS = new Set<string>([
@@ -33,78 +46,78 @@ export function parseRoute(route: string): { entryId: string; exitId: string } |
   return { entryId: match[1]!, exitId: match[2]! };
 }
 
-export function parseTimeSlot(time: string | undefined, day: string | undefined): ResolvedTimeSlot {
+export function parseTimeSlot(time: string, day: string): ResolvedTimeSlot {
   if (day === "weekend") {
-    const slot = (time && VALID_WEEKEND_SLOTS.has(time) ? time : "10am") as WeekendSlot;
+    const slot = (VALID_WEEKEND_SLOTS.has(time) ? time : "10am") as WeekendSlot;
     return { dayType: "weekend_or_holiday", slot };
   }
-  const slot = (time && VALID_WEEKDAY_SLOTS.has(time) ? time : "7am") as WeekdaySlot;
+  const slot = (VALID_WEEKDAY_SLOTS.has(time) ? time : "7am") as WeekdaySlot;
   return { dayType: "weekday", slot };
 }
 
-export function parseSlot(
-  val: string | null | undefined,
-  validSet: Set<string>,
-  fallback: string,
-): string {
-  return val && validSet.has(val) ? val : fallback;
+export function parseSlot(value: string, validSet: Set<string>, fallback: string): string {
+  return validSet.has(value) ? value : fallback;
 }
 
-export function parseDays(val: string | null | undefined): DayOfWeek[] {
-  if (!val) return [1, 2, 3, 4, 5];
-  const parsed = val
+export function parseDays(value: string): DayOfWeek[] {
+  const parsed = value
     .split(",")
     .map(Number)
     .filter((d) => d >= 0 && d <= 6) as DayOfWeek[];
   return parsed.length > 0 ? parsed : [1, 2, 3, 4, 5];
 }
 
-export function parseTripType(val: string | null | undefined): TripType {
-  return val === "one_way" ? "one_way" : "round_trip";
+export function parseVehicleClass(value: string): VehicleClassId {
+  const result = VehicleClassIdSchema.safeParse(value);
+  if (!result.success) throw new Error(`Invalid vehicle class: ${value}`);
+  return result.data;
 }
 
-export function buildTripShareUrl(
-  entryId: string,
-  exitId: string,
-  breakdown: TollBreakdown,
-): string {
-  const params = new URLSearchParams({
-    day: breakdown.timeSlot.dayType === "weekday" ? "weekday" : "weekend",
-    time: breakdown.timeSlot.slot,
-    transponder: String(breakdown.cameraChargeCents === null),
-  });
-  return `/trip/${entryId}-to-${exitId}?${params}`;
+export function parseTripType(value: string): TripType {
+  return value === "one_way" ? "one_way" : "round_trip";
 }
 
-export function buildCommuteShareUrl({
-  entryId,
-  exitId,
-  tripType,
-  commuteDays,
-  hasTransponder,
-  goSlot,
-  returnSlot,
-  weekendGoSlot,
-  weekendReturnSlot,
-}: {
-  entryId: string;
-  exitId: string;
-  tripType: TripType;
-  commuteDays: DayOfWeek[];
-  hasTransponder: boolean;
-  goSlot: string;
-  returnSlot?: string;
-  weekendGoSlot: string;
-  weekendReturnSlot?: string;
-}): string {
-  const params = new URLSearchParams({
-    tripType,
-    days: commuteDays.join(","),
-    departure: goSlot,
-    weekendDeparture: weekendGoSlot,
-    transponder: String(hasTransponder),
+function buildTollSearchParams(params: TollQueryParams): URLSearchParams {
+  return new URLSearchParams({
+    vehicleClass: params.vehicleClassId,
+    day: params.dayType === "weekday" ? "weekday" : "weekend",
+    slot: params.slot,
+    transponder: String(params.hasTransponder),
   });
-  if (returnSlot) params.set("return", returnSlot);
-  if (weekendReturnSlot) params.set("weekendReturn", weekendReturnSlot);
-  return `/commute/${entryId}-to-${exitId}?${params}`;
+}
+
+function buildCommuteSearchParams(params: CommuteQueryParams): URLSearchParams {
+  const result = new URLSearchParams({
+    vehicleClass: params.vehicleClassId,
+    tripType: params.tripType,
+    days: params.commuteDays.join(","),
+    departure: params.goSlot,
+    weekendDeparture: params.weekendGoSlot,
+    transponder: String(params.hasTransponder),
+  });
+  if (params.returnSlot) result.set("return", params.returnSlot);
+  if (params.weekendReturnSlot) result.set("weekendReturn", params.weekendReturnSlot);
+  return result;
+}
+
+export function buildTollApiUrl(params: TollQueryParams): string {
+  const query = buildTollSearchParams(params);
+  query.set("entry", params.entryId);
+  query.set("exit", params.exitId);
+  return `/api/toll?${query}`;
+}
+
+export function buildCommuteApiUrl(params: CommuteQueryParams): string {
+  const query = buildCommuteSearchParams(params);
+  query.set("entry", params.entryId);
+  query.set("exit", params.exitId);
+  return `/api/commute?${query}`;
+}
+
+export function buildTripShareUrl(params: TollQueryParams): string {
+  return `/trip/${params.entryId}-to-${params.exitId}?${buildTollSearchParams(params)}`;
+}
+
+export function buildCommuteShareUrl(params: CommuteQueryParams): string {
+  return `/commute/${params.entryId}-to-${params.exitId}?${buildCommuteSearchParams(params)}`;
 }

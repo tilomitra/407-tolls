@@ -2,7 +2,7 @@ import type { CommuteInput, CommuteEstimate, RouteInput, DayOfWeek } from "../ty
 import { getAllBreakdowns, findBreakdown } from "./toll-cache";
 import { flipDirection } from "../geo/direction";
 import { isOntarioHoliday } from "../rates/holidays";
-import { NO_TRANSPONDER_MONTHLY_FEE_CENTS, RATE_YEAR } from "../rates";
+import { RATE_YEAR, getVehicleClass } from "../rates";
 
 interface DayCounts {
   weekdayDays: number;
@@ -70,7 +70,8 @@ function computeTripCosts(input: CommuteInput, dayCounts: DayCounts, hasTranspon
     (weekdayGoCostCents + weekdayReturnCostCents) * dayCounts.weekdayDays +
     (weekendGoCostCents + weekendReturnCostCents) * dayCounts.weekendDays;
 
-  const monthlyAccountFee = hasTransponder ? 0 : NO_TRANSPONDER_MONTHLY_FEE_CENTS;
+  const vc = getVehicleClass({ id: route.vehicleClassId });
+  const monthlyAccountFee = hasTransponder ? 0 : vc.monthlyAccountFeeCents;
   const perYearCents = tripYearCents + monthlyAccountFee * 12;
 
   return {

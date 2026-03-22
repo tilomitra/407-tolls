@@ -1,9 +1,4 @@
-import type {
-  CompareResult,
-  CompareRoutesArgs,
-  Direction,
-  RouteOption,
-} from "../types";
+import type { CompareResult, CompareRoutesArgs, Direction, RouteOption } from "../types";
 import { findNearestOnRamps, inferDirection } from "../geo";
 import { calculateToll } from "../toll";
 
@@ -16,7 +11,11 @@ export async function compareRoutes({
   const { origin, destination, timeSlot, hasTransponder, maxRamps = 3 } = input;
 
   const nearestOnRamps = findNearestOnRamps({ origin, ramps: onRamps, count: maxRamps });
-  const nearestOffRamps = findNearestOnRamps({ origin: destination, ramps: offRamps, count: maxRamps });
+  const nearestOffRamps = findNearestOnRamps({
+    origin: destination,
+    ramps: offRamps,
+    count: maxRamps,
+  });
 
   // Build candidate pairs, compute tolls (cheap, sync), and fire directions calls in parallel
   const candidates: Array<{
@@ -37,9 +36,7 @@ export async function compareRoutes({
           entryLng: onRamp.location.lng,
           exitLng: offRamp.location.lng,
         }),
-        isDefault:
-          onRamp.id === nearestOnRamps[0]?.id &&
-          offRamp.id === nearestOffRamps[0]?.id,
+        isDefault: onRamp.id === nearestOnRamps[0]?.id && offRamp.id === nearestOffRamps[0]?.id,
       });
     }
   }
@@ -59,6 +56,7 @@ export async function compareRoutes({
     const dirs = directionsResults[i]!;
 
     const toll = calculateToll({
+      vehicleClassId: input.vehicleClassId,
       entryZone: c.onRamp.zone,
       exitZone: c.offRamp.zone,
       entryKm: c.onRamp.km,
@@ -75,8 +73,7 @@ export async function compareRoutes({
       driveToOnRampMinutes: dirs.toOnRampMinutes,
       highwayTimeMinutes: dirs.highwayMinutes,
       driveFromOffRampMinutes: dirs.fromOffRampMinutes,
-      driveTimeMinutes:
-        dirs.toOnRampMinutes + dirs.highwayMinutes + dirs.fromOffRampMinutes,
+      driveTimeMinutes: dirs.toOnRampMinutes + dirs.highwayMinutes + dirs.fromOffRampMinutes,
     };
 
     routes[i] = route;
@@ -92,9 +89,7 @@ export async function compareRoutes({
     cheapest.toll.totalCents < defaultRoute.toll.totalCents
       ? {
           savingsCents: defaultRoute.toll.totalCents - cheapest.toll.totalCents,
-          extraMinutes: Math.round(
-            cheapest.driveTimeMinutes - defaultRoute.driveTimeMinutes,
-          ),
+          extraMinutes: Math.round(cheapest.driveTimeMinutes - defaultRoute.driveTimeMinutes),
           alternateOnRamp: cheapest.onRamp.name,
           alternateOffRamp: cheapest.offRamp.name,
           description: `Enter at ${cheapest.onRamp.name} instead of ${defaultRoute.onRamp.name}`,

@@ -103,7 +103,33 @@ export const RampWithDistanceSchema = OnRampSchema.extend({
 });
 export type RampWithDistance = z.infer<typeof RampWithDistanceSchema>;
 
+export type WeekdayRateKey = `weekday:${Direction}:${WeekdaySlot}:${Zone}`;
+export type WeekendRateKey = `weekend_or_holiday:${Direction}:${WeekendSlot}:${Zone}`;
+export type RateKey = WeekdayRateKey | WeekendRateKey;
+
+export const VehicleClassIdSchema = z.enum([
+  "motorcycle",
+  "light",
+  "medium",
+  "heavy_single",
+  "heavy_multi",
+]);
+export type VehicleClassId = z.infer<typeof VehicleClassIdSchema>;
+
+export interface VehicleClass {
+  id: VehicleClassId;
+  apiId: number;
+  name: string;
+  description: string;
+  rates: Readonly<Record<RateKey, number>>;
+  hasTransponderOption: boolean;
+  tripChargeCents: number;
+  cameraChargeCents: number;
+  monthlyAccountFeeCents: number;
+}
+
 export const TollInputSchema = z.object({
+  vehicleClassId: VehicleClassIdSchema,
   entryZone: ZoneSchema,
   exitZone: ZoneSchema,
   entryKm: z.number(),
@@ -133,7 +159,7 @@ export const TollBreakdownSchema = z.object({
   totalCents: z.number(),
   tollCents: z.number(),
   tripChargeCents: z.number(),
-  cameraChargeCents: z.number().nullable(),
+  cameraChargeCents: z.number(),
   perZone: z.array(ZoneTollDetailSchema),
   direction: DirectionSchema,
   timeSlot: ResolvedTimeSlotSchema,
@@ -196,6 +222,7 @@ export const CompareResultSchema = z.object({
 export type CompareResult = z.infer<typeof CompareResultSchema>;
 
 export const CompareInputSchema = z.object({
+  vehicleClassId: VehicleClassIdSchema,
   origin: LatLngSchema,
   destination: LatLngSchema,
   timeSlot: ResolvedTimeSlotSchema,
@@ -304,7 +331,3 @@ export const NearbyComparisonSchema = z.object({
   alternatives: z.array(NearbyAlternativeSchema),
 });
 export type NearbyComparison = z.infer<typeof NearbyComparisonSchema>;
-
-export type WeekdayRateKey = `weekday:${Direction}:${WeekdaySlot}:${Zone}`;
-export type WeekendRateKey = `weekend_or_holiday:${Direction}:${WeekendSlot}:${Zone}`;
-export type RateKey = WeekdayRateKey | WeekendRateKey;

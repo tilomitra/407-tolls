@@ -10,17 +10,21 @@ import type {
   ResolvedTimeSlot,
   DayType,
   TripType,
+  VehicleClassId,
   WeekdaySlot,
   WeekendSlot,
 } from "@407-etr/core";
+import { getVehicleClass } from "@407-etr/core";
 import { Card, CardBody } from "../ui/card";
 import { SearchableSelect } from "../ui/searchable-select";
 import { StyledSelect } from "../ui/styled-select";
 import { Button } from "../ui/button";
 import { Toggle } from "../ui/toggle";
 import { RadioGroup } from "../ui/radio-group";
+import { VehicleClassSelector } from "./vehicle-class-selector";
 import { useLocalStorage } from "@/lib/use-local-storage";
 import { fetchJson } from "@/lib/api";
+import { buildTollApiUrl, buildCommuteApiUrl } from "@/lib/params";
 
 const WEEKDAY_TIME_OPTIONS = [
   { value: "5am", label: "5:00am - 7:00am" },
@@ -74,16 +78,17 @@ function resolveCurrentSlot(): { dayType: DayType; slot: string } {
   const minutes = now.getHours() * 60 + now.getMinutes();
   const isWeekend = day === 0 || day === 6;
   const boundaries = isWeekend ? WEEKEND_BOUNDARIES : WEEKDAY_BOUNDARIES;
+  const dayType = isWeekend ? "weekend_or_holiday" : "weekday";
 
   for (let i = boundaries.length - 1; i >= 0; i--) {
     if (minutes >= boundaries[i]![0]) {
       return {
-        dayType: isWeekend ? "weekend_or_holiday" : "weekday",
+        dayType,
         slot: boundaries[i]![1],
       };
     }
   }
-  return { dayType: isWeekend ? "weekend_or_holiday" : "weekday", slot: "9pm" };
+  return { dayType, slot: "9pm" };
 }
 
 export type FormMode = "single" | "commute";
@@ -139,7 +144,13 @@ export function RouteForm({
   onModeChange,
 }: {
   interchanges: Interchange[];
-  onTollResult: (args: { result: TollResponse; entryId: string; exitId: string }) => void;
+  onTollResult: (args: {
+    result: TollResponse;
+    entryId: string;
+    exitId: string;
+    vehicleClassId: VehicleClassId;
+    hasTransponder: boolean;
+  }) => void;
   onCommuteResult: (args: {
     estimate: CommuteEstimate;
     nearby: NearbyComparison;
@@ -147,6 +158,7 @@ export function RouteForm({
     exitId: string;
     entryName: string;
     exitName: string;
+    vehicleClassId: VehicleClassId;
     tripType: TripType;
     commuteDays: DayOfWeek[];
     hasTransponder: boolean;
@@ -192,6 +204,10 @@ export function RouteForm({
   // Default to Jane Street (25) and Highway 404 (33)
   const [entryId, setEntryId] = useLocalStorage("407-entry", interchanges.length > 0 ? "25" : "");
   const [exitId, setExitId] = useLocalStorage("407-exit", interchanges.length > 0 ? "33" : "");
+  const [vehicleClassId, setVehicleClassId] = useLocalStorage<VehicleClassId>(
+    "407-vehicle-class",
+    "light",
+  );
   const [hasTransponder, setHasTransponder] = useLocalStorage("407-transponder", true);
   const [dayType, setDayType] = useState<DayType>(currentSlot.dayType);
   const [weekdaySlot, setWeekdaySlot] = useState<WeekdaySlot>(
@@ -217,6 +233,7 @@ export function RouteForm({
   );
   const exit = useMemo(() => interchanges.find((ic) => ic.id === exitId)!, [interchanges, exitId]);
   const sameInterchange = entryId === exitId;
+  const vehicleClass = getVehicleClass({ id: vehicleClassId });
 
   // Validate ramp access for the computed direction
   const direction: "eastbound" | "westbound" | null =
@@ -252,24 +269,23 @@ export function RouteForm({
 
     try {
       if (mode === "commute") {
-        const params = new URLSearchParams({
-          entry: entryId,
-          exit: exitId,
+        const url = buildCommuteApiUrl({
+          entryId,
+          exitId,
+          vehicleClassId,
           tripType,
-          days: commuteDays.join(","),
-          departure: goWeekdaySlot,
-          weekendDeparture: goWeekendSlot,
-          transponder: String(hasTransponder),
+          commuteDays,
+          hasTransponder,
+          goSlot: goWeekdaySlot,
+          ...(isRoundTrip ? { returnSlot: returnWeekdaySlot } : {}),
+          weekendGoSlot: goWeekendSlot,
+          ...(isRoundTrip ? { weekendReturnSlot: returnWeekendSlot } : {}),
         });
-        if (isRoundTrip) {
-          params.set("return", returnWeekdaySlot);
-          params.set("weekendReturn", returnWeekendSlot);
-        }
 
         const { estimate, nearby } = await fetchJson<{
           estimate: CommuteEstimate;
           nearby: NearbyComparison;
-        }>(`/api/commute?${params}`);
+        }>(url);
 
         onCommuteResult({
           estimate,
@@ -278,6 +294,7 @@ export function RouteForm({
           exitId,
           entryName: entry.name,
           exitName: exit.name,
+          vehicleClassId,
           tripType,
           commuteDays,
           hasTransponder,
@@ -290,16 +307,17 @@ export function RouteForm({
         });
       } else {
         const ts = getTimeSlot();
-        const params = new URLSearchParams({
-          entry: entryId,
-          exit: exitId,
-          day: ts.dayType === "weekday" ? "weekday" : "weekend",
-          slot: ts.slot,
-          transponder: String(hasTransponder),
-        });
-
-        const result = await fetchJson<TollResponse>(`/api/toll?${params}`);
-        onTollResult({ result, entryId, exitId });
+        const result = await fetchJson<TollResponse>(
+          buildTollApiUrl({
+            entryId,
+            exitId,
+            vehicleClassId,
+            hasTransponder,
+            dayType: ts.dayType,
+            slot: ts.slot,
+          }),
+        );
+        onTollResult({ result, entryId, exitId, vehicleClassId, hasTransponder });
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
@@ -351,6 +369,8 @@ export function RouteForm({
               />
             )}
           </div>
+
+          <VehicleClassSelector value={vehicleClassId} onChange={setVehicleClassId} />
 
           <div className="relative">
             <div className="rounded-xl border border-slate-200">
@@ -487,14 +507,20 @@ export function RouteForm({
             </>
           )}
 
-          <div className="border-t border-slate-100 pt-4">
-            <Toggle
-              checked={hasTransponder}
-              onChange={setHasTransponder}
-              label="I have a transponder"
-              detail={!hasTransponder ? "+$5.30 camera charge per trip" : undefined}
-            />
-          </div>
+          {vehicleClass.hasTransponderOption && (
+            <div className="border-t border-slate-100 pt-4">
+              <Toggle
+                checked={hasTransponder}
+                onChange={setHasTransponder}
+                label="I have a transponder"
+                detail={
+                  !hasTransponder
+                    ? `+${(vehicleClass.cameraChargeCents / 100).toFixed(2)} camera charge per trip`
+                    : undefined
+                }
+              />
+            </div>
+          )}
 
           <Button
             type="submit"

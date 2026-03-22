@@ -11,6 +11,7 @@ import {
   parseSlot,
   parseDays,
   parseTripType,
+  parseVehicleClass,
   getString,
 } from "@/lib/params";
 import { formatDollars, formatCommuteDays } from "@/lib/format";
@@ -22,18 +23,24 @@ export const revalidate = 86400;
 type Query = Record<string, string | string[] | undefined>;
 
 function buildCommuteInput(query: Query, transponder: boolean, entryId: string, exitId: string) {
-  const resolved = buildRouteInput(entryId, exitId, transponder);
+  const vehicleClassId = parseVehicleClass(getString(query, "vehicleClass", "light"));
+  const resolved = buildRouteInput({
+    entryId,
+    exitId,
+    vehicleClassId,
+    hasTransponder: transponder,
+  });
   if (!resolved.ok) return null;
 
-  const tripType = parseTripType(getString(query, "tripType"));
-  const days = parseDays(getString(query, "days"));
+  const tripType = parseTripType(getString(query, "tripType", "round_trip"));
+  const days = parseDays(getString(query, "days", "1,2,3,4,5"));
   const goSlot = parseSlot(
-    getString(query, "departure"),
+    getString(query, "departure", "7am"),
     VALID_WEEKDAY_SLOTS,
     "7am",
   ) as WeekdaySlot;
   const wkndGoSlot = parseSlot(
-    getString(query, "weekendDeparture"),
+    getString(query, "weekendDeparture", "10am"),
     VALID_WEEKEND_SLOTS,
     "10am",
   ) as WeekendSlot;
@@ -47,7 +54,7 @@ function buildCommuteInput(query: Query, transponder: boolean, entryId: string, 
           returnTimeSlot: {
             dayType: "weekday",
             slot: parseSlot(
-              getString(query, "return"),
+              getString(query, "return", "330pm"),
               VALID_WEEKDAY_SLOTS,
               "330pm",
             ) as WeekdaySlot,
@@ -56,7 +63,7 @@ function buildCommuteInput(query: Query, transponder: boolean, entryId: string, 
           weekendReturnTimeSlot: {
             dayType: "weekend_or_holiday",
             slot: parseSlot(
-              getString(query, "weekendReturn"),
+              getString(query, "weekendReturn", "7pm"),
               VALID_WEEKEND_SLOTS,
               "7pm",
             ) as WeekendSlot,
@@ -85,7 +92,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   const parsed = parseRoute(decodeURIComponent(route));
   if (!parsed) return { title: "Commute not found" };
 
-  const transponder = query.transponder !== "false";
+  const transponder = getString(query, "transponder", "true") !== "false";
   const resolved = buildCommuteInput(query, transponder, parsed.entryId, parsed.exitId);
   if (!resolved) return { title: "Commute not found" };
 
@@ -113,7 +120,7 @@ export default async function CommutePage({ params, searchParams }: PageProps) {
   const parsed = parseRoute(decodeURIComponent(route));
   if (!parsed) notFound();
 
-  const transponder = query.transponder !== "false";
+  const transponder = getString(query, "transponder", "true") !== "false";
   const resolved = buildCommuteInput(query, true, parsed.entryId, parsed.exitId);
   if (!resolved) notFound();
 
@@ -157,6 +164,7 @@ export default async function CommutePage({ params, searchParams }: PageProps) {
         estimateWithout={estimateWithout}
         entryName={resolved.entry.name}
         exitName={resolved.exit.name}
+        vehicleClassId={inputWith.route.vehicleClassId}
         tripType={resolved.tripType}
         commuteDays={resolved.days}
         hasTransponder={transponder}

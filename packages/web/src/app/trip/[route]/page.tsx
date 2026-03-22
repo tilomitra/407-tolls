@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { calculateToll, computeAllTimeSlotCosts } from "@407-etr/core";
 import { buildRouteInput } from "@/lib/load-toll-points";
-import { parseRoute, parseTimeSlot } from "@/lib/params";
+import { parseRoute, parseTimeSlot, parseVehicleClass, getString } from "@/lib/params";
 import { formatDollars } from "@/lib/format";
 import { TripPageClient } from "./trip-page-client";
 
@@ -18,13 +18,19 @@ function resolveTrip(routeParam: string, query: Record<string, string | string[]
   const parsed = parseRoute(decodeURIComponent(routeParam));
   if (!parsed) return null;
 
-  const resolved = buildRouteInput(parsed.entryId, parsed.exitId, true);
+  const vehicleClassId = parseVehicleClass(getString(query, "vehicleClass", "light"));
+  const resolved = buildRouteInput({
+    entryId: parsed.entryId,
+    exitId: parsed.exitId,
+    vehicleClassId,
+    hasTransponder: true,
+  });
   if (!resolved.ok) return null;
 
-  const transponder = query.transponder !== "false";
+  const transponder = getString(query, "transponder", "true") !== "false";
   const timeSlot = parseTimeSlot(
-    typeof query.time === "string" ? query.time : undefined,
-    typeof query.day === "string" ? query.day : undefined,
+    getString(query, "time", "7am"),
+    getString(query, "day", "weekday"),
   );
 
   return { ...parsed, ...resolved, transponder, timeSlot };
@@ -70,6 +76,7 @@ export default async function TripPage({ params, searchParams }: PageProps) {
         exitName={trip.exit.name}
         entryId={trip.entryId}
         exitId={trip.exitId}
+        vehicleClassId={trip.route.vehicleClassId}
         hasTransponder={trip.transponder}
       />
     </main>

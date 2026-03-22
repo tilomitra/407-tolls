@@ -74,6 +74,7 @@ function buildAlternativeRoute({
   const direction: Direction = exitKm > entryKm ? "eastbound" : "westbound";
 
   return {
+    vehicleClassId: originalRoute.vehicleClassId,
     entryKm,
     exitKm,
     entryZone,

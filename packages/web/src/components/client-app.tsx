@@ -8,6 +8,7 @@ import type {
   CommuteEstimate,
   NearbyComparison,
   TripType,
+  VehicleClassId,
 } from "@407-etr/core";
 import type { DayOfWeek } from "@407-etr/core";
 import { HighwayMap } from "./map/highway-map";
@@ -30,7 +31,11 @@ export function ClientApp({
   highwayGeometry: Array<[number, number]>;
 }) {
   const [mode, setMode] = useState<FormMode>("single");
-  const [tollResult, setTollResult] = useState<TollResponse | null>(null);
+  const [tollResult, setTollResult] = useState<{
+    data: TollResponse;
+    vehicleClassId: VehicleClassId;
+    hasTransponder: boolean;
+  } | null>(null);
   const [commuteResult, setCommuteResult] = useState<{
     estimate: CommuteEstimate;
     nearby: NearbyComparison;
@@ -38,6 +43,7 @@ export function ClientApp({
     exitId: string;
     entryName: string;
     exitName: string;
+    vehicleClassId: VehicleClassId;
     tripType: TripType;
     commuteDays: DayOfWeek[];
     hasTransponder: boolean;
@@ -57,12 +63,16 @@ export function ClientApp({
     result,
     entryId,
     exitId,
+    vehicleClassId,
+    hasTransponder,
   }: {
     result: TollResponse;
     entryId: string;
     exitId: string;
+    vehicleClassId: VehicleClassId;
+    hasTransponder: boolean;
   }) {
-    setTollResult(result);
+    setTollResult({ data: result, vehicleClassId, hasTransponder });
     setCommuteResult(null);
     setSelectedRoute({ entryId, exitId });
   }
@@ -74,6 +84,7 @@ export function ClientApp({
     exitId,
     entryName,
     exitName,
+    vehicleClassId,
     tripType,
     commuteDays,
     hasTransponder,
@@ -85,6 +96,7 @@ export function ClientApp({
     exitId: string;
     entryName: string;
     exitName: string;
+    vehicleClassId: VehicleClassId;
     tripType: TripType;
     commuteDays: DayOfWeek[];
     hasTransponder: boolean;
@@ -102,6 +114,7 @@ export function ClientApp({
       exitId,
       entryName,
       exitName,
+      vehicleClassId,
       tripType,
       commuteDays,
       hasTransponder,
@@ -151,15 +164,17 @@ export function ClientApp({
           {mode === "single" && tollResult ? (
             <>
               <TollBreakdownView
-                breakdown={tollResult}
+                breakdown={tollResult.data}
                 entryId={selectedRoute!.entryId}
                 exitId={selectedRoute!.exitId}
+                vehicleClassId={tollResult.vehicleClassId}
+                hasTransponder={tollResult.hasTransponder}
               />
-              {tollResult.byTimeSlot.length > 0 && (
+              {tollResult.data.byTimeSlot.length > 0 && (
                 <TimeChart
-                  data={tollResult.byTimeSlot}
-                  currentSlot={tollResult.timeSlot.slot}
-                  currentDayType={tollResult.timeSlot.dayType}
+                  data={tollResult.data.byTimeSlot}
+                  currentSlot={tollResult.data.timeSlot.slot}
+                  currentDayType={tollResult.data.timeSlot.dayType}
                 />
               )}
             </>
@@ -169,6 +184,7 @@ export function ClientApp({
                 estimate={commuteResult.estimate}
                 entryName={commuteResult.entryName}
                 exitName={commuteResult.exitName}
+                vehicleClassId={commuteResult.vehicleClassId}
                 tripType={commuteResult.tripType}
                 commuteDays={commuteResult.commuteDays}
                 hasTransponder={commuteResult.hasTransponder}

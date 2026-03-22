@@ -6,9 +6,12 @@ import { interchanges } from "@/data";
 import {
   VALID_WEEKDAY_SLOTS,
   VALID_WEEKEND_SLOTS,
+  requireParam,
+  getParam,
   parseSlot,
   parseDays,
   parseTripType,
+  parseVehicleClass,
 } from "@/lib/params";
 import { API_CACHE_HEADERS } from "@/lib/cache";
 
@@ -22,20 +25,26 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "Missing entry or exit" }, { status: 400 });
     }
 
-    const transponder = url.searchParams.get("transponder") !== "false";
-    const resolved = buildRouteInput(entryId, exitId, transponder);
+    const vehicleClassId = parseVehicleClass(requireParam(url, "vehicleClass"));
+    const transponder = getParam(url, "transponder", "true") !== "false";
+    const resolved = buildRouteInput({
+      entryId,
+      exitId,
+      vehicleClassId,
+      hasTransponder: transponder,
+    });
     if (!resolved.ok) {
       return NextResponse.json({ error: resolved.error }, { status: 400 });
     }
 
-    const tripType = parseTripType(url.searchParams.get("tripType"));
-    const goSlot = parseSlot(url.searchParams.get("departure"), VALID_WEEKDAY_SLOTS, "7am");
+    const tripType = parseTripType(getParam(url, "tripType", "round_trip"));
+    const goSlot = parseSlot(getParam(url, "departure", "7am"), VALID_WEEKDAY_SLOTS, "7am");
     const wkndGoSlot = parseSlot(
-      url.searchParams.get("weekendDeparture"),
+      getParam(url, "weekendDeparture", "10am"),
       VALID_WEEKEND_SLOTS,
       "10am",
     );
-    const commuteDays = parseDays(url.searchParams.get("days"));
+    const commuteDays = parseDays(getParam(url, "days", "1,2,3,4,5"));
 
     const schedule: CommuteSchedule =
       tripType === "round_trip"
@@ -45,7 +54,7 @@ export async function GET(req: Request) {
             returnTimeSlot: {
               dayType: "weekday",
               slot: parseSlot(
-                url.searchParams.get("return"),
+                getParam(url, "return", "330pm"),
                 VALID_WEEKDAY_SLOTS,
                 "330pm",
               ) as WeekdaySlot,
@@ -54,7 +63,7 @@ export async function GET(req: Request) {
             weekendReturnTimeSlot: {
               dayType: "weekend_or_holiday",
               slot: parseSlot(
-                url.searchParams.get("weekendReturn"),
+                getParam(url, "weekendReturn", "7pm"),
                 VALID_WEEKEND_SLOTS,
                 "7pm",
               ) as WeekendSlot,
@@ -79,10 +88,7 @@ export async function GET(req: Request) {
       schedule,
     });
 
-    return NextResponse.json(
-      { estimate, nearby },
-      { headers: API_CACHE_HEADERS },
-    );
+    return NextResponse.json({ estimate, nearby }, { headers: API_CACHE_HEADERS });
   } catch {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }

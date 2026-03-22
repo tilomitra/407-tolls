@@ -1,6 +1,6 @@
 "use client";
 
-import type { CommuteEstimate, DayOfWeek, TripType } from "@407-etr/core";
+import type { CommuteEstimate, DayOfWeek, TripType, VehicleClassId } from "@407-etr/core";
 import { Card, CardBody } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { ShareButton } from "../ui/share-button";
@@ -67,6 +67,7 @@ export function CommuteBreakdown({
   estimate,
   entryName,
   exitName,
+  vehicleClassId,
   tripType,
   commuteDays,
   hasTransponder,
@@ -78,6 +79,7 @@ export function CommuteBreakdown({
   estimate: CommuteEstimate;
   entryName: string;
   exitName: string;
+  vehicleClassId: VehicleClassId;
   tripType: TripType;
   commuteDays: DayOfWeek[];
   hasTransponder: boolean;
@@ -116,6 +118,7 @@ export function CommuteBreakdown({
   const shareUrl = buildCommuteShareUrl({
     entryId,
     exitId,
+    vehicleClassId,
     tripType,
     commuteDays,
     hasTransponder,

@@ -1,7 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import type { CommuteEstimate, DayOfWeek, NearbyComparison, TripType } from "@407-etr/core";
+import type {
+  CommuteEstimate,
+  DayOfWeek,
+  NearbyComparison,
+  TripType,
+  VehicleClassId,
+} from "@407-etr/core";
+import { getVehicleClass } from "@407-etr/core";
 import { CommuteBreakdown } from "@/components/results/commute-breakdown";
 import { NearbyComparisonView } from "@/components/results/nearby-comparison";
 import { Toggle } from "@/components/ui/toggle";
@@ -11,6 +18,7 @@ export function CommutePageClient({
   estimateWithout,
   entryName,
   exitName,
+  vehicleClassId,
   tripType,
   commuteDays,
   hasTransponder: initialTransponder,
@@ -23,6 +31,7 @@ export function CommutePageClient({
   estimateWithout: CommuteEstimate;
   entryName: string;
   exitName: string;
+  vehicleClassId: VehicleClassId;
   tripType: TripType;
   commuteDays: DayOfWeek[];
   hasTransponder: boolean;
@@ -37,6 +46,8 @@ export function CommutePageClient({
   nearby: NearbyComparison;
 }) {
   const [hasTransponder, setHasTransponder] = useState(initialTransponder);
+
+  const vehicleClass = getVehicleClass({ id: vehicleClassId });
   const active = hasTransponder ? estimate : estimateWithout;
 
   return (
@@ -49,6 +60,7 @@ export function CommutePageClient({
         estimate={active}
         entryName={entryName}
         exitName={exitName}
+        vehicleClassId={vehicleClassId}
         tripType={tripType}
         commuteDays={commuteDays}
         hasTransponder={hasTransponder}
@@ -56,11 +68,13 @@ export function CommutePageClient({
         exitId={exitId}
         shareParams={shareParams}
       >
-        <Toggle
-          checked={hasTransponder}
-          onChange={setHasTransponder}
-          label="I have a transponder"
-        />
+        {vehicleClass.hasTransponderOption && (
+          <Toggle
+            checked={hasTransponder}
+            onChange={setHasTransponder}
+            label="I have a transponder"
+          />
+        )}
       </CommuteBreakdown>
 
       <NearbyComparisonView comparison={nearby} entryName={entryName} exitName={exitName} />
