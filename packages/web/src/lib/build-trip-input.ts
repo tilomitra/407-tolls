@@ -1,0 +1,25 @@
+import type { Query } from "@/lib/types";
+import { buildRouteInput } from "@/lib/load-toll-points";
+import { parseRoute, parseTimeSlot, parseVehicleClass, getString } from "@/lib/params";
+
+export function buildTripInput(routeParam: string, query: Query) {
+  const parsed = parseRoute(decodeURIComponent(routeParam));
+  if (!parsed) return null;
+
+  const vehicleClassId = parseVehicleClass(getString(query, "vehicleClass", "light"));
+  const resolved = buildRouteInput({
+    entryId: parsed.entryId,
+    exitId: parsed.exitId,
+    vehicleClassId,
+    hasTransponder: true,
+  });
+  if (!resolved.ok) return null;
+
+  const transponder = getString(query, "transponder", "true") !== "false";
+  const timeSlot = parseTimeSlot(
+    getString(query, "time", "7am"),
+    getString(query, "day", "weekday"),
+  );
+
+  return { ...parsed, ...resolved, transponder, timeSlot };
+}

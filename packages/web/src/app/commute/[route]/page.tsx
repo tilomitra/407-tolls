@@ -1,99 +1,38 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { computeCommuteEstimate, computeNearbyComparison, getVehicleClass } from "@407-etr/core";
-import type { WeekdaySlot, WeekendSlot, CommuteInput } from "@407-etr/core";
-import { buildRouteInput } from "@/lib/load-toll-points";
+import type { CommuteInput } from "@407-etr/core";
 import { interchanges } from "@/data";
-import {
-  VALID_WEEKDAY_SLOTS,
-  VALID_WEEKEND_SLOTS,
-  parseRoute,
-  parseSlot,
-  parseDays,
-  parseTripType,
-  parseVehicleClass,
-  getString,
-} from "@/lib/params";
+import type { Query } from "@/lib/types";
+import { parseRoute, getString } from "@/lib/params";
+import { buildCommuteInput } from "@/lib/build-commute-input";
 import { formatDollars, formatCommuteDays } from "@/lib/format";
+import { buildCommuteOgImageUrl, OG_SIZE } from "@/lib/og";
 import { CommutePageClient } from "./commute-page-client";
 
 // Next.js statically analyzes this value, so it must be a literal.
 export const revalidate = 86400;
-
-type Query = Record<string, string | string[] | undefined>;
-
-function buildCommuteInput(query: Query, transponder: boolean, entryId: string, exitId: string) {
-  const vehicleClassId = parseVehicleClass(getString(query, "vehicleClass", "light"));
-  const resolved = buildRouteInput({
-    entryId,
-    exitId,
-    vehicleClassId,
-    hasTransponder: transponder,
-  });
-  if (!resolved.ok) return null;
-
-  const tripType = parseTripType(getString(query, "tripType", "round_trip"));
-  const days = parseDays(getString(query, "days", "1,2,3,4,5"));
-  const goSlot = parseSlot(
-    getString(query, "departure", "7am"),
-    VALID_WEEKDAY_SLOTS,
-    "7am",
-  ) as WeekdaySlot;
-  const wkndGoSlot = parseSlot(
-    getString(query, "weekendDeparture", "10am"),
-    VALID_WEEKEND_SLOTS,
-    "10am",
-  ) as WeekendSlot;
-
-  const commuteInput: CommuteInput =
-    tripType === "round_trip"
-      ? {
-          tripType: "round_trip",
-          route: resolved.route,
-          goTimeSlot: { dayType: "weekday", slot: goSlot },
-          returnTimeSlot: {
-            dayType: "weekday",
-            slot: parseSlot(
-              getString(query, "return", "330pm"),
-              VALID_WEEKDAY_SLOTS,
-              "330pm",
-            ) as WeekdaySlot,
-          },
-          weekendGoTimeSlot: { dayType: "weekend_or_holiday", slot: wkndGoSlot },
-          weekendReturnTimeSlot: {
-            dayType: "weekend_or_holiday",
-            slot: parseSlot(
-              getString(query, "weekendReturn", "7pm"),
-              VALID_WEEKEND_SLOTS,
-              "7pm",
-            ) as WeekendSlot,
-          },
-          commuteDays: days,
-        }
-      : {
-          tripType: "one_way",
-          route: resolved.route,
-          goTimeSlot: { dayType: "weekday", slot: goSlot },
-          weekendGoTimeSlot: { dayType: "weekend_or_holiday", slot: wkndGoSlot },
-          commuteDays: days,
-        };
-
-  return { entry: resolved.entry, exit: resolved.exit, days, tripType, commuteInput };
-}
 
 interface PageProps {
   params: Promise<{ route: string }>;
   searchParams: Promise<Query>;
 }
 
-export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
-  const { route } = await params;
-  const query = await searchParams;
+function resolveCommute(route: string, query: Query) {
   const parsed = parseRoute(decodeURIComponent(route));
-  if (!parsed) return { title: "Commute not found" };
+  if (!parsed) return null;
 
   const transponder = getString(query, "transponder", "true") !== "false";
   const resolved = buildCommuteInput(query, transponder, parsed.entryId, parsed.exitId);
+  if (!resolved) return null;
+
+  return { ...resolved, parsed, transponder };
+}
+
+export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
+  const { route } = await params;
+  const query = await searchParams;
+  const resolved = resolveCommute(route, query);
   if (!resolved) return { title: "Commute not found" };
 
   const estimate = computeCommuteEstimate(resolved.commuteInput);
@@ -107,21 +46,25 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
     estimate.perMonthCents,
   )}/month for ${resolved.entry.name} to ${resolved.exit.name}. ${vehicleClass.name}, ${dayLabels}.`;
 
+  const ogImageUrl = buildCommuteOgImageUrl(route, query);
+
   return {
     title,
     description,
-    openGraph: { title, description, type: "website" },
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      images: [{ url: ogImageUrl, ...OG_SIZE, alt: title }],
+    },
+    twitter: { card: "summary_large_image" },
   };
 }
 
 export default async function CommutePage({ params, searchParams }: PageProps) {
   const { route } = await params;
   const query = await searchParams;
-  const parsed = parseRoute(decodeURIComponent(route));
-  if (!parsed) notFound();
-
-  const transponder = getString(query, "transponder", "true") !== "false";
-  const resolved = buildCommuteInput(query, true, parsed.entryId, parsed.exitId);
+  const resolved = resolveCommute(route, query);
   if (!resolved) notFound();
 
   const inputWith = resolved.commuteInput;
@@ -167,10 +110,10 @@ export default async function CommutePage({ params, searchParams }: PageProps) {
         vehicleClassId={inputWith.route.vehicleClassId}
         tripType={resolved.tripType}
         commuteDays={resolved.days}
-        hasTransponder={transponder}
+        hasTransponder={resolved.transponder}
         shareParams={shareParams}
-        entryId={parsed.entryId}
-        exitId={parsed.exitId}
+        entryId={resolved.parsed.entryId}
+        exitId={resolved.parsed.exitId}
         nearby={nearby}
       />
     </main>

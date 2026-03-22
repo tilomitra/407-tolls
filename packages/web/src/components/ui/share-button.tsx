@@ -9,19 +9,21 @@ export function ShareButton({ url }: { url?: string }) {
     const raw = url ?? window.location.href;
     const shareUrl = raw.startsWith("/") ? `${window.location.origin}${raw}` : raw;
 
-    // Use native share on mobile if available
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard API unavailable
+    }
+
     if (navigator.share) {
       try {
         await navigator.share({ url: shareUrl });
-        return;
       } catch {
-        // User cancelled or share failed, fall through to clipboard
+        // User cancelled share sheet.
       }
     }
-
-    await navigator.clipboard.writeText(shareUrl);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
   }, [url]);
 
   return (

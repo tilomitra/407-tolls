@@ -1,5 +1,8 @@
 import type { VehicleClassId, TripType, DayOfWeek } from "@407-etr/core";
 
+export type SearchParamValue = string | string[] | undefined;
+export type Query = Record<string, SearchParamValue>;
+
 export interface TollQueryParams {
   entryId: string;
   exitId: string;
