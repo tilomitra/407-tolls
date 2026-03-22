@@ -38,7 +38,7 @@ function buildBreakdown({
   hasTransponder: boolean;
 }): TollBreakdown {
   const perZone: ZoneTollDetail[] = new Array(zones.length);
-  let tollCents = 0;
+  let exactTollCents = 0;
 
   for (let i = 0; i < zones.length; i++) {
     const { zone, distanceKm } = zones[i]!;
@@ -49,10 +49,12 @@ function buildBreakdown({
       throw new Error(`Unknown rate key: ${key}`);
     }
 
-    const costCents = Math.round(rateCentsPerKm * distanceKm);
-    tollCents += costCents;
-    perZone[i] = { zone, distanceKm, rateCentsPerKm, costCents };
+    const exactCostCents = rateCentsPerKm * distanceKm;
+    exactTollCents += exactCostCents;
+    perZone[i] = { zone, distanceKm, rateCentsPerKm, costCents: Math.round(exactCostCents) };
   }
+
+  const tollCents = Math.round(exactTollCents);
 
   const appliedCameraCharge = hasTransponder ? 0 : vehicleClass.cameraChargeCents;
 
