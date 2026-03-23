@@ -4,7 +4,7 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
         <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-slate-400">
           <a
-            href="https://www.407etr.com/en/rate-chart-light"
+            href="https://www.407etr.com/en/rates"
             target="_blank"
             rel="noopener noreferrer"
             className="text-slate-500 hover:text-blue-600 transition-colors"
