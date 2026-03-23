@@ -8,6 +8,7 @@ import type {
 } from "@407-etr/core";
 import { VehicleClassIdSchema } from "@407-etr/core";
 import type { TollQueryParams, CommuteQueryParams } from "./types";
+import { buildSlugRoute } from "./slugs";
 
 export function requireParam(url: URL, key: string): string {
   const value = url.searchParams.get(key);
@@ -39,12 +40,6 @@ export const VALID_WEEKDAY_SLOTS = new Set<string>([
   "9pm",
 ]);
 export const VALID_WEEKEND_SLOTS = new Set<string>(["830am", "10am", "7pm", "9pm"]);
-
-export function parseRoute(route: string): { entryId: string; exitId: string } | null {
-  const match = route.match(/^(.+)-to-(.+)$/);
-  if (!match) return null;
-  return { entryId: match[1]!, exitId: match[2]! };
-}
 
 export function parseTimeSlot(time: string, day: string): ResolvedTimeSlot {
   if (day === "weekend") {
@@ -114,9 +109,9 @@ export function buildCommuteApiUrl(params: CommuteQueryParams): string {
 }
 
 export function buildTripShareUrl(params: TollQueryParams): string {
-  return `/trip/${params.entryId}-to-${params.exitId}?${buildTollSearchParams(params)}`;
+  return `/trip/${buildSlugRoute(params.entryId, params.exitId)}?${buildTollSearchParams(params)}`;
 }
 
 export function buildCommuteShareUrl(params: CommuteQueryParams): string {
-  return `/commute/${params.entryId}-to-${params.exitId}?${buildCommuteSearchParams(params)}`;
+  return `/commute/${buildSlugRoute(params.entryId, params.exitId)}?${buildCommuteSearchParams(params)}`;
 }

@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 import { computeCommuteEstimate } from "@407-etr/core";
-import { parseRoute } from "@/lib/params";
+import { resolveSlugRoute } from "@/lib/slugs";
 import { buildCommuteInput } from "@/lib/build-commute-input";
 import { formatDollars, formatLargeDollars, formatCommuteDays, formatTimeSlot } from "@/lib/format";
 import { OG_SIZE, OG_MAX_NAME_LENGTH, loadFonts, OgDefault, OgCard, OgBadge, truncate, searchParamsToQuery } from "@/lib/og";
@@ -12,7 +12,7 @@ export async function GET(req: Request) {
   const routeParam = searchParams.get("route");
   if (!routeParam) return OgDefault();
 
-  const parsed = parseRoute(decodeURIComponent(routeParam));
+  const parsed = resolveSlugRoute(decodeURIComponent(routeParam));
   if (!parsed) return OgDefault();
 
   const query = searchParamsToQuery(searchParams);

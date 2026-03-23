@@ -1,9 +1,10 @@
 import type { Query } from "@/lib/types";
 import { buildRouteInput } from "@/lib/load-toll-points";
-import { parseRoute, parseTimeSlot, parseVehicleClass, getString } from "@/lib/params";
+import { resolveSlugRoute } from "@/lib/slugs";
+import { parseTimeSlot, parseVehicleClass, getString } from "@/lib/params";
 
 export function buildTripInput(routeParam: string, query: Query) {
-  const parsed = parseRoute(decodeURIComponent(routeParam));
+  const parsed = resolveSlugRoute(decodeURIComponent(routeParam));
   if (!parsed) return null;
 
   const vehicleClassId = parseVehicleClass(getString(query, "vehicleClass", "light"));

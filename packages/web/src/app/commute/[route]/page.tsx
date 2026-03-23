@@ -4,7 +4,8 @@ import { computeCommuteEstimate, computeNearbyComparison, getVehicleClass } from
 import type { CommuteInput } from "@407-etr/core";
 import { interchanges } from "@/data";
 import type { Query } from "@/lib/types";
-import { parseRoute, getString } from "@/lib/params";
+import { resolveSlugRoute } from "@/lib/slugs";
+import { getString } from "@/lib/params";
 import { buildCommuteInput } from "@/lib/build-commute-input";
 import { formatDollars, formatCommuteDays } from "@/lib/format";
 import { buildCommuteOgImageUrl, OG_SIZE } from "@/lib/og";
@@ -19,7 +20,7 @@ interface PageProps {
 }
 
 function resolveCommute(route: string, query: Query) {
-  const parsed = parseRoute(decodeURIComponent(route));
+  const parsed = resolveSlugRoute(decodeURIComponent(route));
   if (!parsed) return null;
 
   const transponder = getString(query, "transponder", "true") !== "false";
