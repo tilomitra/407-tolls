@@ -53,8 +53,7 @@ export default async function TripPage({ params, searchParams }: PageProps) {
   const trip = buildTripInput((await params).route, await searchParams);
   if (!trip) notFound();
 
-  // Pre-compute both transponder variants so the client can toggle instantly
-  const routeWith = trip.route;
+  const routeWith = { ...trip.route, hasTransponder: true };
   const routeWithout = { ...trip.route, hasTransponder: false };
 
   const resultWith = calculateToll({ ...routeWith, timeSlot: trip.timeSlot });

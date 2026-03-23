@@ -68,10 +68,14 @@ export default async function CommutePage({ params, searchParams }: PageProps) {
   const resolved = resolveCommute(route, query);
   if (!resolved) notFound();
 
-  const inputWith = resolved.commuteInput;
+  const base = resolved.commuteInput;
+  const inputWith: CommuteInput = {
+    ...base,
+    route: { ...base.route, hasTransponder: true },
+  };
   const inputWithout: CommuteInput = {
-    ...inputWith,
-    route: { ...inputWith.route, hasTransponder: false },
+    ...base,
+    route: { ...base.route, hasTransponder: false },
   };
 
   const estimate = computeCommuteEstimate(inputWith);
