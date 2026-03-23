@@ -15,6 +15,16 @@
 
 ## Next up
 
+### Recent routes history
+
+Save recently viewed routes to localStorage so users can quickly re-check
+past trip and commute lookups without re-entering interchanges.
+
+### PWA support
+
+Add a web app manifest so mobile users can "Add to Home Screen" for
+quick access. Include app name, icons, and theme color.
+
 ### Schedule shift savings
 
 Show what adjacent time slots cost so people with flexible schedules
