@@ -4,7 +4,7 @@ export function Header() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6">
         <a href="/" className="group">
           <h1 className="flex items-center gap-2 text-lg font-semibold tracking-tight">
-            <span className="rounded-md bg-[#1b365d] px-1.5 py-0.5 text-sm font-bold text-white">407</span>
+            <img src="/favicon.svg" alt="407" className="h-7 w-7 rounded" />
             <span className="text-slate-900 group-hover:text-blue-600 transition-colors">ETR Savings Tool</span>
           </h1>
         </a>

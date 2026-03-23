@@ -21,12 +21,16 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "407 ETR Toll Calculator — Estimate Your Trip & Commute Cost",
+    default: "407 ETR Toll Calculator — Estimate Trip & Commute Costs",
     template: "%s | 407 ETR Toll Calculator",
   },
   description:
     "Calculate 407 ETR toll costs for any route. Compare transponder savings, estimate commute costs, and find the cheapest on-ramps.",
-  icons: { icon: "/favicon.svg" },
+  icons: {
+    icon: "/favicon.svg",
+    apple: "/apple-icon.png",
+  },
+  manifest: "/manifest.json",
   openGraph: {
     type: "website",
     siteName: "407 ETR Toll Calculator",

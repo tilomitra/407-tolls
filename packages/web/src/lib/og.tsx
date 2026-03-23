@@ -195,7 +195,7 @@ export function OgCard({
           }}
         >
           <span style={{ fontSize: 22, fontWeight: 700, color: "#3b82f6", letterSpacing: 2 }}>
-            407 ETR
+            407 ETR Calculator
           </span>
           <span style={{ fontSize: 17, fontWeight: 600, color: "#64748b" }}>{label}</span>
         </div>

@@ -3,7 +3,9 @@
 ## Done
 
 - Time-of-day chart with cheapest slot highlighted
+- Schedule shift savings (visible in time-of-day chart)
 - Commute estimator (monthly/yearly, holiday-aware)
+- Annual cost summary (per month, per year, transponder savings in commute breakdown)
 - Shareable links with OG metadata for trips and commutes
 - Transponder toggle with per-class charges
 - Vehicle classes (motorcycle, light, medium, heavy single, heavy multi)
@@ -17,49 +19,32 @@
 
 ### Recent routes history
 
-Save recently viewed routes to localStorage so users can quickly re-check
-past trip and commute lookups without re-entering interchanges.
+Save recently viewed routes to localStorage so users can quickly
+re-check past lookups without re-entering interchanges.
 
 ### PWA support
 
-Add a web app manifest so mobile users can "Add to Home Screen" for
-quick access. Include app name, icons, and theme color.
-
-### Schedule shift savings
-
-Show what adjacent time slots cost so people with flexible schedules
-can see if leaving 10 minutes earlier actually saves anything.
-The time-of-day chart already computes every slot — just surface the delta.
+Web app manifest so mobile users can add to home screen.
 
 ### 407 vs 401
 
 Toll + time on the 407 vs free but slower 401. Cost per minute saved.
-Needs Google Directions API. Comparison endpoint exists at `/api/compare`.
+Needs a directions API for drive times.
 
 ### Bill verifier
 
-Paste your 407 bill details, we recalculate and flag any discrepancies.
-Start with manual entry (interchange, date, time). OCR later.
-
-### Annual cost summary
-
-Big-picture view of what the 407 costs you per year. Yearly total,
-cost per km, transponder savings. Shareable card format.
+Paste your 407 bill details, we recalculate and flag discrepancies.
+Manual entry first (interchange, date, time). OCR later.
 
 ### Carpool split
 
-Split the toll 2–4 ways. Per-person cost for trips and commutes.
+Split the toll 2-4 ways. Per-person cost for trips and commutes.
 
 ## Later
 
 ### Rate change impact
 
-When new rates drop in January, show how your saved commute is affected.
-Diff current vs previous rate tables.
-
-### Cost comparisons
-
-Put yearly toll in perspective — equivalent tanks of gas, flights, etc.
+When new rates drop in January, show how your saved commute changes.
 
 ### Community distance corrections
 
