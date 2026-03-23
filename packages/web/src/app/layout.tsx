@@ -1,7 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Header } from "@/components/ui/header";
 import { Footer } from "@/components/ui/footer";
+import { BASE_URL } from "@/lib/constants";
 import "./globals.css";
 
 const inter = Inter({
@@ -9,10 +11,26 @@ const inter = Inter({
   display: "swap",
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0b1222",
+};
+
 export const metadata: Metadata = {
-  title: "407 ETR Savings Tool",
-  description: "Find cheaper on-ramps on the 407 ETR and see how much you could save.",
+  metadataBase: new URL(BASE_URL),
+  title: {
+    default: "407 ETR Toll Calculator — Estimate Your Trip & Commute Cost",
+    template: "%s | 407 ETR Toll Calculator",
+  },
+  description:
+    "Calculate 407 ETR toll costs for any route. Compare transponder savings, estimate commute costs, and find the cheapest on-ramps.",
   icons: { icon: "/favicon.svg" },
+  openGraph: {
+    type: "website",
+    siteName: "407 ETR Toll Calculator",
+    images: [{ url: "/api/og/home", width: 1200, height: 630 }],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -22,6 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         {children}
         <Footer />
+        <SpeedInsights />
       </body>
     </html>
   );

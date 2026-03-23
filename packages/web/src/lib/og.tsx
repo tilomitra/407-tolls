@@ -46,24 +46,33 @@ export function buildCommuteOgImageUrl(route: string, query: Query): string {
   return buildOgImageUrl("commute", route, query);
 }
 
-export function OgFallback() {
+export function OgDefault() {
   return new ImageResponse(
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: "100%",
-        height: "100%",
-        backgroundColor: "#0b1222",
-        color: "#ffffff",
-        fontSize: 56,
-        fontFamily: "Inter",
-        fontWeight: 700,
-      }}
-    >
-      407 ETR
-    </div>,
+    <OgCard
+      label="Toll Calculator"
+      entryName=""
+      exitName=""
+      priceContent={
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
+          <span
+            style={{
+              fontSize: 56,
+              fontWeight: 700,
+              color: "#ffffff",
+              lineHeight: 1.2,
+              textAlign: "center",
+            }}
+          >
+            Calculate Your Toll
+          </span>
+          <span style={{ fontSize: 22, fontWeight: 600, color: "#64748b", textAlign: "center" }}>
+            Estimate trips, commute costs, and transponder savings
+          </span>
+        </div>
+      }
+      pills={[]}
+      ctaText="Try it free →"
+    />,
     OG_SIZE,
   );
 }
@@ -191,18 +200,20 @@ export function OgCard({
           <span style={{ fontSize: 17, fontWeight: 600, color: "#64748b" }}>{label}</span>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <span style={{ fontSize: 36, fontWeight: 700, color: "#ffffff" }}>{entryName}</span>
-          {roundTrip ? (
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-              <span style={{ fontSize: 18, fontWeight: 700, color: "#3b82f6" }}>→</span>
-              <span style={{ fontSize: 18, fontWeight: 700, color: "#818cf8" }}>←</span>
-            </div>
-          ) : (
-            <span style={{ fontSize: 22, fontWeight: 700, color: "#3b82f6" }}>→</span>
-          )}
-          <span style={{ fontSize: 36, fontWeight: 700, color: "#ffffff" }}>{exitName}</span>
-        </div>
+        {entryName && exitName && (
+          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            <span style={{ fontSize: 36, fontWeight: 700, color: "#ffffff" }}>{entryName}</span>
+            {roundTrip ? (
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+                <span style={{ fontSize: 18, fontWeight: 700, color: "#3b82f6" }}>→</span>
+                <span style={{ fontSize: 18, fontWeight: 700, color: "#818cf8" }}>←</span>
+              </div>
+            ) : (
+              <span style={{ fontSize: 22, fontWeight: 700, color: "#3b82f6" }}>→</span>
+            )}
+            <span style={{ fontSize: 36, fontWeight: 700, color: "#ffffff" }}>{exitName}</span>
+          </div>
+        )}
 
         <div
           style={{

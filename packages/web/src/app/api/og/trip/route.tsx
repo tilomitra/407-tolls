@@ -2,17 +2,17 @@ import { ImageResponse } from "next/og";
 import { calculateToll, getVehicleClass } from "@407-etr/core";
 import { buildTripInput } from "@/lib/build-trip-input";
 import { formatDollars, formatTimeSlot } from "@/lib/format";
-import { OG_SIZE, OG_MAX_NAME_LENGTH, loadFonts, OgFallback, OgCard, OgBadge, truncate, searchParamsToQuery } from "@/lib/og";
+import { OG_SIZE, OG_MAX_NAME_LENGTH, loadFonts, OgDefault, OgCard, OgBadge, truncate, searchParamsToQuery } from "@/lib/og";
 
 export const runtime = "nodejs";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const routeParam = searchParams.get("route");
-  if (!routeParam) return OgFallback();
+  if (!routeParam) return OgDefault();
 
   const trip = buildTripInput(routeParam, searchParamsToQuery(searchParams));
-  if (!trip) return OgFallback();
+  if (!trip) return OgDefault();
 
   const result = calculateToll({
     ...trip.route,

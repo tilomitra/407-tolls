@@ -3,22 +3,22 @@ import { computeCommuteEstimate } from "@407-etr/core";
 import { parseRoute } from "@/lib/params";
 import { buildCommuteInput } from "@/lib/build-commute-input";
 import { formatDollars, formatLargeDollars, formatCommuteDays, formatTimeSlot } from "@/lib/format";
-import { OG_SIZE, OG_MAX_NAME_LENGTH, loadFonts, OgFallback, OgCard, OgBadge, truncate, searchParamsToQuery } from "@/lib/og";
+import { OG_SIZE, OG_MAX_NAME_LENGTH, loadFonts, OgDefault, OgCard, OgBadge, truncate, searchParamsToQuery } from "@/lib/og";
 
 export const runtime = "nodejs";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const routeParam = searchParams.get("route");
-  if (!routeParam) return OgFallback();
+  if (!routeParam) return OgDefault();
 
   const parsed = parseRoute(decodeURIComponent(routeParam));
-  if (!parsed) return OgFallback();
+  if (!parsed) return OgDefault();
 
   const query = searchParamsToQuery(searchParams);
   const transponder = searchParams.get("transponder") !== "false";
   const resolved = buildCommuteInput(query, transponder, parsed.entryId, parsed.exitId);
-  if (!resolved) return OgFallback();
+  if (!resolved) return OgDefault();
 
   const estimate = computeCommuteEstimate(resolved.commuteInput);
 
