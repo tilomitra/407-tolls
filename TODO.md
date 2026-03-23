@@ -2,64 +2,60 @@
 
 ## Done
 
-- Time-of-day cost chart
-- Monthly/yearly commute estimator with holiday-aware scheduling
-- Shareable trip and commute links with OG tags
-- Transponder toggle on shared pages
-
-## In progress
-
-- UI/UX polish (mobile responsiveness, searchable interchange picker)
+- Time-of-day chart with cheapest slot highlighted
+- Commute estimator (monthly/yearly, holiday-aware)
+- Shareable links with OG metadata for trips and commutes
+- Transponder toggle with per-class charges
+- Vehicle classes (motorcycle, light, medium, heavy single, heavy multi)
+- One-way trips in commute estimator
+- Nearby interchange comparison with savings
+- Searchable interchange picker
+- Interactive map with zones, gantries, and route highlighting
+- Swap entry/exit
 
 ## Next up
 
-### Nearby interchange comparison (commute)
+### Schedule shift savings
 
-"Enter at Goreway instead of Highway 410, save $80/month for 2 extra minutes."
-Show 2-3 nearby on-ramp alternatives with monthly cost and time tradeoffs.
-Biggest differentiator. No other tool does this.
+Show what adjacent time slots cost so people with flexible schedules
+can see if leaving 10 minutes earlier actually saves anything.
+The time-of-day chart already computes every slot — just surface the delta.
 
-### Schedule shift savings (commute)
+### 407 vs 401
 
-"Leave 10 minutes earlier (before 7am) and save $X/day = $Y/month."
-Show the cost of adjacent time slots so commuters with flexible schedules
-can see if a small shift saves real money.
-
-### 407 vs 401 comparison
-
-Compare 407 toll + travel time against the 401 (free, slower).
-Show cost per minute saved. Needs Google Directions API for drive times.
+Toll + time on the 407 vs free but slower 401. Cost per minute saved.
+Needs Google Directions API. Comparison endpoint exists at `/api/compare`.
 
 ### Bill verifier
 
-Upload or paste a 407 ETR bill. We recalculate and flag discrepancies.
-"Your bill says $12.97, we calculate $12.97, matches."
-Could use OCR (photo upload) or manual entry.
+Paste your 407 bill details, we recalculate and flag any discrepancies.
+Start with manual entry (interchange, date, time). OCR later.
 
-### One-way trip support
+### Annual cost summary
 
-Some users only take the 407 one direction (e.g. morning only,
-return via 401). The commute estimator assumes round trips.
+Big-picture view of what the 407 costs you per year. Yearly total,
+cost per km, transponder savings. Shareable card format.
+
+### Carpool split
+
+Split the toll 2–4 ways. Per-person cost for trips and commutes.
 
 ## Later
 
 ### Rate change impact
 
-When new rates drop each January, show how saved commutes are affected.
-"Your daily commute goes up $0.42 this year."
+When new rates drop in January, show how your saved commute is affected.
+Diff current vs previous rate tables.
+
+### Cost comparisons
+
+Put yearly toll in perspective — equivalent tanks of gas, flights, etc.
 
 ### Community distance corrections
 
-Let users submit actual bill data (entry, exit, billed distance).
-Once enough submissions agree, calibrate our distances.
-Crowdsourced accuracy without needing proprietary gantry data.
+Users submit bill data (entry, exit, billed distance) to crowdsource
+more accurate distances.
 
 ### Natural language search
 
-"How much is Goreway to Weston at 7am?" parsed into a toll lookup.
-Could use an LLM or simple keyword extraction.
-
-### Bill photo verification
-
-Take a photo of a 407 ETR bill, OCR extracts trip details,
-we compare against our calculation and flag overcharges.
+"QEW to Weston at 7am?" parsed into a toll lookup.

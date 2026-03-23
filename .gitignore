@@ -5,3 +5,6 @@ dist/
 .env
 .env.local
 *.tsbuildinfo
+
+# Turborepo
+.turbo
