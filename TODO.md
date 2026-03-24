@@ -15,6 +15,9 @@
 - Interactive map with zones, gantries, and route highlighting
 - Swap entry/exit
 - PWA support (manifest, add to home screen)
+- Auto-calculate on input change (debounced)
+- Clickable map interchanges (entry/exit selection)
+- Clickable nearby suggestions
 
 ## Next up
 
@@ -38,11 +41,19 @@ as the new entry/exit and recalculate instantly.
 Show route summary (entry → exit, distance, zones) in the results
 panel before the user calculates. Replaces the empty state.
 
-### Auto-calculate on input change
+### Client-side calculation
 
-Remove the submit button. Debounced useEffect watches all form
-values and auto-fetches when both entry/exit are set. Covers both
-single trips and commutes.
+Move toll and commute calculations from API calls to client-side.
+The core package already has calculateToll and computeCommuteEstimate.
+Running them directly eliminates network latency, API calls, and
+edge requests. Keep API routes for shared pages and OG images.
+
+### Clickable suggestions on shared commute page
+
+On the shared commute page (/commute/...), clicking a nearby
+suggestion should navigate to the homepage with the new interchange
+pre-filled. Requires URL-based state passing since the shared page
+has no form.
 
 ### Trip A vs Trip B comparison
 

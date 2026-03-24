@@ -5,16 +5,25 @@ import { formatDollars } from "@/lib/format";
 function AlternativeRow({
   alternative,
   currentName,
+  onClick,
 }: {
   alternative: NearbyAlternative;
   currentName: string;
+  onClick?: () => void;
 }) {
   const savingsPerMonth = Math.abs(alternative.deltaMonthCents);
   const extraKm = alternative.deltaDistanceKm;
   const label = alternative.role === "entry" ? "Enter at" : "Exit at";
+  const Tag = onClick ? "button" : "div";
 
   return (
-    <div className="flex items-center justify-between gap-4 py-3">
+    <Tag
+      type={onClick ? "button" : undefined}
+      onClick={onClick}
+      className={`flex w-full items-center justify-between gap-4 py-3 text-left ${
+        onClick ? "-mx-2 px-2 rounded-lg transition-colors hover:bg-blue-50 active:bg-blue-100 cursor-pointer" : ""
+      }`}
+    >
       <div className="min-w-0">
         <p className="text-sm font-medium text-slate-900">
           {label} <span className="text-blue-600">{alternative.interchange.name}</span>
@@ -36,7 +45,7 @@ function AlternativeRow({
           -{formatDollars(savingsPerMonth * 12)}/yr
         </p>
       </div>
-    </div>
+    </Tag>
   );
 }
 
@@ -44,10 +53,12 @@ export function NearbyComparisonView({
   comparison,
   entryName,
   exitName,
+  onAlternativeClick,
 }: {
   comparison: NearbyComparison;
   entryName: string;
   exitName: string;
+  onAlternativeClick?: (role: "entry" | "exit", interchangeId: string) => void;
 }) {
   if (comparison.alternatives.length === 0) {
     return (
@@ -83,6 +94,7 @@ export function NearbyComparisonView({
               key={`${alt.role}-${alt.interchange.id}`}
               alternative={alt}
               currentName={alt.role === "entry" ? entryName : exitName}
+              onClick={onAlternativeClick ? () => onAlternativeClick(alt.role, alt.interchange.id) : undefined}
             />
           ))}
         </div>

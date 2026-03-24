@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import type {
   TollResponse,
   CommuteEstimate,
@@ -18,7 +18,6 @@ import { getVehicleClass } from "@407-etr/core";
 import { Card, CardBody } from "../ui/card";
 import { SearchableSelect } from "../ui/searchable-select";
 import { StyledSelect } from "../ui/styled-select";
-import { Button } from "../ui/button";
 import { Toggle } from "../ui/toggle";
 import { RadioGroup } from "../ui/radio-group";
 import { VehicleClassSelector } from "./vehicle-class-selector";
@@ -268,8 +267,8 @@ export function RouteForm({
       : { dayType: "weekend_or_holiday", slot: weekendSlot };
   }
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function calculate() {
+    if (missingRoute || sameInterchange || routeError) return;
     setLoading(true);
     setError(null);
 
@@ -332,10 +331,28 @@ export function RouteForm({
     }
   }
 
+  // Auto-calculate with debounce when any input changes
+  const calculateRef = useRef(calculate);
+  calculateRef.current = calculate;
+
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => calculateRef.current(), 300);
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [
+    entryId, exitId, vehicleClassId, hasTransponder, mode,
+    dayType, weekdaySlot, weekendSlot,
+    tripType, commuteDays, goWeekdaySlot, returnWeekdaySlot,
+    goWeekendSlot, returnWeekendSlot,
+  ]);
+
   return (
     <Card>
       <CardBody>
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <div className="space-y-5">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <RadioGroup
               value={mode}
@@ -528,15 +545,6 @@ export function RouteForm({
             </div>
           )}
 
-          <Button
-            type="submit"
-            disabled={missingRoute || sameInterchange || !!routeError}
-            loading={loading}
-            className="w-full"
-          >
-            {mode === "commute" ? "Estimate Commute" : "Calculate Toll"}
-          </Button>
-
           {sameInterchange && (
             <p className="text-center text-xs text-amber-600">
               Entry and exit must be different interchanges.
@@ -550,7 +558,7 @@ export function RouteForm({
           {error && (
             <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>
           )}
-        </form>
+        </div>
       </CardBody>
     </Card>
   );

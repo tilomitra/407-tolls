@@ -239,6 +239,14 @@ export function ClientApp({
                 comparison={commuteResult.nearby}
                 entryName={commuteResult.entryName}
                 exitName={commuteResult.exitName}
+                onAlternativeClick={(role, id) => {
+                  if (role === "entry") {
+                     setEntryId(id);
+                  } else {
+                    setExitId(id);
+                  }
+                 
+                }}
               />
             </>
           ) : (
@@ -260,13 +268,11 @@ export function ClientApp({
                   </svg>
                 </div>
                 <p className="text-sm font-medium text-slate-500">
-                  {entryId && exitId ? "Ready to calculate" : "Select your route"}
+                  {entryId && exitId ? "Calculating..." : "Select your route"}
                 </p>
                 <p className="mt-1 text-xs text-slate-400">
                   {entryId && exitId
-                    ? mode === "commute"
-                      ? "Hit Estimate Commute to see the cost breakdown"
-                      : "Hit Calculate Toll to see the toll breakdown"
+                    ? "Crunching the numbers"
                     : "Pick entry and exit interchanges or click the map"}
                 </p>
               </div>
