@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useMemo } from "react";
+import { useEffect, useRef, useMemo, useState } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { TollPoint, Interchange } from "@407-etr/core";
@@ -25,23 +25,31 @@ export function HighwayMap({
   interchanges,
   highwayGeometry,
   selectedRoute,
+  onInterchangeClick,
+  entryId,
+  exitId,
 }: {
   gantries: TollPoint[];
   interchanges: Interchange[];
   highwayGeometry: Array<[number, number]>;
   selectedRoute: { entryId: string; exitId: string } | null;
+  onInterchangeClick?: (interchangeId: string) => void;
+  entryId?: string;
+  exitId?: string;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
-  const selectedRouteRef = useRef(selectedRoute);
-  selectedRouteRef.current = selectedRoute;
+  const [mapReady, setMapReady] = useState(false);
+  const onClickRef = useRef(onInterchangeClick);
+  onClickRef.current = onInterchangeClick;
+  const updateHighlightRef = useRef<((entry?: string, exit?: string) => void) | null>(null);
 
   const spatialIndex = useMemo(
     () => highwayGeometry.length > 0 ? new PolylineSpatialIndex(highwayGeometry) : null,
     [highwayGeometry],
   );
 
-  const updateRouteRef = useRef<(() => void) | null>(null);
+  const updateRouteRef = useRef<((route: { entryId: string; exitId: string } | null) => void) | null>(null);
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
@@ -260,12 +268,16 @@ export function HighwayMap({
         const noteHtml = note
           ? `<div style="font-size:10px;color:#f59e0b;font-weight:500;margin-top:2px">${note}</div>`
           : "";
+        const clickHint = onClickRef.current
+          ? `<div style="font-size:10px;color:#3b82f6;margin-top:3px">Click to select</div>`
+          : "";
         popup
           .setLngLat(f.geometry.coordinates.slice() as [number, number])
           .setHTML(
             `<div style="font-size:13px;font-weight:500">${f.properties.name}</div>` +
             `<div style="font-size:11px;color:#64748b">Zone ${f.properties.zone}</div>` +
-            noteHtml,
+            noteHtml +
+            clickHint,
           )
           .addTo(map);
       }
@@ -275,24 +287,86 @@ export function HighwayMap({
         popup.remove();
       }
 
-      // Attach hover to all interchange layers
-      for (const layerId of ["interchanges-dots", "interchanges-partial-inner"]) {
+      // Attach hover and click to all interchange layers
+      const icLayers = ["interchanges-dots", "interchanges-partial-inner"];
+      for (const layerId of icLayers) {
         map.on("mouseenter", layerId, showPopup);
         map.on("mouseleave", layerId, hidePopup);
+        map.on("click", layerId, (e) => {
+          const id = e.features?.[0]?.properties.id;
+          if (id && onClickRef.current) onClickRef.current(id);
+        });
       }
 
-      // Update route function
-      updateRouteRef.current = () => {
-        const route = selectedRouteRef.current;
+      // Entry/exit selection markers (green A, red B)
+      map.addSource("selection-markers", {
+        type: "geojson",
+        data: { type: "FeatureCollection", features: [] },
+      });
+      map.addLayer({
+        id: "selection-markers-ring",
+        type: "circle",
+        source: "selection-markers",
+        paint: {
+          "circle-radius": ["interpolate", ["linear"], ["zoom"], 8, 10, 12, 14],
+          "circle-color": ["get", "color"],
+          "circle-stroke-color": "#ffffff",
+          "circle-stroke-width": 3,
+        },
+      });
+      map.addLayer({
+        id: "selection-markers-labels",
+        type: "symbol",
+        source: "selection-markers",
+        layout: {
+          "text-field": ["get", "label"],
+          "text-size": 12,
+          "text-font": ["Open Sans Bold"],
+          "text-allow-overlap": true,
+        },
+        paint: { "text-color": "#ffffff" },
+      });
+
+      updateHighlightRef.current = (entry?: string, exit?: string) => {
+        const src = map.getSource("selection-markers") as maplibregl.GeoJSONSource;
+        const features: GeoJSON.Feature[] = [];
+        if (entry) {
+          const ic = interchanges.find((i) => i.id === entry);
+          if (ic) {
+            features.push({
+              type: "Feature",
+              geometry: { type: "Point", coordinates: [ic.location.lng, ic.location.lat] },
+              properties: { label: "A", color: "#16a34a" },
+            });
+          }
+        }
+        if (exit) {
+          const ic = interchanges.find((i) => i.id === exit);
+          if (ic) {
+            features.push({
+              type: "Feature",
+              geometry: { type: "Point", coordinates: [ic.location.lng, ic.location.lat] },
+              properties: { label: "B", color: "#dc2626" },
+            });
+          }
+        }
+        src.setData({ type: "FeatureCollection", features });
+      };
+
+      // Draws the blue route line and A/B markers on the map.
+      // Called by useEffect whenever selectedRoute changes.
+      updateRouteRef.current = (route) => {
         const routeSource = map.getSource("selected-route") as maplibregl.GeoJSONSource;
         const markerSource = map.getSource("route-markers") as maplibregl.GeoJSONSource;
 
+        // No route selected — clear the line and markers
         if (!route) {
           routeSource.setData({ type: "FeatureCollection", features: [] });
           markerSource.setData({ type: "FeatureCollection", features: [] });
           return;
         }
 
+        // Look up the two interchanges by ID
         const entry = interchanges.find((ic) => ic.id === route.entryId);
         const exit = interchanges.find((ic) => ic.id === route.exitId);
         if (!entry || !exit) return;
@@ -300,12 +374,17 @@ export function HighwayMap({
         const entryCoord: [number, number] = [entry.location.lng, entry.location.lat];
         const exitCoord: [number, number] = [exit.location.lng, exit.location.lat];
 
+        // Find the closest points on the highway polyline to snap the route to the road.
+        // spatialIndex lets us find the nearest point without looping through every coordinate.
         const entryIdx = spatialIndex ? spatialIndex.findNearest(entryCoord) : 0;
         const exitIdx = spatialIndex ? spatialIndex.findNearest(exitCoord) : 0;
+
+        // Extract the highway segment between entry and exit
         const startIdx = Math.min(entryIdx, exitIdx);
         const endIdx = Math.max(entryIdx, exitIdx);
         const segment = highwayGeometry.slice(startIdx, endIdx + 1);
 
+        // Draw the blue route line along the highway
         if (segment.length >= 2) {
           routeSource.setData({
             type: "Feature",
@@ -314,6 +393,7 @@ export function HighwayMap({
           });
         }
 
+        // Place A and B markers at entry and exit
         markerSource.setData({
           type: "FeatureCollection",
           features: [
@@ -322,6 +402,7 @@ export function HighwayMap({
           ],
         });
 
+        // Zoom the map to fit the route with padding
         const lngs = segment.map((p) => p[0]);
         const lats = segment.map((p) => p[1]);
         if (lngs.length > 0) {
@@ -332,7 +413,7 @@ export function HighwayMap({
         }
       };
 
-      updateRouteRef.current();
+      setMapReady(true);
     });
 
     mapRef.current = map;
@@ -340,8 +421,12 @@ export function HighwayMap({
   }, [gantries, interchanges, highwayGeometry]);
 
   useEffect(() => {
-    updateRouteRef.current?.();
-  }, [selectedRoute]);
+    if (mapReady) updateRouteRef.current?.(selectedRoute);
+  }, [selectedRoute, mapReady]);
+
+  useEffect(() => {
+    if (mapReady) updateHighlightRef.current?.(entryId, exitId);
+  }, [entryId, exitId, mapReady]);
 
   return (
     <div ref={containerRef} className="h-[280px] w-full rounded-t-xl sm:h-[320px]" />

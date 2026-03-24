@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { useLocalStorage } from "@/lib/use-local-storage";
 import type {
   TollPoint,
   Interchange,
@@ -30,6 +31,9 @@ export function ClientApp({
   interchanges: Interchange[];
   highwayGeometry: Array<[number, number]>;
 }) {
+  const [entryId, setEntryId] = useLocalStorage("407-entry", "25");
+  const [exitId, setExitId] = useLocalStorage("407-exit", "33");
+  const [activeField, setActiveField] = useState<"entry" | "exit">("entry");
   const [mode, setMode] = useState<FormMode>("single");
   const [tollResult, setTollResult] = useState<{
     data: TollResponse;
@@ -58,6 +62,12 @@ export function ClientApp({
     entryId: string;
     exitId: string;
   } | null>(null);
+
+  useEffect(() => {
+    setTollResult(null);
+    setCommuteResult(null);
+    setSelectedRoute(null);
+  }, [entryId, exitId]);
 
   function handleTollResult({
     result,
@@ -124,6 +134,32 @@ export function ClientApp({
     setSelectedRoute({ entryId, exitId });
   }
 
+  const handleInterchangeClick = useCallback(
+    (interchangeId: string) => {
+      // Clicking a selected entry deselects it
+      if (interchangeId === entryId) {
+        setEntryId("");
+        setActiveField("entry");
+        return;
+      }
+      // Clicking a selected exit deselects it
+      if (interchangeId === exitId) {
+        setExitId("");
+        setActiveField(entryId ? "exit" : "entry");
+        return;
+      }
+      // Fill entry first if empty, otherwise use activeField
+      if (!entryId || activeField === "entry") {
+        setEntryId(interchangeId);
+        setActiveField("exit");
+      } else {
+        setExitId(interchangeId);
+        setActiveField("entry");
+      }
+    },
+    [activeField, entryId, exitId, setEntryId, setExitId],
+  );
+
   function handleModeChange(newMode: FormMode) {
     setMode(newMode);
     setTollResult(null);
@@ -142,6 +178,9 @@ export function ClientApp({
               interchanges={interchanges}
               highwayGeometry={highwayGeometry}
               selectedRoute={selectedRoute}
+              onInterchangeClick={handleInterchangeClick}
+              entryId={entryId}
+              exitId={exitId}
             />
           </div>
           <div className="px-5 py-3">
@@ -154,6 +193,10 @@ export function ClientApp({
         <div className="lg:col-span-2">
           <RouteForm
             interchanges={interchanges}
+            entryId={entryId}
+            exitId={exitId}
+            onEntryChange={(id) => { setEntryId(id); setActiveField("exit"); }}
+            onExitChange={(id) => { setExitId(id); setActiveField("entry"); }}
             mode={mode}
             onModeChange={handleModeChange}
             onTollResult={handleTollResult}
@@ -216,11 +259,15 @@ export function ClientApp({
                     />
                   </svg>
                 </div>
-                <p className="text-sm font-medium text-slate-500">Select your route</p>
+                <p className="text-sm font-medium text-slate-500">
+                  {entryId && exitId ? "Ready to calculate" : "Select your route"}
+                </p>
                 <p className="mt-1 text-xs text-slate-400">
-                  {mode === "commute"
-                    ? "Set your commute details to see the cost breakdown"
-                    : "Pick entry and exit interchanges to see the toll breakdown"}
+                  {entryId && exitId
+                    ? mode === "commute"
+                      ? "Hit Estimate Commute to see the cost breakdown"
+                      : "Hit Calculate Toll to see the toll breakdown"
+                    : "Pick entry and exit interchanges or click the map"}
                 </p>
               </div>
             </Card>

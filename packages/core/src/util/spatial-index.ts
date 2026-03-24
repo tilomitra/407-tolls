@@ -21,7 +21,8 @@ export class PolylineSpatialIndex {
   findNearest(target: [number, number]): number {
     const targetLng = target[0];
 
-    // Binary search for the closest longitude
+    // Binary search on longitude. Close but not exact since
+    // same lng can be far in lat where the road curves.
     let lo = 0;
     let hi = this.sortedByLng.length - 1;
 
@@ -34,7 +35,7 @@ export class PolylineSpatialIndex {
       }
     }
 
-    // Scan a window around the match to find the true nearest by 2D distance
+    // Check 10 polyline points on each side by actual 2D distance.
     const scanRadius = 10;
     const scanStart = Math.max(0, lo - scanRadius);
     const scanEnd = Math.min(this.sortedByLng.length - 1, lo + scanRadius);
@@ -43,14 +44,15 @@ export class PolylineSpatialIndex {
     let bestDist = Infinity;
 
     for (let i = scanStart; i <= scanEnd; i++) {
-      const pointIdx = this.sortedByLng[i]!.idx;
-      const p = this.points[pointIdx]!;
-      const dx = p[0] - target[0];
-      const dy = p[1] - target[1];
-      const d = dx * dx + dy * dy;
-      if (d < bestDist) {
-        bestDist = d;
-        bestIdx = pointIdx;
+      const polylineIdx = this.sortedByLng[i]!.idx;
+      const coord = this.points[polylineIdx]!;
+      const dx = coord[0] - target[0];
+      const dy = coord[1] - target[1];
+      const dist = dx * dx + dy * dy;
+      
+      if (dist < bestDist) {
+        bestDist = dist;
+        bestIdx = polylineIdx;
       }
     }
 

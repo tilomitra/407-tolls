@@ -138,12 +138,20 @@ function DayPicker({
 
 export function RouteForm({
   interchanges,
+  entryId,
+  exitId,
+  onEntryChange,
+  onExitChange,
   onTollResult,
   onCommuteResult,
   mode,
   onModeChange,
 }: {
   interchanges: Interchange[];
+  entryId: string;
+  exitId: string;
+  onEntryChange: (id: string) => void;
+  onExitChange: (id: string) => void;
   onTollResult: (args: {
     result: TollResponse;
     entryId: string;
@@ -201,9 +209,6 @@ export function RouteForm({
 
   const currentSlot = resolveCurrentSlot();
 
-  // Default to Jane Street (25) and Highway 404 (33)
-  const [entryId, setEntryId] = useLocalStorage("407-entry", interchanges.length > 0 ? "25" : "");
-  const [exitId, setExitId] = useLocalStorage("407-exit", interchanges.length > 0 ? "33" : "");
   const [vehicleClassId, setVehicleClassId] = useLocalStorage<VehicleClassId>(
     "407-vehicle-class",
     "light",
@@ -232,7 +237,8 @@ export function RouteForm({
     [interchanges, entryId],
   );
   const exit = useMemo(() => interchanges.find((ic) => ic.id === exitId)!, [interchanges, exitId]);
-  const sameInterchange = entryId === exitId;
+  const missingRoute = !entryId || !exitId;
+  const sameInterchange = !missingRoute && entryId === exitId;
   const vehicleClass = getVehicleClass({ id: vehicleClassId });
 
   // Validate ramp access for the computed direction
@@ -379,7 +385,7 @@ export function RouteForm({
                 <SearchableSelect
                   options={interchangeOptions}
                   value={entryId}
-                  onChange={setEntryId}
+                  onChange={onEntryChange}
                   placeholder="Search interchanges..."
                   renderOption={renderInterchangeOption}
                 />
@@ -392,7 +398,7 @@ export function RouteForm({
                 <SearchableSelect
                   options={interchangeOptions}
                   value={exitId}
-                  onChange={setExitId}
+                  onChange={onExitChange}
                   placeholder="Search interchanges..."
                   renderOption={renderInterchangeOption}
                 />
@@ -402,8 +408,8 @@ export function RouteForm({
             <button
               type="button"
               onClick={() => {
-                setEntryId(exitId);
-                setExitId(entryId);
+                onEntryChange(exitId);
+                onExitChange(entryId);
               }}
               aria-label="Swap entry and exit"
               className="
@@ -524,7 +530,7 @@ export function RouteForm({
 
           <Button
             type="submit"
-            disabled={sameInterchange || !!routeError}
+            disabled={missingRoute || sameInterchange || !!routeError}
             loading={loading}
             className="w-full"
           >
