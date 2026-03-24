@@ -52,9 +52,17 @@ export function CommutePageClient({
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold text-slate-900">
-        {entryName} to {exitName}
-      </h2>
+      <div className="flex items-baseline justify-between gap-4">
+        <h2 className="text-xl font-semibold text-slate-900">
+          {entryName} to {exitName}
+        </h2>
+        <a
+          href="/"
+          className="shrink-0 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-500 transition-colors hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
+        >
+          Try your own commute →
+        </a>
+      </div>
 
       <CommuteBreakdown
         estimate={active}
@@ -79,21 +87,6 @@ export function CommutePageClient({
 
       <NearbyComparisonView comparison={nearby} entryName={entryName} exitName={exitName} />
 
-      <a
-        href="/"
-        className="flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
-      >
-        Estimate your commute
-        <svg
-          className="h-3.5 w-3.5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-        </svg>
-      </a>
     </div>
   );
 }
