@@ -252,7 +252,7 @@ export function OgCard({
             alignItems: "center",
           }}
         >
-          <span style={{ fontSize: 18, fontWeight: 700, color: "#3b82f6" }}>407etr.tools</span>
+          <span style={{ fontSize: 18, fontWeight: 700, color: "#3b82f6" }}>407tolls.com</span>
           <span style={{ fontSize: 15, fontWeight: 600, color: "#475569" }}>{ctaText}</span>
         </div>
       </div>

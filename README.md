@@ -1,8 +1,10 @@
-# 407 ETR Toll Calculator
+# 407 Tolls
 
-Estimate toll costs for Highway 407 ETR. Single trips, daily commutes, all five vehicle classes.
+Toll calculator for Highway 407 ETR. Single trips, daily commutes, all five vehicle classes.
 
-**Live:** [407-etr-web.vercel.app](https://407-etr-web.vercel.app)
+Open source and open to contributions.
+
+**Live:** [407tolls.com](https://www.407tolls.com)
 
 ## What it does
 
@@ -43,7 +45,7 @@ scripts/         Data pipeline (fetch interchanges, distances, gantries)
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+This project is open source. Bug reports, rate corrections, and feature PRs are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## Disclaimer
 

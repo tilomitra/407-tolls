@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for your interest in improving the 407 ETR Savings Tool.
+Thanks for your interest in contributing.
 
 ## Getting started
 

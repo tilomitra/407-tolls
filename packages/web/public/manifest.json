@@ -1,6 +1,6 @@
 {
-  "name": "407 ETR Savings Tool",
-  "short_name": "407 ETR",
+  "name": "407 Tolls",
+  "short_name": "407 Tolls",
   "description": "Calculate 407 ETR tolls and find cheaper routes.",
   "start_url": "/",
   "display": "standalone",
