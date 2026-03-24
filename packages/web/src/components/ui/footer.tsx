@@ -15,7 +15,7 @@ export function Footer() {
           <span>Not affiliated with 407 ETR</span>
           <span className="hidden sm:block h-3 w-px bg-slate-200" />
           <a
-            href="https://github.com/legacy/407-etr/issues"
+            href="https://github.com/legacy/407-tolls/issues"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-blue-600 transition-colors"

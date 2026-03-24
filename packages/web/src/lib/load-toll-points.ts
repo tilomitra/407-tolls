@@ -1,4 +1,4 @@
-import type { Interchange, OnRamp, Direction, RouteResult, VehicleClassId } from "@407-etr/core";
+import type { Interchange, OnRamp, Direction, RouteResult, VehicleClassId } from "@407-tolls/core";
 import { interchanges as rawInterchanges } from "@/data";
 
 let cachedInterchangeMap: Map<string, Interchange> | null = null;

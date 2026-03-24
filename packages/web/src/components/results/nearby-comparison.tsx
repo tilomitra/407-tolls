@@ -1,4 +1,4 @@
-import type { NearbyComparison, NearbyAlternative } from "@407-etr/core";
+import type { NearbyComparison, NearbyAlternative } from "@407-tolls/core";
 import { Card, CardBody } from "../ui/card";
 import { formatDollars } from "@/lib/format";
 

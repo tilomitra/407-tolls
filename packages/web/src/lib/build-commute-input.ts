@@ -1,4 +1,4 @@
-import type { WeekdaySlot, WeekendSlot, CommuteInput } from "@407-etr/core";
+import type { WeekdaySlot, WeekendSlot, CommuteInput } from "@407-tolls/core";
 import type { Query } from "@/lib/types";
 import { buildRouteInput } from "@/lib/load-toll-points";
 import {

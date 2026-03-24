@@ -40,7 +40,7 @@ importers:
 
   packages/web:
     dependencies:
-      '@407-etr/core':
+      '@407-tolls/core':
         specifier: workspace:*
         version: link:../core
       '@headlessui/react':
@@ -110,7 +110,7 @@ importers:
 
   scripts:
     dependencies:
-      '@407-etr/core':
+      '@407-tolls/core':
         specifier: workspace:*
         version: link:../packages/core
       zod:

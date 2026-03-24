@@ -12,7 +12,7 @@ import type {
   TripType,
   VehicleClassId,
   DayOfWeek,
-} from "@407-etr/core";
+} from "@407-tolls/core";
 import { HighwayMap } from "./map/highway-map";
 import { ZoneLegend } from "./map/zone-legend";
 import { RouteForm, type FormMode } from "./form/route-form";

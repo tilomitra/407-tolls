@@ -3,8 +3,8 @@
 import { useEffect, useRef, useMemo, useState } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-import type { TollPoint, Interchange } from "@407-etr/core";
-import { PolylineSpatialIndex } from "@407-etr/core";
+import type { TollPoint, Interchange } from "@407-tolls/core";
+import { PolylineSpatialIndex } from "@407-tolls/core";
 import { zoneColors, FREE_DOT_COLOR } from "@/lib/design/tokens";
 
 function getZoneColor(zone: number): string {

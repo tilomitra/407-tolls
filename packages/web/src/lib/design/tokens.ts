@@ -1,4 +1,4 @@
-import type { Zone } from "@407-etr/core";
+import type { Zone } from "@407-tolls/core";
 
 export const colors = {
   brand: {

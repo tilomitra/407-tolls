@@ -5,7 +5,7 @@
  *   Community-maintained, free, no API key required.
  *   Queries for motorway ways tagged "ref=407 ETR" within the GTA bounding box.
  *
- * Output: packages/web/src/data/407-etr-highway-geometry.json
+ * Output: packages/web/src/data/407-highway-geometry.json
  *   Array of [longitude, latitude] coordinate pairs (GeoJSON order).
  *   Only the eastbound carriageway is kept to produce a clean single polyline.
  *   Points are sorted west-to-east and deduplicated within ~20m.
@@ -19,7 +19,7 @@ import type { OverpassElement } from "./types";
 
 const OVERPASS_URL = "https://overpass-api.de/api/interpreter";
 const DEDUP_THRESHOLD = 0.0002; // ~20m in degrees
-const OUTPUT_PATH = join(process.cwd(), "packages/web/src/data/407-etr-highway-geometry.json");
+const OUTPUT_PATH = join(process.cwd(), "packages/web/src/data/407-highway-geometry.json");
 
 const QUERY = `
 [out:json][timeout:60];

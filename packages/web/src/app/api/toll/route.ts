@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { calculateToll, computeAllTimeSlotCosts } from "@407-etr/core";
-import type { WeekdaySlot, WeekendSlot } from "@407-etr/core";
+import { calculateToll, computeAllTimeSlotCosts } from "@407-tolls/core";
+import type { WeekdaySlot, WeekendSlot } from "@407-tolls/core";
 import { buildRouteInput } from "@/lib/load-toll-points";
 import {
   VALID_WEEKDAY_SLOTS,

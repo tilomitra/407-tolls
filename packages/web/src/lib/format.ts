@@ -1,5 +1,5 @@
-import type { DayOfWeek } from "@407-etr/core";
-import { DAY_NAMES } from "@407-etr/core";
+import type { DayOfWeek } from "@407-tolls/core";
+import { DAY_NAMES } from "@407-tolls/core";
 
 const WEEKDAYS: DayOfWeek[] = [1, 2, 3, 4, 5];
 

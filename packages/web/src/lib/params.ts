@@ -5,8 +5,8 @@ import type {
   DayOfWeek,
   TripType,
   VehicleClassId,
-} from "@407-etr/core";
-import { VehicleClassIdSchema } from "@407-etr/core";
+} from "@407-tolls/core";
+import { VehicleClassIdSchema } from "@407-tolls/core";
 import type { TollQueryParams, CommuteQueryParams } from "./types";
 import { buildSlugRoute } from "./slugs";
 

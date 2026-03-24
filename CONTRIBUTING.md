@@ -41,7 +41,7 @@ Keep PRs focused. One fix or feature per PR.
 
 ## Reporting issues
 
-Open a [GitHub issue](https://github.com/legacy/407-etr/issues). If you're reporting a toll discrepancy, include:
+Open a [GitHub issue](https://github.com/legacy/407-tolls/issues). If you're reporting a toll discrepancy, include:
 
 - Entry and exit interchanges
 - Vehicle class

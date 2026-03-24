@@ -8,8 +8,8 @@ import type {
   NearbyComparison,
   TripType,
   VehicleClassId,
-} from "@407-etr/core";
-import { getVehicleClass } from "@407-etr/core";
+} from "@407-tolls/core";
+import { getVehicleClass } from "@407-tolls/core";
 import { CommuteBreakdown } from "@/components/results/commute-breakdown";
 import { NearbyComparisonView } from "@/components/results/nearby-comparison";
 import { Toggle } from "@/components/ui/toggle";

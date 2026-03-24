@@ -1,5 +1,5 @@
 {
-  "name": "@407-etr/scripts",
+  "name": "@407-tolls/scripts",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -11,7 +11,7 @@
     "pipeline": "pnpm fetch && pnpm geocode && pnpm assign-zones && pnpm validate"
   },
   "dependencies": {
-    "@407-etr/core": "workspace:*",
+    "@407-tolls/core": "workspace:*",
     "zod": "^4.3.6"
   },
   "devDependencies": {

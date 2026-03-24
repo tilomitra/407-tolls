@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { CompareInputSchema, compareRoutes, inferDirection } from "@407-etr/core";
+import { CompareInputSchema, compareRoutes, inferDirection } from "@407-tolls/core";
 import { z } from "zod/v4";
 import { getOnRampsForDirection } from "@/lib/load-toll-points";
 import { getDirections } from "@/lib/directions";

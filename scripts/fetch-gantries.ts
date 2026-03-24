@@ -11,7 +11,7 @@
  * and enriches each gantry using our interchange data for zone assignment,
  * nearest-interchange naming, and free-section detection.
  *
- * Output: packages/web/src/data/407-etr-gantries.json
+ * Output: packages/web/src/data/407-gantries.json
  *
  * Run: npx tsx scripts/fetch-gantries.ts
  */
@@ -20,8 +20,8 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const API_URL = "https://services1.arcgis.com/TJH5KDher0W13Kgo/arcgis/rest/services/Ontario_Road_Network_Composite_Service_GeoHub_View_EN/FeatureServer/3/query";
-const OUTPUT_PATH = join(process.cwd(), "packages/web/src/data/407-etr-gantries.json");
-const INTERCHANGES_PATH = join(process.cwd(), "packages/web/src/data/407-etr-interchanges.json");
+const OUTPUT_PATH = join(process.cwd(), "packages/web/src/data/407-gantries.json");
+const INTERCHANGES_PATH = join(process.cwd(), "packages/web/src/data/407-interchanges.json");
 const PAGE_SIZE = 200;
 
 // 407 ETR corridor bounding box

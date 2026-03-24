@@ -2,17 +2,17 @@
  * Build the enriched interchange file from 407 ETR API data.
  *
  * Inputs:
- *   scripts/data/407-etr-interchanges-raw.json
+ *   scripts/data/407-interchanges-raw.json
  *     Source: 407 ETR website API (api.407etr.com/toll-fee-calculator/api/v1/interchanges)
  *     Contains: names, coordinates, partial access notes, en/fr translations
  *
- *   scripts/data/407-etr-distances-raw.json
+ *   scripts/data/407-distances-raw.json
  *     Source: 407 ETR toll calculator API (api.407etr.com/toll-fee-calculator/api/v1/toll-rate)
  *     Fetched by: scripts/fetch-distances.ts
  *     Contains: distance and zone_info for each consecutive interchange pair
  *
  * Output:
- *   packages/web/src/data/407-etr-interchanges.json
+ *   packages/web/src/data/407-interchanges.json
  *
  * How it works:
  *   Distances between consecutive interchanges are indexed into an adjacency map
@@ -67,11 +67,11 @@ function parseRampAccess(note: string) {
 
 function main() {
   const rawInterchanges: RawInterchange[] = JSON.parse(
-    readFileSync(join(SCRIPTS_DATA, "407-etr-interchanges-raw.json"), "utf-8"),
+    readFileSync(join(SCRIPTS_DATA, "407-interchanges-raw.json"), "utf-8"),
   );
 
   const rawDistances: DistancesFile | DistancePair[] = JSON.parse(
-    readFileSync(join(SCRIPTS_DATA, "407-etr-distances-raw.json"), "utf-8"),
+    readFileSync(join(SCRIPTS_DATA, "407-distances-raw.json"), "utf-8"),
   );
   const pairs = (Array.isArray(rawDistances) ? rawDistances : rawDistances.pairs)
     .filter((p) => !p.error && p.etr_distance !== undefined);
@@ -165,7 +165,7 @@ function main() {
     }
   }
 
-  writeFileSync(join(APP_DATA, "407-etr-interchanges.json"), JSON.stringify(result, null, 2));
+  writeFileSync(join(APP_DATA, "407-interchanges.json"), JSON.stringify(result, null, 2));
 
   console.log(`${result.length} interchanges`);
   for (const ic of result) {

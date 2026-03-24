@@ -13,8 +13,8 @@ import type {
   VehicleClassId,
   WeekdaySlot,
   WeekendSlot,
-} from "@407-etr/core";
-import { getVehicleClass } from "@407-etr/core";
+} from "@407-tolls/core";
+import { getVehicleClass } from "@407-tolls/core";
 import { Card, CardBody } from "../ui/card";
 import { SearchableSelect } from "../ui/searchable-select";
 import { StyledSelect } from "../ui/styled-select";
@@ -26,7 +26,7 @@ import {
   computeAllTimeSlotCosts,
   computeCommuteEstimate,
   computeNearbyComparison,
-} from "@407-etr/core";
+} from "@407-tolls/core";
 import { useLocalStorage } from "@/lib/use-local-storage";
 import { buildRouteInput } from "@/lib/load-toll-points";
 

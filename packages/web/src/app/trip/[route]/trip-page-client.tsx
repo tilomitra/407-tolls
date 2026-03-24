@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import type { TollResponse, VehicleClassId } from "@407-etr/core";
-import { getVehicleClass } from "@407-etr/core";
+import type { TollResponse, VehicleClassId } from "@407-tolls/core";
+import { getVehicleClass } from "@407-tolls/core";
 import { TollBreakdownView } from "@/components/results/toll-breakdown";
 import { TimeChart } from "@/components/results/time-chart";
 import { Toggle } from "@/components/ui/toggle";

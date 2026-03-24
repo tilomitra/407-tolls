@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { calculateToll, computeAllTimeSlotCosts, getVehicleClass } from "@407-etr/core";
+import { calculateToll, computeAllTimeSlotCosts, getVehicleClass } from "@407-tolls/core";
 import type { Query } from "@/lib/types";
 import { buildTripInput } from "@/lib/build-trip-input";
 import { formatDollars } from "@/lib/format";

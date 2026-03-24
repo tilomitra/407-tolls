@@ -2,8 +2,8 @@
  * Fetch distances between consecutive interchanges from the 407 ETR toll API.
  *
  * Source: api.407etr.com/toll-fee-calculator/api/v1/toll-rate
- * Input: scripts/data/407-etr-interchanges-raw.json
- * Output: scripts/data/407-etr-distances-raw.json
+ * Input: scripts/data/407-interchanges-raw.json
+ * Output: scripts/data/407-distances-raw.json
  *
  * For each interchange, queries the next valid one going eastbound and westbound.
  * Partial interchanges (EB-only or WB-only access) are skipped when they can't
@@ -22,8 +22,8 @@ const VEHICLE_CLASS = 2; // light vehicle
 const DELAY_MS = 2000;
 
 const PATHS = {
-  interchanges: join(process.cwd(), "scripts/data/407-etr-interchanges-raw.json"),
-  output: join(process.cwd(), "scripts/data/407-etr-distances-raw.json"),
+  interchanges: join(process.cwd(), "scripts/data/407-interchanges-raw.json"),
+  output: join(process.cwd(), "scripts/data/407-distances-raw.json"),
 };
 
 const HEADERS: Record<string, string> = {

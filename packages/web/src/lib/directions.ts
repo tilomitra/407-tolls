@@ -1,5 +1,5 @@
-import type { DirectionsInput, DirectionsResult } from "@407-etr/core";
-import { haversineKm } from "@407-etr/core";
+import type { DirectionsInput, DirectionsResult } from "@407-tolls/core";
+import { haversineKm } from "@407-tolls/core";
 
 const GOOGLE_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
 

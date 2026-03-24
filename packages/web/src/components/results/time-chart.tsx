@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import type { TimeSlotCost } from "@407-etr/core";
+import type { TimeSlotCost } from "@407-tolls/core";
 import { Card } from "../ui/card";
 import { formatDollars } from "@/lib/format";
 

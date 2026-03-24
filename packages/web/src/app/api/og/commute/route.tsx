@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { computeCommuteEstimate } from "@407-etr/core";
+import { computeCommuteEstimate } from "@407-tolls/core";
 import { resolveSlugRoute } from "@/lib/slugs";
 import { buildCommuteInput } from "@/lib/build-commute-input";
 import { formatDollars, formatCommuteDays, formatTimeSlot } from "@/lib/format";

@@ -1,7 +1,7 @@
 "use client";
 
-import type { CommuteEstimate, DayOfWeek, TripType, VehicleClassId } from "@407-etr/core";
-import { getVehicleClass } from "@407-etr/core";
+import type { CommuteEstimate, DayOfWeek, TripType, VehicleClassId } from "@407-tolls/core";
+import { getVehicleClass } from "@407-tolls/core";
 import { Card, CardBody } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { ShareButton } from "../ui/share-button";

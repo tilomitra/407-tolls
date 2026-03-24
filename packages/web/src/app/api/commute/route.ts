@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { computeCommuteEstimate, computeNearbyComparison } from "@407-etr/core";
-import type { WeekdaySlot, WeekendSlot, CommuteSchedule } from "@407-etr/core";
+import { computeCommuteEstimate, computeNearbyComparison } from "@407-tolls/core";
+import type { WeekdaySlot, WeekendSlot, CommuteSchedule } from "@407-tolls/core";
 import { buildRouteInput } from "@/lib/load-toll-points";
 import { interchanges } from "@/data";
 import {

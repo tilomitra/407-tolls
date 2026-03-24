@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { calculateToll, getVehicleClass } from "@407-etr/core";
+import { calculateToll, getVehicleClass } from "@407-tolls/core";
 import { buildTripInput } from "@/lib/build-trip-input";
 import { formatDollars, formatTimeSlot } from "@/lib/format";
 import { OG_SIZE, OG_MAX_NAME_LENGTH, loadFonts, OgDefault, OgCard, OgBadge, truncate, searchParamsToQuery } from "@/lib/og";

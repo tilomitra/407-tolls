@@ -1,4 +1,4 @@
-import type { VehicleClassId, TripType, DayOfWeek } from "@407-etr/core";
+import type { VehicleClassId, TripType, DayOfWeek } from "@407-tolls/core";
 
 export type SearchParamValue = string | string[] | undefined;
 export type Query = Record<string, SearchParamValue>;

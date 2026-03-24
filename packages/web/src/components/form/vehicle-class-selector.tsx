@@ -1,7 +1,7 @@
 "use client";
 
-import type { VehicleClassId, VehicleClass } from "@407-etr/core";
-import { VEHICLE_CLASSES } from "@407-etr/core";
+import type { VehicleClassId, VehicleClass } from "@407-tolls/core";
+import { VEHICLE_CLASSES } from "@407-tolls/core";
 import { Tooltip, TooltipProvider } from "../ui/tooltip";
 
 const iconClass = "h-7 w-7";

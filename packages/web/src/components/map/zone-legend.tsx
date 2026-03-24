@@ -1,5 +1,5 @@
 import { zoneColors, FREE_DOT_COLOR } from "@/lib/design/tokens";
-import type { Zone } from "@407-etr/core";
+import type { Zone } from "@407-tolls/core";
 
 const ZONE_LABELS: Record<Zone | 0, string> = {
   1: "QEW – Dundas",

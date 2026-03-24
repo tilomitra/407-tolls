@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { computeCommuteEstimate, computeNearbyComparison, getVehicleClass } from "@407-etr/core";
-import type { CommuteInput } from "@407-etr/core";
+import { computeCommuteEstimate, computeNearbyComparison, getVehicleClass } from "@407-tolls/core";
+import type { CommuteInput } from "@407-tolls/core";
 import { interchanges } from "@/data";
 import type { Query } from "@/lib/types";
 import { resolveSlugRoute } from "@/lib/slugs";
