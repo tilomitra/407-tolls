@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { useSearchParams } from "next/navigation";
 import { useLocalStorage } from "@/lib/use-local-storage";
 import type {
   TollPoint,
@@ -31,10 +32,15 @@ export function ClientApp({
   interchanges: Interchange[];
   highwayGeometry: Array<[number, number]>;
 }) {
-  const [entryId, setEntryId] = useLocalStorage("407-entry", "25");
-  const [exitId, setExitId] = useLocalStorage("407-exit", "33");
+  const searchParams = useSearchParams();
+  const urlEntry = searchParams.get("entry") ?? undefined;
+  const urlExit = searchParams.get("exit") ?? undefined;
+  const urlMode = searchParams.get("mode");
+
+  const [entryId, setEntryId] = useLocalStorage("407-entry", "25", urlEntry);
+  const [exitId, setExitId] = useLocalStorage("407-exit", "33", urlExit);
   const [activeField, setActiveField] = useState<"entry" | "exit">("entry");
-  const [mode, setMode] = useState<FormMode>("single");
+  const [mode, setMode] = useState<FormMode>(urlMode === "commute" ? "commute" : "single");
   const [tollResult, setTollResult] = useState<{
     data: TollResponse;
     vehicleClassId: VehicleClassId;

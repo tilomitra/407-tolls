@@ -17,7 +17,9 @@
 - PWA support (manifest, add to home screen)
 - Auto-calculate on input change (debounced)
 - Clickable map interchanges (entry/exit selection)
-- Clickable nearby suggestions
+- Clickable nearby suggestions (homepage and shared commute page)
+- Client-side toll calculation (no API calls from homepage)
+- URL params for pre-filling form from shared pages (?entry=&exit=&mode=)
 
 ## Next up
 
@@ -26,34 +28,10 @@
 Save recently viewed routes to localStorage so users can quickly
 re-check past lookups without re-entering interchanges.
 
-### Clickable map interchanges
-
-Click a dot on the map to set it as the entry or exit point.
-First click sets entry, second sets exit (or tap to toggle).
-
-### Clickable nearby suggestions
-
-In the nearby interchange comparison, click a row to select it
-as the new entry/exit and recalculate instantly.
-
 ### Route preview before calculating
 
 Show route summary (entry → exit, distance, zones) in the results
 panel before the user calculates. Replaces the empty state.
-
-### Client-side calculation
-
-Move toll and commute calculations from API calls to client-side.
-The core package already has calculateToll and computeCommuteEstimate.
-Running them directly eliminates network latency, API calls, and
-edge requests. Keep API routes for shared pages and OG images.
-
-### Clickable suggestions on shared commute page
-
-On the shared commute page (/commute/...), clicking a nearby
-suggestion should navigate to the homepage with the new interchange
-pre-filled. Requires URL-based state passing since the shared page
-has no form.
 
 ### Trip A vs Trip B comparison
 

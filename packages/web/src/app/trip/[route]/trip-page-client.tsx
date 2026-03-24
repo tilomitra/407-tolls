@@ -38,7 +38,7 @@ export function TripPageClient({
           {entryName} to {exitName}
         </h2>
         <a
-          href="/"
+          href={`/?entry=${entryId}&exit=${exitId}&mode=trip`}
           className="shrink-0 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-500 transition-colors hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
         >
           Try your own route →
@@ -68,7 +68,6 @@ export function TripPageClient({
           currentDayType={active.timeSlot.dayType}
         />
       )}
-
     </div>
   );
 }

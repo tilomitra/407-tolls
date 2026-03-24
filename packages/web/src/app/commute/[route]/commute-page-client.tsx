@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import type {
   CommuteEstimate,
   DayOfWeek,
@@ -45,6 +46,7 @@ export function CommutePageClient({
   exitId: string;
   nearby: NearbyComparison;
 }) {
+  const router = useRouter();
   const [hasTransponder, setHasTransponder] = useState(initialTransponder);
 
   const vehicleClass = getVehicleClass({ id: vehicleClassId });
@@ -57,7 +59,7 @@ export function CommutePageClient({
           {entryName} to {exitName}
         </h2>
         <a
-          href="/"
+          href={`/?entry=${entryId}&exit=${exitId}&mode=commute`}
           className="shrink-0 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-500 transition-colors hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
         >
           Try your own commute →
@@ -85,8 +87,16 @@ export function CommutePageClient({
         )}
       </CommuteBreakdown>
 
-      <NearbyComparisonView comparison={nearby} entryName={entryName} exitName={exitName} />
-
+      <NearbyComparisonView
+        comparison={nearby}
+        entryName={entryName}
+        exitName={exitName}
+        onAlternativeClick={(role, id) => {
+          const entry = role === "entry" ? id : entryId;
+          const exit = role === "exit" ? id : exitId;
+          router.push(`/?entry=${entry}&exit=${exit}&mode=commute`);
+        }}
+      />
     </div>
   );
 }
