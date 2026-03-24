@@ -21,9 +21,14 @@ import { StyledSelect } from "../ui/styled-select";
 import { Toggle } from "../ui/toggle";
 import { RadioGroup } from "../ui/radio-group";
 import { VehicleClassSelector } from "./vehicle-class-selector";
+import {
+  calculateToll,
+  computeAllTimeSlotCosts,
+  computeCommuteEstimate,
+  computeNearbyComparison,
+} from "@407-etr/core";
 import { useLocalStorage } from "@/lib/use-local-storage";
-import { fetchJson } from "@/lib/api";
-import { buildTollApiUrl, buildCommuteApiUrl } from "@/lib/params";
+import { buildRouteInput } from "@/lib/load-toll-points";
 
 const WEEKDAY_TIME_OPTIONS = [
   { value: "5am", label: "5:00am - 7:00am" },
@@ -157,7 +162,7 @@ export function RouteForm({
     exitId: string;
     vehicleClassId: VehicleClassId;
     hasTransponder: boolean;
-  }) => void;
+  } | null, error?: string) => void;
   onCommuteResult: (args: {
     estimate: CommuteEstimate;
     nearby: NearbyComparison;
@@ -175,7 +180,7 @@ export function RouteForm({
       weekendGoSlot: string;
       weekendReturnSlot?: string;
     };
-  }) => void;
+  } | null, error?: string) => void;
   mode: FormMode;
   onModeChange: (mode: FormMode) => void;
 }) {
@@ -228,7 +233,6 @@ export function RouteForm({
   const [goWeekendSlot, setGoWeekendSlot] = useState<WeekendSlot>("10am");
   const [returnWeekendSlot, setReturnWeekendSlot] = useState<WeekendSlot>("7pm");
 
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const entry = useMemo(
@@ -267,30 +271,49 @@ export function RouteForm({
       : { dayType: "weekend_or_holiday", slot: weekendSlot };
   }
 
-  async function calculate() {
-    if (missingRoute || sameInterchange || routeError) return;
-    setLoading(true);
-    setError(null);
+  function calculate() {
+    if (missingRoute || sameInterchange || routeError) {
+      const err = routeError ?? (sameInterchange ? "Entry and exit must be different" : undefined);
+      onTollResult(null, err);
+      onCommuteResult(null, err);
+      return;
+    }
 
+    const resolved = buildRouteInput({ entryId, exitId, vehicleClassId, hasTransponder });
+    if (!resolved.ok) {
+      onTollResult(null, resolved.error);
+      onCommuteResult(null, resolved.error);
+      return;
+    }
+
+    setError(null);
     try {
       if (mode === "commute") {
-        const url = buildCommuteApiUrl({
-          entryId,
-          exitId,
-          vehicleClassId,
-          tripType,
-          commuteDays,
-          hasTransponder,
-          goSlot: goWeekdaySlot,
-          ...(isRoundTrip ? { returnSlot: returnWeekdaySlot } : {}),
-          weekendGoSlot: goWeekendSlot,
-          ...(isRoundTrip ? { weekendReturnSlot: returnWeekendSlot } : {}),
-        });
+        const schedule = isRoundTrip
+          ? {
+              tripType: "round_trip" as const,
+              goTimeSlot: { dayType: "weekday" as const, slot: goWeekdaySlot },
+              returnTimeSlot: { dayType: "weekday" as const, slot: returnWeekdaySlot },
+              weekendGoTimeSlot: { dayType: "weekend_or_holiday" as const, slot: goWeekendSlot },
+              weekendReturnTimeSlot: { dayType: "weekend_or_holiday" as const, slot: returnWeekendSlot },
+              commuteDays,
+            }
+          : {
+              tripType: "one_way" as const,
+              goTimeSlot: { dayType: "weekday" as const, slot: goWeekdaySlot },
+              weekendGoTimeSlot: { dayType: "weekend_or_holiday" as const, slot: goWeekendSlot },
+              commuteDays,
+            };
 
-        const { estimate, nearby } = await fetchJson<{
-          estimate: CommuteEstimate;
-          nearby: NearbyComparison;
-        }>(url);
+        const estimate = computeCommuteEstimate({ route: resolved.route, ...schedule });
+        const nearby = computeNearbyComparison({
+          entryInterchange: resolved.entry,
+          exitInterchange: resolved.exit,
+          interchanges,
+          route: resolved.route,
+          estimate,
+          schedule,
+        });
 
         onCommuteResult({
           estimate,
@@ -312,36 +335,27 @@ export function RouteForm({
         });
       } else {
         const ts = getTimeSlot();
-        const result = await fetchJson<TollResponse>(
-          buildTollApiUrl({
-            entryId,
-            exitId,
-            vehicleClassId,
-            hasTransponder,
-            dayType: ts.dayType,
-            slot: ts.slot,
-          }),
-        );
-        onTollResult({ result, entryId, exitId, vehicleClassId, hasTransponder });
+        const result = calculateToll({ ...resolved.route, timeSlot: ts });
+        const byTimeSlot = computeAllTimeSlotCosts(resolved.route);
+        onTollResult({
+          result: { ...result, byTimeSlot },
+          entryId,
+          exitId,
+          vehicleClassId,
+          hasTransponder,
+        });
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
-    } finally {
-      setLoading(false);
     }
   }
 
-  // Auto-calculate with debounce when any input changes
+  // Recalculate whenever any input changes
   const calculateRef = useRef(calculate);
   calculateRef.current = calculate;
 
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => calculateRef.current(), 300);
-    return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current);
-    };
+    calculateRef.current();
   }, [
     entryId, exitId, vehicleClassId, hasTransponder, mode,
     dayType, weekdaySlot, weekendSlot,

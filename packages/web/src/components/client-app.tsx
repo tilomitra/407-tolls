@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { useLocalStorage } from "@/lib/use-local-storage";
 import type {
   TollPoint,
@@ -10,8 +10,8 @@ import type {
   NearbyComparison,
   TripType,
   VehicleClassId,
+  DayOfWeek,
 } from "@407-etr/core";
-import type { DayOfWeek } from "@407-etr/core";
 import { HighwayMap } from "./map/highway-map";
 import { ZoneLegend } from "./map/zone-legend";
 import { RouteForm, type FormMode } from "./form/route-form";
@@ -62,44 +62,31 @@ export function ClientApp({
     entryId: string;
     exitId: string;
   } | null>(null);
+  const [routeError, setRouteError] = useState<string | null>(null);
 
-  useEffect(() => {
-    setTollResult(null);
-    setCommuteResult(null);
-    setSelectedRoute(null);
-  }, [entryId, exitId]);
-
-  function handleTollResult({
-    result,
-    entryId,
-    exitId,
-    vehicleClassId,
-    hasTransponder,
-  }: {
+  function handleTollResult(args: {
     result: TollResponse;
     entryId: string;
     exitId: string;
     vehicleClassId: VehicleClassId;
     hasTransponder: boolean;
-  }) {
-    setTollResult({ data: result, vehicleClassId, hasTransponder });
+  } | null, error?: string) {
+    setRouteError(error ?? null);
+    if (!args) {
+      setTollResult(null);
+      setSelectedRoute(null);
+      return;
+    }
+    setTollResult({
+      data: args.result,
+      vehicleClassId: args.vehicleClassId,
+      hasTransponder: args.hasTransponder,
+    });
     setCommuteResult(null);
-    setSelectedRoute({ entryId, exitId });
+    setSelectedRoute({ entryId: args.entryId, exitId: args.exitId });
   }
 
-  function handleCommuteResult({
-    estimate,
-    nearby,
-    entryId,
-    exitId,
-    entryName,
-    exitName,
-    vehicleClassId,
-    tripType,
-    commuteDays,
-    hasTransponder,
-    shareParams,
-  }: {
+  function handleCommuteResult(args: {
     estimate: CommuteEstimate;
     nearby: NearbyComparison;
     entryId: string;
@@ -116,22 +103,16 @@ export function ClientApp({
       weekendGoSlot: string;
       weekendReturnSlot?: string;
     };
-  }) {
-    setCommuteResult({
-      estimate,
-      nearby,
-      entryId,
-      exitId,
-      entryName,
-      exitName,
-      vehicleClassId,
-      tripType,
-      commuteDays,
-      hasTransponder,
-      shareParams,
-    });
+  } | null, error?: string) {
+    setRouteError(error ?? null);
+    if (!args) {
+      setCommuteResult(null);
+      setSelectedRoute(null);
+      return;
+    }
+    setCommuteResult(args);
     setTollResult(null);
-    setSelectedRoute({ entryId, exitId });
+    setSelectedRoute({ entryId: args.entryId, exitId: args.exitId });
   }
 
   const handleInterchangeClick = useCallback(
@@ -240,12 +221,8 @@ export function ClientApp({
                 entryName={commuteResult.entryName}
                 exitName={commuteResult.exitName}
                 onAlternativeClick={(role, id) => {
-                  if (role === "entry") {
-                     setEntryId(id);
-                  } else {
-                    setExitId(id);
-                  }
-                 
+                  if (role === "entry") setEntryId(id);
+                  else setExitId(id);
                 }}
               />
             </>
@@ -268,12 +245,10 @@ export function ClientApp({
                   </svg>
                 </div>
                 <p className="text-sm font-medium text-slate-500">
-                  {entryId && exitId ? "Calculating..." : "Select your route"}
+                  {routeError ? "Route not available" : "Select your route"}
                 </p>
                 <p className="mt-1 text-xs text-slate-400">
-                  {entryId && exitId
-                    ? "Crunching the numbers"
-                    : "Pick entry and exit interchanges or click the map"}
+                  {routeError ?? "Pick entry and exit interchanges or click the map"}
                 </p>
               </div>
             </Card>

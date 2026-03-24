@@ -7,7 +7,6 @@ import { Badge } from "../ui/badge";
 import { ShareButton } from "../ui/share-button";
 import {
   formatDollars as fmt,
-  formatLargeDollars as fmtLarge,
   formatCommuteDays,
 } from "@/lib/format";
 import { buildCommuteShareUrl } from "@/lib/params";
@@ -174,13 +173,13 @@ export function CommuteBreakdown({
         <div className="space-y-0.5">
           <CostRow label="Per week" value={fmt(perWeekCents)} />
           <CostRow label="Per month" value={fmt(perMonthCents)} bold />
-          <CostRow label="Per year" value={fmtLarge(perYearCents)} />
+          <CostRow label="Per year" value={fmt(perYearCents)} />
         </div>
 
         {transponderSavingsMonthCents > 0 && (
           <TransponderCallout
             hasTransponder={hasTransponder}
-            summary={`${fmt(transponderSavingsMonthCents)}/mo (${fmtLarge(
+            summary={`${fmt(transponderSavingsMonthCents)}/mo (${fmt(
               transponderSavingsMonthCents * 12,
             )}/yr)`}
           />

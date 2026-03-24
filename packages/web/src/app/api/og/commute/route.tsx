@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { computeCommuteEstimate } from "@407-etr/core";
 import { resolveSlugRoute } from "@/lib/slugs";
 import { buildCommuteInput } from "@/lib/build-commute-input";
-import { formatDollars, formatLargeDollars, formatCommuteDays, formatTimeSlot } from "@/lib/format";
+import { formatDollars, formatCommuteDays, formatTimeSlot } from "@/lib/format";
 import { OG_SIZE, OG_MAX_NAME_LENGTH, loadFonts, OgDefault, OgCard, OgBadge, truncate, searchParamsToQuery } from "@/lib/og";
 
 export const runtime = "nodejs";
@@ -40,7 +40,7 @@ export async function GET(req: Request) {
     : null;
 
   const monthly = formatDollars(estimate.perMonthCents);
-  const yearly = formatLargeDollars(estimate.perYearCents);
+  const yearly = formatDollars(estimate.perYearCents);
   const dayLabel = formatCommuteDays(resolved.days);
   const tripLabel = resolved.tripType === "round_trip" ? "Round trip" : "One way";
   const departTime = formatTimeSlot(resolved.commuteInput.goTimeSlot.slot);
