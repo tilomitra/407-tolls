@@ -14,6 +14,7 @@
 - Searchable interchange picker
 - Interactive map with zones, gantries, and route highlighting
 - Swap entry/exit
+- PWA support (manifest, add to home screen)
 
 ## Next up
 
@@ -22,9 +23,31 @@
 Save recently viewed routes to localStorage so users can quickly
 re-check past lookups without re-entering interchanges.
 
-### PWA support
+### Clickable map interchanges
 
-Web app manifest so mobile users can add to home screen.
+Click a dot on the map to set it as the entry or exit point.
+First click sets entry, second sets exit (or tap to toggle).
+
+### Clickable nearby suggestions
+
+In the nearby interchange comparison, click a row to select it
+as the new entry/exit and recalculate instantly.
+
+### Route preview before calculating
+
+Show route summary (entry → exit, distance, zones) in the results
+panel before the user calculates. Replaces the empty state.
+
+### Auto-calculate on input change
+
+Remove the submit button. Debounced useEffect watches all form
+values and auto-fetches when both entry/exit are set. Covers both
+single trips and commutes.
+
+### Trip A vs Trip B comparison
+
+Side-by-side comparison of two different routes. Pick route A
+and route B, see price, distance, and zones compared.
 
 ### 407 vs 401
 
