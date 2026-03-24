@@ -28,11 +28,6 @@
 Save recently viewed routes to localStorage so users can quickly
 re-check past lookups without re-entering interchanges.
 
-### Route preview before calculating
-
-Show route summary (entry → exit, distance, zones) in the results
-panel before the user calculates. Replaces the empty state.
-
 ### Trip A vs Trip B comparison
 
 Side-by-side comparison of two different routes. Pick route A

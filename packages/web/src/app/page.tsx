@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { gantries, interchanges, highwayGeometry } from "@/data";
 import { ClientApp } from "@/components/client-app";
@@ -27,11 +28,13 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
-        <ClientApp
-          gantries={gantries}
-          interchanges={interchanges}
-          highwayGeometry={highwayGeometry}
-        />
+        <Suspense>
+          <ClientApp
+            gantries={gantries}
+            interchanges={interchanges}
+            highwayGeometry={highwayGeometry}
+          />
+        </Suspense>
       </main>
     </>
   );
