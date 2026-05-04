@@ -1,7 +1,6 @@
-import { Suspense } from "react";
 import type { Metadata } from "next";
 import { gantries, interchanges, highwayGeometry } from "@/data";
-import { ClientApp } from "@/components/client-app";
+import { PlannerApp } from "@/components/planner-app";
 import { BASE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -12,10 +11,10 @@ export default function Home() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    name: "407 ETR Toll Calculator",
+    name: "407 Tolls Trip Planner",
     url: BASE_URL,
     description:
-      "Calculate 407 ETR toll costs for any route. Compare transponder savings, estimate commute costs, and find the cheapest on-ramps.",
+      "Plan a trip on or off the 407 ETR. Compare toll, distance, and time for full-407, partial-407, and no-toll routes.",
     applicationCategory: "UtilityApplication",
     operatingSystem: "Any",
     offers: { "@type": "Offer", price: "0", priceCurrency: "CAD" },
@@ -28,13 +27,11 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
-        <Suspense>
-          <ClientApp
-            gantries={gantries}
-            interchanges={interchanges}
-            highwayGeometry={highwayGeometry}
-          />
-        </Suspense>
+        <PlannerApp
+          gantries={gantries}
+          interchanges={interchanges}
+          highwayGeometry={highwayGeometry}
+        />
       </main>
     </>
   );

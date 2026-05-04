@@ -7,6 +7,11 @@ import type { TollPoint, Interchange } from "@407-tolls/core";
 import { PolylineSpatialIndex } from "@407-tolls/core";
 import { zoneColors, FREE_DOT_COLOR } from "@/lib/design/tokens";
 
+export interface RoutePolyline {
+  id: string;
+  coordinates: Array<[number, number]>;
+}
+
 function getZoneColor(zone: number): string {
   return zoneColors[zone as keyof typeof zoneColors]?.dot ?? "#94a3b8";
 }
@@ -28,6 +33,10 @@ export function HighwayMap({
   onInterchangeClick,
   entryId,
   exitId,
+  routePolylines,
+  selectedRouteId,
+  onRouteSelect,
+  endpointMarkers,
 }: {
   gantries: TollPoint[];
   interchanges: Interchange[];
@@ -36,6 +45,10 @@ export function HighwayMap({
   onInterchangeClick?: (interchangeId: string) => void;
   entryId?: string;
   exitId?: string;
+  routePolylines?: RoutePolyline[];
+  selectedRouteId?: string | null;
+  onRouteSelect?: (id: string) => void;
+  endpointMarkers?: { origin: [number, number]; destination: [number, number] } | null;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
@@ -50,6 +63,14 @@ export function HighwayMap({
   );
 
   const updateRouteRef = useRef<((route: { entryId: string; exitId: string } | null) => void) | null>(null);
+  const updatePolylinesRef = useRef<
+    ((polylines: RoutePolyline[], selectedId: string | null) => void) | null
+  >(null);
+  const updateEndpointsRef = useRef<
+    ((endpoints: { origin: [number, number]; destination: [number, number] } | null) => void) | null
+  >(null);
+  const onRouteSelectRef = useRef(onRouteSelect);
+  onRouteSelectRef.current = onRouteSelect;
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
@@ -100,6 +121,61 @@ export function HighwayMap({
         type: "line",
         source: "selected-route",
         paint: { "line-color": "#3b82f6", "line-width": 4 },
+      });
+
+      // Candidate polylines (planner mode): one source, color by selected state
+      map.addSource("candidate-routes", {
+        type: "geojson",
+        data: { type: "FeatureCollection", features: [] },
+      });
+      map.addLayer({
+        id: "candidate-routes-line",
+        type: "line",
+        source: "candidate-routes",
+        paint: {
+          "line-color": ["case", ["get", "selected"], "#3b82f6", "#94a3b8"],
+          "line-width": ["case", ["get", "selected"], 5, 3],
+          "line-opacity": ["case", ["get", "selected"], 1, 0.55],
+        },
+      });
+
+      map.on("mouseenter", "candidate-routes-line", () => {
+        map.getCanvas().style.cursor = "pointer";
+      });
+      map.on("mouseleave", "candidate-routes-line", () => {
+        map.getCanvas().style.cursor = "";
+      });
+      map.on("click", "candidate-routes-line", (e) => {
+        const id = e.features?.[0]?.properties?.id as string | undefined;
+        if (id && onRouteSelectRef.current) onRouteSelectRef.current(id);
+      });
+
+      // Origin/destination markers (planner mode)
+      map.addSource("planner-endpoints", {
+        type: "geojson",
+        data: { type: "FeatureCollection", features: [] },
+      });
+      map.addLayer({
+        id: "planner-endpoints-circle",
+        type: "circle",
+        source: "planner-endpoints",
+        paint: {
+          "circle-radius": 8,
+          "circle-color": ["get", "color"],
+          "circle-stroke-color": "#ffffff",
+          "circle-stroke-width": 3,
+        },
+      });
+      map.addLayer({
+        id: "planner-endpoints-label",
+        type: "symbol",
+        source: "planner-endpoints",
+        layout: {
+          "text-field": ["get", "label"],
+          "text-size": 11,
+          "text-allow-overlap": true,
+        },
+        paint: { "text-color": "#ffffff" },
       });
 
       // Route markers (A/B)
@@ -413,6 +489,61 @@ export function HighwayMap({
         }
       };
 
+      updatePolylinesRef.current = (polylines, selectedId) => {
+        const src = map.getSource("candidate-routes") as maplibregl.GeoJSONSource;
+        const features: GeoJSON.Feature[] = polylines.map((p) => ({
+          type: "Feature",
+          geometry: { type: "LineString", coordinates: p.coordinates },
+          properties: { id: p.id, selected: p.id === selectedId },
+        }));
+        src.setData({ type: "FeatureCollection", features });
+
+        // Fit bounds to all polylines (only if we have them)
+        if (polylines.length > 0) {
+          let minLng = Infinity;
+          let minLat = Infinity;
+          let maxLng = -Infinity;
+          let maxLat = -Infinity;
+          for (const p of polylines) {
+            for (const [lng, lat] of p.coordinates) {
+              if (lng < minLng) minLng = lng;
+              if (lng > maxLng) maxLng = lng;
+              if (lat < minLat) minLat = lat;
+              if (lat > maxLat) maxLat = lat;
+            }
+          }
+          if (Number.isFinite(minLng)) {
+            map.fitBounds(
+              [[minLng, minLat], [maxLng, maxLat]],
+              { padding: 60, duration: 600 },
+            );
+          }
+        }
+      };
+
+      updateEndpointsRef.current = (endpoints) => {
+        const src = map.getSource("planner-endpoints") as maplibregl.GeoJSONSource;
+        if (!endpoints) {
+          src.setData({ type: "FeatureCollection", features: [] });
+          return;
+        }
+        src.setData({
+          type: "FeatureCollection",
+          features: [
+            {
+              type: "Feature",
+              geometry: { type: "Point", coordinates: endpoints.origin },
+              properties: { label: "A", color: "#16a34a" },
+            },
+            {
+              type: "Feature",
+              geometry: { type: "Point", coordinates: endpoints.destination },
+              properties: { label: "B", color: "#dc2626" },
+            },
+          ],
+        });
+      };
+
       setMapReady(true);
     });
 
@@ -427,6 +558,16 @@ export function HighwayMap({
   useEffect(() => {
     if (mapReady) updateHighlightRef.current?.(entryId, exitId);
   }, [entryId, exitId, mapReady]);
+
+  useEffect(() => {
+    if (mapReady) {
+      updatePolylinesRef.current?.(routePolylines ?? [], selectedRouteId ?? null);
+    }
+  }, [routePolylines, selectedRouteId, mapReady]);
+
+  useEffect(() => {
+    if (mapReady) updateEndpointsRef.current?.(endpointMarkers ?? null);
+  }, [endpointMarkers, mapReady]);
 
   return (
     <div ref={containerRef} className="h-[280px] w-full rounded-t-xl sm:h-[320px]" />

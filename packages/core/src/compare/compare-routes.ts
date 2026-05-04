@@ -8,7 +8,7 @@ export async function compareRoutes({
   offRamps,
   getDirections,
 }: CompareRoutesArgs): Promise<CompareResult> {
-  const { origin, destination, timeSlot, hasTransponder, maxRamps = 3 } = input;
+  const { origin, destination, timeSlot, hasTransponder, maxRamps = 4 } = input;
 
   const nearestOnRamps = findNearestOnRamps({ origin, ramps: onRamps, count: maxRamps });
   const nearestOffRamps = findNearestOnRamps({
@@ -66,7 +66,10 @@ export async function compareRoutes({
       hasTransponder,
     });
 
+    const isFull = c.onRamp.zone === 1 && c.offRamp.zone === 12
+      || c.onRamp.zone === 12 && c.offRamp.zone === 1;
     const route: RouteOption = {
+      kind: isFull ? "full_407" : "partial_407",
       onRamp: c.onRamp,
       offRamp: c.offRamp,
       toll,
@@ -74,24 +77,28 @@ export async function compareRoutes({
       highwayTimeMinutes: dirs.highwayMinutes,
       driveFromOffRampMinutes: dirs.fromOffRampMinutes,
       driveTimeMinutes: dirs.toOnRampMinutes + dirs.highwayMinutes + dirs.fromOffRampMinutes,
+      distanceKm: dirs.totalDistanceKm,
+      polyline: dirs.polyline,
     };
 
     routes[i] = route;
     if (c.isDefault) defaultRoute = route;
   }
 
-  routes.sort((a, b) => a.toll.totalCents - b.toll.totalCents);
+  routes.sort((a, b) => (a.toll?.totalCents ?? 0) - (b.toll?.totalCents ?? 0));
 
   if (!defaultRoute) defaultRoute = routes[0]!;
   const cheapest = routes[0]!;
 
+  const cheapestToll = cheapest.toll?.totalCents ?? 0;
+  const defaultToll = defaultRoute.toll?.totalCents ?? 0;
   const bestSaving =
-    cheapest.toll.totalCents < defaultRoute.toll.totalCents
+    cheapest.onRamp && cheapest.offRamp && defaultRoute.onRamp && cheapestToll < defaultToll
       ? {
-          savingsCents: defaultRoute.toll.totalCents - cheapest.toll.totalCents,
+          savingsCents: defaultToll - cheapestToll,
           extraMinutes: Math.round(cheapest.driveTimeMinutes - defaultRoute.driveTimeMinutes),
           alternateOnRamp: cheapest.onRamp.name,
-          alternateOffRamp: cheapest.offRamp.name,
+          alternateOffRamp: cheapest.offRamp!.name,
           description: `Enter at ${cheapest.onRamp.name} instead of ${defaultRoute.onRamp.name}`,
         }
       : null;

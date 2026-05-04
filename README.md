@@ -1,6 +1,6 @@
 # 407 Tolls
 
-Toll calculator for Highway 407 ETR. Single trips, daily commutes, all five vehicle classes.
+Toll calculator and trip planner for Highway 407 ETR. Single trips, daily commutes, all five vehicle classes.
 
 Open source and open to contributions.
 
@@ -8,6 +8,7 @@ Open source and open to contributions.
 
 ## What it does
 
+- **Trip planner:** type any two addresses and get ranked routes — no-407 baseline, full-407, and partial-407 alternatives, each with toll, drive time, and distance
 - Calculate toll for any interchange pair, any time slot
 - Estimate daily/weekly/monthly/yearly commute costs with holiday-aware scheduling
 - Compare nearby interchanges to find cheaper on-ramps
@@ -30,10 +31,13 @@ Rates come from the official 407 ETR rate charts. Distances and zone boundaries 
 
 ```bash
 pnpm install
+cp .env.example .env.local   # set GOOGLE_MAPS_API_KEY
 pnpm turbo dev
 ```
 
 Open [localhost:3000](http://localhost:3000).
+
+The trip planner needs a Google Maps Platform key with **Directions API** and **Places API (New)** enabled. Without a key the toll engine still works for interchange pairs (drive times fall back to crude haversine estimates and address autocomplete is disabled). For tighter key restrictions, set `GOOGLE_DIRECTIONS_API_KEY` and `GOOGLE_PLACES_API_KEY` separately — they both fall back to `GOOGLE_MAPS_API_KEY` when unset.
 
 ## Project structure
 

@@ -183,6 +183,8 @@ export const DirectionsResultSchema = z.object({
   toOnRampMinutes: z.number(),
   highwayMinutes: z.number(),
   fromOffRampMinutes: z.number(),
+  totalDistanceKm: z.number(),
+  polyline: z.string(),
 });
 export type DirectionsResult = z.infer<typeof DirectionsResultSchema>;
 
@@ -195,14 +197,33 @@ export interface DirectionsInput {
 
 export type DirectionsProvider = (input: DirectionsInput) => Promise<DirectionsResult>;
 
+export const NoTollDirectionsResultSchema = z.object({
+  durationMinutes: z.number(),
+  distanceKm: z.number(),
+  polyline: z.string(),
+});
+export type NoTollDirectionsResult = z.infer<typeof NoTollDirectionsResultSchema>;
+
+export interface NoTollDirectionsInput {
+  origin: LatLng;
+  destination: LatLng;
+}
+
+export type NoTollDirectionsProvider = (
+  input: NoTollDirectionsInput,
+) => Promise<NoTollDirectionsResult>;
+
 export const RouteOptionSchema = z.object({
-  onRamp: OnRampSchema,
-  offRamp: OnRampSchema,
-  toll: TollBreakdownSchema,
+  kind: z.enum(["full_407", "partial_407", "no_407"]),
+  onRamp: OnRampSchema.nullable(),
+  offRamp: OnRampSchema.nullable(),
+  toll: TollBreakdownSchema.nullable(),
   driveTimeMinutes: z.number(),
   driveToOnRampMinutes: z.number(),
   driveFromOffRampMinutes: z.number(),
   highwayTimeMinutes: z.number(),
+  distanceKm: z.number(),
+  polyline: z.string(),
 });
 export type RouteOption = z.infer<typeof RouteOptionSchema>;
 
@@ -220,6 +241,20 @@ export const CompareResultSchema = z.object({
     .nullable(),
 });
 export type CompareResult = z.infer<typeof CompareResultSchema>;
+
+export const RouteBadgeSchema = z.enum(["cheapest", "fastest", "best_value"]);
+export type RouteBadge = z.infer<typeof RouteBadgeSchema>;
+
+export const RankedRouteSchema = RouteOptionSchema.extend({
+  id: z.string(),
+  badges: z.array(RouteBadgeSchema),
+});
+export type RankedRoute = z.infer<typeof RankedRouteSchema>;
+
+export const PlannerResultSchema = z.object({
+  routes: z.array(RankedRouteSchema),
+});
+export type PlannerResult = z.infer<typeof PlannerResultSchema>;
 
 export const CompareInputSchema = z.object({
   vehicleClassId: VehicleClassIdSchema,
