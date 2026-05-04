@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { gantries, interchanges, highwayGeometry } from "@/data";
 import { PlannerApp } from "@/components/planner-app";
 import { BASE_URL } from "@/lib/constants";
 
@@ -26,12 +25,8 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
-        <PlannerApp
-          gantries={gantries}
-          interchanges={interchanges}
-          highwayGeometry={highwayGeometry}
-        />
+      <main className="mx-auto max-w-7xl px-3 py-4 sm:px-6 sm:py-6">
+        <PlannerApp />
       </main>
     </>
   );

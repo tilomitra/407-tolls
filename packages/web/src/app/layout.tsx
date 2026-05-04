@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Header } from "@/components/ui/header";
-import { Footer } from "@/components/ui/footer";
+import { SwRegister } from "@/components/sw-register";
 import { BASE_URL } from "@/lib/constants";
 import "./globals.css";
 
@@ -15,7 +15,8 @@ const inter = Inter({
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0b1222",
+  themeColor: "#1e3a5f",
+  viewportFit: "cover",
 };
 
 export const metadata: Metadata = {
@@ -30,6 +31,11 @@ export const metadata: Metadata = {
     icon: "/favicon.svg",
     apple: "/apple-icon.png",
   },
+  appleWebApp: {
+    capable: true,
+    title: "407 Tolls",
+    statusBarStyle: "black-translucent",
+  },
   manifest: "/manifest.json",
   openGraph: {
     type: "website",
@@ -42,9 +48,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={inter.className}>
       <body className="min-h-screen overflow-x-hidden bg-slate-50 text-slate-900">
+        <SwRegister />
         <Header />
         {children}
-        <Footer />
         <Analytics />
         <SpeedInsights />
       </body>

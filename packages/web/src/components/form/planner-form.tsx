@@ -34,6 +34,36 @@ const WEEKEND_TIME_OPTIONS = [
   { value: "9pm", label: "9:00pm - 8:30am" },
 ];
 
+function resolveCurrentSlot(): ResolvedTimeSlot {
+  const now = new Date();
+  const day = now.getDay(); // 0=Sun, 6=Sat
+  const h = now.getHours();
+  const m = now.getMinutes();
+  const mins = h * 60 + m;
+
+  if (day === 0 || day === 6) {
+    // Weekend
+    let slot: WeekendSlot;
+    if (mins >= 8 * 60 + 30 && mins < 10 * 60) slot = "830am";
+    else if (mins >= 10 * 60 && mins < 19 * 60) slot = "10am";
+    else if (mins >= 19 * 60 && mins < 21 * 60) slot = "7pm";
+    else slot = "9pm";
+    return { dayType: "weekend_or_holiday", slot };
+  } else {
+    // Weekday
+    let slot: WeekdaySlot;
+    if (mins >= 5 * 60 && mins < 7 * 60) slot = "5am";
+    else if (mins >= 7 * 60 && mins < 9 * 60 + 30) slot = "7am";
+    else if (mins >= 9 * 60 + 30 && mins < 10 * 60 + 30) slot = "930am";
+    else if (mins >= 10 * 60 + 30 && mins < 14 * 60 + 30) slot = "1030am";
+    else if (mins >= 14 * 60 + 30 && mins < 15 * 60 + 30) slot = "230pm";
+    else if (mins >= 15 * 60 + 30 && mins < 18 * 60) slot = "330pm";
+    else if (mins >= 18 * 60 && mins < 21 * 60) slot = "6pm";
+    else slot = "9pm";
+    return { dayType: "weekday", slot };
+  }
+}
+
 export interface PlannerFormValues {
   origin: ResolvedAddress;
   destination: ResolvedAddress;
@@ -59,6 +89,7 @@ export function PlannerForm({
     "light",
   );
   const [hasTransponder, setHasTransponder] = useLocalStorage("407-transponder", true);
+  const [timing, setTiming] = useState<"now" | "later">("now");
   const [dayType, setDayType] = useState<DayType>("weekday");
   const [weekdaySlot, setWeekdaySlot] = useState<WeekdaySlot>("7am");
   const [weekendSlot, setWeekendSlot] = useState<WeekendSlot>("10am");
@@ -67,6 +98,7 @@ export function PlannerForm({
   const ready = origin && destination;
 
   function buildTimeSlot(): ResolvedTimeSlot {
+    if (timing === "now") return resolveCurrentSlot();
     return dayType === "weekday"
       ? { dayType: "weekday", slot: weekdaySlot }
       : { dayType: "weekend_or_holiday", slot: weekendSlot };
@@ -108,25 +140,49 @@ export function PlannerForm({
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <StyledSelect
-              label="Day"
-              value={dayType}
-              onChange={(v) => setDayType(v as DayType)}
-              options={[
-                { value: "weekday", label: "Weekday" },
-                { value: "weekend_or_holiday", label: "Weekend / Holiday" },
-              ]}
-            />
-            <StyledSelect
-              label="Time"
-              value={dayType === "weekday" ? weekdaySlot : weekendSlot}
-              onChange={(v) => {
-                if (dayType === "weekday") setWeekdaySlot(v as WeekdaySlot);
-                else setWeekendSlot(v as WeekendSlot);
-              }}
-              options={dayType === "weekday" ? WEEKDAY_TIME_OPTIONS : WEEKEND_TIME_OPTIONS}
-            />
+          {/* Timing toggle */}
+          <div className="space-y-3">
+            <div className="flex gap-2">
+              {(["now", "later"] as const).map((opt) => (
+                <button
+                  key={opt}
+                  type="button"
+                  onClick={() => setTiming(opt)}
+                  className={`
+                    rounded-lg border px-4 py-2 text-sm font-medium transition-colors
+                    ${timing === opt
+                      ? "border-blue-500 bg-blue-50 text-blue-700"
+                      : "border-slate-200 bg-white text-slate-600 hover:border-slate-300"
+                    }
+                  `}
+                >
+                  {opt === "now" ? "Now" : "At later time"}
+                </button>
+              ))}
+            </div>
+
+            {timing === "later" && (
+              <div className="grid grid-cols-2 gap-3">
+                <StyledSelect
+                  label="Day"
+                  value={dayType}
+                  onChange={(v) => setDayType(v as DayType)}
+                  options={[
+                    { value: "weekday", label: "Weekday" },
+                    { value: "weekend_or_holiday", label: "Weekend / Holiday" },
+                  ]}
+                />
+                <StyledSelect
+                  label="Time"
+                  value={dayType === "weekday" ? weekdaySlot : weekendSlot}
+                  onChange={(v) => {
+                    if (dayType === "weekday") setWeekdaySlot(v as WeekdaySlot);
+                    else setWeekendSlot(v as WeekendSlot);
+                  }}
+                  options={dayType === "weekday" ? WEEKDAY_TIME_OPTIONS : WEEKEND_TIME_OPTIONS}
+                />
+              </div>
+            )}
           </div>
 
           {vehicleClass.hasTransponderOption && (
@@ -148,7 +204,7 @@ export function PlannerForm({
             type="submit"
             disabled={!ready || loading}
             className="
-              flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-2.5
+              flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-3
               text-sm font-medium text-white shadow-sm transition-colors
               hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400
             "

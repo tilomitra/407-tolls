@@ -15,11 +15,13 @@ const ROUTES_ENDPOINT =
 
 interface RoutesLeg {
   duration?: string;
+  staticDuration?: string;
   distanceMeters?: number;
 }
 
 interface RoutesRoute {
   duration?: string;
+  staticDuration?: string;
   distanceMeters?: number;
   polyline?: { encodedPolyline?: string };
   legs?: RoutesLeg[];
@@ -96,17 +98,20 @@ async function googleDirections({
     destination,
     intermediates: [onRamp.location, offRamp.location],
     fieldMask:
-      "routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline,routes.legs.duration,routes.legs.distanceMeters",
+      "routes.duration,routes.staticDuration,routes.distanceMeters,routes.polyline.encodedPolyline,routes.legs.duration,routes.legs.staticDuration,routes.legs.distanceMeters",
   });
 
   const legs = route.legs ?? [];
   const totalMeters = route.distanceMeters ?? legs.reduce((s, l) => s + (l.distanceMeters ?? 0), 0);
+  const staticSecs = legs.reduce((s, l) => s + parseDurationSeconds(l.staticDuration), 0)
+    || parseDurationSeconds(route.staticDuration);
   return {
     toOnRampMinutes: Math.round(parseDurationSeconds(legs[0]?.duration) / 60),
     highwayMinutes: Math.round(parseDurationSeconds(legs[1]?.duration) / 60),
     fromOffRampMinutes: Math.round(parseDurationSeconds(legs[2]?.duration) / 60),
     totalDistanceKm: Math.round((totalMeters / 1000) * 10) / 10,
     polyline: route.polyline?.encodedPolyline ?? "",
+    staticDurationMinutes: staticSecs > 0 ? Math.round(staticSecs / 60) : undefined,
   };
 }
 
@@ -119,13 +124,15 @@ async function googleNoTollDirections({
     destination,
     avoidTolls: true,
     fieldMask:
-      "routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline",
+      "routes.duration,routes.staticDuration,routes.distanceMeters,routes.polyline.encodedPolyline",
   });
 
+  const staticSecs = parseDurationSeconds(route.staticDuration);
   return {
     durationMinutes: Math.round(parseDurationSeconds(route.duration) / 60),
     distanceKm: Math.round(((route.distanceMeters ?? 0) / 1000) * 10) / 10,
     polyline: route.polyline?.encodedPolyline ?? "",
+    staticDurationMinutes: staticSecs > 0 ? Math.round(staticSecs / 60) : undefined,
   };
 }
 

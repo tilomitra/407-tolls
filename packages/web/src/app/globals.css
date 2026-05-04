@@ -4,5 +4,14 @@
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Home indicator clearance on iPhone */
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Status bar clearance in standalone (home screen) mode */
+  @media all and (display-mode: standalone) {
+    header {
+      padding-top: env(safe-area-inset-top);
+    }
   }
 }

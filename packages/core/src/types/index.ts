@@ -185,6 +185,7 @@ export const DirectionsResultSchema = z.object({
   fromOffRampMinutes: z.number(),
   totalDistanceKm: z.number(),
   polyline: z.string(),
+  staticDurationMinutes: z.number().optional(),
 });
 export type DirectionsResult = z.infer<typeof DirectionsResultSchema>;
 
@@ -201,6 +202,7 @@ export const NoTollDirectionsResultSchema = z.object({
   durationMinutes: z.number(),
   distanceKm: z.number(),
   polyline: z.string(),
+  staticDurationMinutes: z.number().optional(),
 });
 export type NoTollDirectionsResult = z.infer<typeof NoTollDirectionsResultSchema>;
 
@@ -219,6 +221,7 @@ export const RouteOptionSchema = z.object({
   offRamp: OnRampSchema.nullable(),
   toll: TollBreakdownSchema.nullable(),
   driveTimeMinutes: z.number(),
+  staticDurationMinutes: z.number().optional(),
   driveToOnRampMinutes: z.number(),
   driveFromOffRampMinutes: z.number(),
   highwayTimeMinutes: z.number(),
@@ -242,7 +245,7 @@ export const CompareResultSchema = z.object({
 });
 export type CompareResult = z.infer<typeof CompareResultSchema>;
 
-export const RouteBadgeSchema = z.enum(["cheapest", "fastest", "best_value"]);
+export const RouteBadgeSchema = z.enum(["cheapest", "fastest", "best_value", "second_best_value"]);
 export type RouteBadge = z.infer<typeof RouteBadgeSchema>;
 
 export const RankedRouteSchema = RouteOptionSchema.extend({

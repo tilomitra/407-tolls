@@ -77,6 +77,7 @@ export async function compareRoutes({
       highwayTimeMinutes: dirs.highwayMinutes,
       driveFromOffRampMinutes: dirs.fromOffRampMinutes,
       driveTimeMinutes: dirs.toOnRampMinutes + dirs.highwayMinutes + dirs.fromOffRampMinutes,
+      staticDurationMinutes: dirs.staticDurationMinutes,
       distanceKm: dirs.totalDistanceKm,
       polyline: dirs.polyline,
     };

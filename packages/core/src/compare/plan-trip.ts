@@ -48,6 +48,7 @@ export async function planTrip({
     highwayTimeMinutes: 0,
     driveFromOffRampMinutes: noToll.durationMinutes,
     driveTimeMinutes: noToll.durationMinutes,
+    staticDurationMinutes: noToll.staticDurationMinutes,
     distanceKm: noToll.distanceKm,
     polyline: noToll.polyline,
   };
@@ -70,50 +71,59 @@ export async function planTrip({
     return a.driveTimeMinutes - b.driveTimeMinutes;
   });
 
-  // Compute badges
+  // Find cheapest (min toll cents; no-toll route is $0 so typically wins)
   let cheapestIdx = 0;
   let fastestIdx = 0;
   for (let i = 0; i < unique.length; i++) {
     const r = unique[i]!;
-    if ((r.toll?.totalCents ?? 0) < (unique[cheapestIdx]!.toll?.totalCents ?? 0)) {
-      cheapestIdx = i;
-    }
-    if (r.driveTimeMinutes < unique[fastestIdx]!.driveTimeMinutes) {
-      fastestIdx = i;
-    }
+    if ((r.toll?.totalCents ?? 0) < (unique[cheapestIdx]!.toll?.totalCents ?? 0)) cheapestIdx = i;
+    if (r.driveTimeMinutes < unique[fastestIdx]!.driveTimeMinutes) fastestIdx = i;
   }
 
-  // Best value: max minutes-saved-per-dollar over the no-toll baseline
+  // Optimal score: minutes-saved-per-dollar over the no-toll baseline
   const baselineMinutes = noTollRoute.driveTimeMinutes;
+  const optimalScore = (r: RouteOption): number => {
+    if (r.kind === "no_407") return -1;
+    const tollDollars = (r.toll?.totalCents ?? 0) / 100;
+    if (tollDollars <= 0) return -1;
+    const minutesSaved = baselineMinutes - r.driveTimeMinutes;
+    if (minutesSaved <= 0) return -1;
+    return minutesSaved / tollDollars;
+  };
+
   let bestValueIdx = -1;
   let bestValueScore = 0;
+  let secondBestValueIdx = -1;
+  let secondBestValueScore = 0;
   for (let i = 0; i < unique.length; i++) {
-    const r = unique[i]!;
-    if (r.kind === "no_407") continue;
-    const tollDollars = (r.toll?.totalCents ?? 0) / 100;
-    if (tollDollars <= 0) continue;
-    const minutesSaved = baselineMinutes - r.driveTimeMinutes;
-    if (minutesSaved <= 0) continue;
-    const score = minutesSaved / tollDollars;
+    const score = optimalScore(unique[i]!);
     if (score > bestValueScore) {
+      secondBestValueScore = bestValueScore;
+      secondBestValueIdx = bestValueIdx;
       bestValueScore = score;
       bestValueIdx = i;
+    } else if (score > secondBestValueScore) {
+      secondBestValueScore = score;
+      secondBestValueIdx = i;
     }
   }
 
-  const ranked: RankedRoute[] = unique.map((r, i) => {
-    const badges: RouteBadge[] = [];
-    if (i === cheapestIdx) badges.push("cheapest");
-    if (i === fastestIdx) badges.push("fastest");
-    if (i === bestValueIdx && i !== cheapestIdx && i !== fastestIdx) {
-      badges.push("best_value");
-    }
-    return {
-      ...r,
-      id: routeId(r, i),
-      badges,
-    };
-  });
+  // Build 4 independent slots: fastest, cheapest, most optimal, 2nd most optimal.
+  // Each slot gets its own card and badge. A route may appear in multiple slots
+  // (e.g. the fastest route is also the most optimal) — both cards are shown so
+  // the "Most Optimal" slot is always present when a valid score exists.
+  const slots: Array<{ idx: number; badge: RouteBadge }> = [
+    { idx: fastestIdx, badge: "fastest" },
+    { idx: cheapestIdx, badge: "cheapest" },
+    ...(bestValueIdx >= 0 ? [{ idx: bestValueIdx, badge: "best_value" as RouteBadge }] : []),
+    ...(secondBestValueIdx >= 0 ? [{ idx: secondBestValueIdx, badge: "second_best_value" as RouteBadge }] : []),
+  ];
+
+  const ranked: RankedRoute[] = slots.map(({ idx, badge }, slotNum) => ({
+    ...unique[idx]!,
+    id: `slot${slotNum}-${routeId(unique[idx]!, idx)}`,
+    badges: [badge],
+  }));
 
   return { routes: ranked };
 }
