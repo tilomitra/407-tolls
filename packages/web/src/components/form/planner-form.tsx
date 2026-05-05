@@ -123,21 +123,39 @@ export function PlannerForm({
         >
           <VehicleClassSelector value={vehicleClassId} onChange={setVehicleClassId} />
 
-          <div className="space-y-3 rounded-xl border border-slate-200 p-3">
-            <AddressAutocomplete
-              label="From"
-              placeholder="Origin address"
-              value={originText}
-              onChange={setOriginText}
-              onResolved={(r) => setOrigin(r)}
-            />
-            <AddressAutocomplete
-              label="To"
-              placeholder="Destination address"
-              value={destinationText}
-              onChange={setDestinationText}
-              onResolved={(r) => setDestination(r)}
-            />
+          <div className="relative rounded-xl border border-slate-200 p-3">
+            <div className="space-y-3">
+              <AddressAutocomplete
+                label="From"
+                placeholder="Origin address"
+                value={originText}
+                onChange={setOriginText}
+                onResolved={(r) => setOrigin(r)}
+                allowCurrentLocation
+              />
+              <AddressAutocomplete
+                label="To"
+                placeholder="Destination address"
+                value={destinationText}
+                onChange={setDestinationText}
+                onResolved={(r) => setDestination(r)}
+              />
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                setOriginText(destinationText);
+                setDestinationText(originText);
+                setOrigin(destination);
+                setDestination(origin);
+              }}
+              title="Swap origin and destination"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full border border-slate-200 bg-white p-1.5 text-slate-400 shadow-sm transition-colors hover:border-slate-300 hover:text-slate-600"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-4">
+                <path fillRule="evenodd" d="M13.2 2.24a.75.75 0 0 0 .04 1.06l2.1 1.95H6.75a.75.75 0 0 0 0 1.5h8.59l-2.1 1.95a.75.75 0 1 0 1.02 1.1l3.5-3.25a.75.75 0 0 0 0-1.1l-3.5-3.25a.75.75 0 0 0-1.06.04Zm-6.4 8a.75.75 0 0 0-1.06-.04l-3.5 3.25a.75.75 0 0 0 0 1.1l3.5 3.25a.75.75 0 1 0 1.02-1.1l-2.1-1.95h8.59a.75.75 0 0 0 0-1.5H4.66l2.1-1.95a.75.75 0 0 0 .04-1.06Z" clipRule="evenodd" />
+              </svg>
+            </button>
           </div>
 
           {/* Timing toggle */}

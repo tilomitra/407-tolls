@@ -24,22 +24,53 @@ export function AddressAutocomplete({
   value,
   onChange,
   onResolved,
+  allowCurrentLocation = false,
 }: {
   label: string;
   placeholder: string;
   value: string;
   onChange: (text: string) => void;
   onResolved: (resolved: ResolvedAddress | null) => void;
+  allowCurrentLocation?: boolean;
 }) {
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [activeIdx, setActiveIdx] = useState(-1);
+  const [geoLoading, setGeoLoading] = useState(false);
+  const [geoError, setGeoError] = useState<string | null>(null);
+  const [isCurrentLocation, setIsCurrentLocation] = useState(false);
   const sessionTokenRef = useRef(generateSessionToken());
   const containerRef = useRef<HTMLDivElement>(null);
 
+  function handleCurrentLocation() {
+    if (!navigator.geolocation) {
+      setGeoError("Geolocation not supported");
+      return;
+    }
+    setGeoLoading(true);
+    setGeoError(null);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setGeoLoading(false);
+        setIsCurrentLocation(true);
+        onChange("Current Location");
+        onResolved({
+          address: "Current Location",
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+        });
+      },
+      () => {
+        setGeoLoading(false);
+        setGeoError("Location access denied");
+      },
+      { timeout: 10000 },
+    );
+  }
+
   useEffect(() => {
-    if (!value || value.length < 2) {
+    if (isCurrentLocation || !value || value.length < 2) {
       setSuggestions([]);
       return;
     }
@@ -106,11 +137,38 @@ export function AddressAutocomplete({
 
   return (
     <div ref={containerRef} className="relative">
-      <span className="mb-1 block text-xs font-medium text-slate-500">{label}</span>
+      <div className="mb-1 flex items-center justify-between">
+        <span className="text-xs font-medium text-slate-500">{label}</span>
+        {allowCurrentLocation && (
+          <button
+            type="button"
+            onClick={handleCurrentLocation}
+            disabled={geoLoading}
+            title="Use current location"
+            className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-700 disabled:text-slate-400"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              className="size-3.5"
+            >
+              <path
+                fillRule="evenodd"
+                d="M9.383 3.076A1 1 0 0 1 10 4v.528c2.46.441 4.371 2.495 4.371 5.007a4.876 4.876 0 0 1-1.28 3.321l2.2 2.2a.75.75 0 1 1-1.06 1.061l-2.2-2.2A4.876 4.876 0 0 1 10 14.904a4.876 4.876 0 0 1-3.031-1.007l-2.2 2.2a.75.75 0 1 1-1.061-1.06l2.2-2.2A4.876 4.876 0 0 1 5.629 9.535C5.629 7.023 7.54 4.969 10 4.528V4a1 1 0 0 1 .617-.924ZM10 6a3.376 3.376 0 0 0-3.371 3.535A3.376 3.376 0 0 0 10 12.904a3.376 3.376 0 0 0 3.371-3.369A3.376 3.376 0 0 0 10 6Zm0 2a1.376 1.376 0 1 1 0 2.751A1.376 1.376 0 0 1 10 8Z"
+                clipRule="evenodd"
+              />
+            </svg>
+            {geoLoading ? "Locating…" : "Current location"}
+          </button>
+        )}
+      </div>
+      {geoError && <p className="mb-1 text-xs text-red-500">{geoError}</p>}
       <input
         type="text"
         value={value}
         onChange={(e) => {
+          setIsCurrentLocation(false);
           onChange(e.target.value);
           setOpen(true);
           setActiveIdx(-1);

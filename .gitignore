@@ -8,3 +8,4 @@ dist/
 
 # Turborepo
 .turbo
+.vercel
