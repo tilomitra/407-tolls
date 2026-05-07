@@ -11,14 +11,15 @@ export function SavingsCallout({
   const timeLabel = extraMinutes <= 0 ? "no extra time" : `${extraMinutes} extra min`;
 
   return (
-    <div className="flex items-start gap-3 rounded-xl border-2 border-emerald-200 bg-emerald-50 px-4 py-3">
-      <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-100">
-        <span className="text-sm font-bold text-emerald-700">$</span>
+    <div className="flex items-start gap-3 border border-amex-gold-deep bg-amex-gold-mist px-4 py-3">
+      <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center border border-amex-gold bg-amex-black">
+        <span className="text-base font-bold text-amex-gold">$</span>
       </div>
       <div>
-        <p className="text-lg font-bold text-emerald-900">Save ${savings}</p>
-        <p className="text-sm text-emerald-700">{description}</p>
-        <p className="mt-0.5 text-xs text-emerald-600">{timeLabel}</p>
+        <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-amex-gold">Member Savings</p>
+        <p className="mt-1 text-2xl font-bold tabular-nums text-amex-gold-hi">${savings}</p>
+        <p className="mt-1 text-sm text-amex-text-dim">{description}</p>
+        <p className="mt-0.5 text-[11px] uppercase tracking-[0.16em] text-amex-text-mute">{timeLabel}</p>
       </div>
     </div>
   );

@@ -27,7 +27,7 @@ export function ZoneLegend() {
   ];
 
   return (
-    <div className="flex flex-wrap gap-x-3 gap-y-1.5 text-xs text-slate-500">
+    <div className="flex flex-wrap gap-x-3 gap-y-1.5 text-[11px] text-amex-text-dim">
       {entries.map(({ zone, color }) => (
         <div key={zone} className="flex items-center gap-1.5">
           <span
@@ -35,7 +35,7 @@ export function ZoneLegend() {
             style={{ backgroundColor: color }}
           />
           <span>
-            {zone > 0 && <span className="font-medium text-slate-600">Z{zone}</span>}
+            {zone > 0 && <span className="font-medium uppercase tracking-[0.14em] text-amex-gold">Z{zone}</span>}
             {zone > 0 && " "}
             {ZONE_LABELS[zone as keyof typeof ZONE_LABELS]}
           </span>

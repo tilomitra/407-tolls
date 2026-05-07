@@ -123,12 +123,12 @@ function DayPicker({
             type="button"
             onClick={() => toggle(d.value)}
             className={`
-              flex h-9 items-center justify-center rounded-lg text-xs font-medium
-              transition-colors duration-150
+              flex h-9 items-center justify-center text-[11px] font-semibold uppercase tracking-[0.16em]
+              border transition-colors duration-150
               ${
                 active
-                  ? "bg-blue-600 text-white shadow-sm"
-                  : "border border-slate-200 text-slate-500 hover:border-slate-300 hover:bg-slate-50"
+                  ? "border-amex-gold bg-amex-gold text-amex-black"
+                  : "border-amex-line-hi bg-amex-ink text-amex-text-dim hover:border-amex-gold-lo hover:text-amex-gold-hi"
               }
             `}
           >
@@ -198,13 +198,13 @@ export function RouteForm({
 
   const renderInterchangeOption = (o: (typeof interchangeOptions)[number]) => (
     <>
-      <div className="text-sm font-medium text-slate-900">{o.label}</div>
-      <div className="flex items-center gap-2 text-xs text-slate-400">
+      <div className="text-sm font-medium text-amex-text">{o.label}</div>
+      <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-amex-text-mute">
         <span>Zone {o.zone}</span>
         {o.note && (
           <>
-            <span className="h-2.5 w-px bg-slate-200" />
-            <span className="text-amber-500">{o.note}</span>
+            <span className="h-2.5 w-px bg-amex-line-hi" />
+            <span className="text-amex-amber">{o.note}</span>
           </>
         )}
       </div>
@@ -410,9 +410,11 @@ export function RouteForm({
           <VehicleClassSelector value={vehicleClassId} onChange={setVehicleClassId} />
 
           <div className="relative">
-            <div className="rounded-xl border border-slate-200">
+            <div className="border border-amex-line-hi">
               <div className="px-3 pb-2 pt-3">
-                <span className="mb-1 block text-xs font-medium text-slate-500">Enter at</span>
+                <span className="mb-1.5 block text-[10px] font-medium uppercase tracking-[0.22em] text-amex-text-mute">
+                  Enter at
+                </span>
                 <SearchableSelect
                   options={interchangeOptions}
                   value={entryId}
@@ -422,10 +424,12 @@ export function RouteForm({
                 />
               </div>
 
-              <div className="border-t border-slate-100" />
+              <div className="border-t border-amex-line" />
 
               <div className="px-3 pb-3 pt-2">
-                <span className="mb-1 block text-xs font-medium text-slate-500">Exit at</span>
+                <span className="mb-1.5 block text-[10px] font-medium uppercase tracking-[0.22em] text-amex-text-mute">
+                  Exit at
+                </span>
                 <SearchableSelect
                   options={interchangeOptions}
                   value={exitId}
@@ -446,18 +450,18 @@ export function RouteForm({
               className="
                 absolute right-3 top-1/2 -translate-y-1/2
                 flex h-9 w-9 items-center justify-center
-                rounded-full border border-slate-200 bg-white
-                shadow-sm transition-all duration-150
-                hover:border-slate-300 hover:shadow-md
+                border border-amex-gold-deep bg-amex-ink
+                transition-all duration-150
+                hover:border-amex-gold hover:text-amex-gold-hi
                 active:scale-90
               "
             >
               <svg
-                className="h-4 w-4 text-slate-500"
+                className="h-4 w-4 text-amex-gold"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                strokeWidth={2}
+                strokeWidth={1.5}
               >
                 <path
                   strokeLinecap="round"
@@ -494,13 +498,13 @@ export function RouteForm({
           ) : (
             <>
               <div className="space-y-3">
-                <span className="block text-sm font-medium text-slate-700">Days</span>
+                <span className="block text-amex-eyebrow">Days</span>
                 <DayPicker selected={commuteDays} onChange={setCommuteDays} />
               </div>
 
               {hasWeekdayDays && (
                 <div className="space-y-3">
-                  <span className="block text-sm font-medium text-slate-700">Weekday schedule</span>
+                  <span className="block text-amex-eyebrow">Weekday schedule</span>
                   <div className={`grid gap-3 ${isRoundTrip ? "grid-cols-2" : "grid-cols-1"}`}>
                     <StyledSelect
                       label="Departure"
@@ -522,7 +526,7 @@ export function RouteForm({
 
               {hasWeekendDays && (
                 <div className="space-y-3">
-                  <span className="block text-sm font-medium text-slate-700">Weekend schedule</span>
+                  <span className="block text-amex-eyebrow">Weekend schedule</span>
                   <div className={`grid gap-3 ${isRoundTrip ? "grid-cols-2" : "grid-cols-1"}`}>
                     <StyledSelect
                       label="Departure"
@@ -545,7 +549,7 @@ export function RouteForm({
           )}
 
           {vehicleClass.hasTransponderOption && (
-            <div className="border-t border-slate-100 pt-4">
+            <div className="border-t border-amex-line pt-4">
               <Toggle
                 checked={hasTransponder}
                 onChange={setHasTransponder}
@@ -560,17 +564,17 @@ export function RouteForm({
           )}
 
           {sameInterchange && (
-            <p className="text-center text-xs text-amber-600">
-              Entry and exit must be different interchanges.
+            <p className="text-center text-[11px] uppercase tracking-[0.18em] text-amex-amber">
+              Entry and exit must be different interchanges
             </p>
           )}
 
           {routeError && !sameInterchange && (
-            <p className="text-center text-xs text-amber-600">{routeError}</p>
+            <p className="text-center text-[11px] uppercase tracking-[0.18em] text-amex-amber">{routeError}</p>
           )}
 
           {error && (
-            <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>
+            <div className="border border-[color:var(--color-amex-ruby)]/40 bg-amex-ruby-deep/40 px-4 py-3 text-sm text-amex-ruby">{error}</div>
           )}
         </div>
       </CardBody>

@@ -2,63 +2,66 @@ import type { Zone } from "@407-tolls/core";
 
 export const colors = {
   brand: {
-    50: "#eff6ff",
-    100: "#dbeafe",
-    200: "#bfdbfe",
-    500: "#3b82f6",
-    600: "#2563eb",
-    700: "#1d4ed8",
-    900: "#1e3a5f",
+    50: "#1a1408",
+    100: "#2d2417",
+    200: "#574532",
+    500: "#c5a572",
+    600: "#dcc28e",
+    700: "#dcc28e",
+    900: "#000000",
   },
   surface: {
-    primary: "#ffffff",
-    secondary: "#f8fafc",
-    tertiary: "#f1f5f9",
-    border: "#e2e8f0",
-    borderHover: "#cbd5e1",
+    primary: "#0c0c0c",
+    secondary: "#050505",
+    tertiary: "#141414",
+    border: "#1c1c1c",
+    borderHover: "#2a2a2a",
   },
   text: {
-    primary: "#0f172a",
-    secondary: "#475569",
-    tertiary: "#94a3b8",
-    inverse: "#ffffff",
+    primary: "#ededed",
+    secondary: "#a3a09a",
+    tertiary: "#6a675f",
+    inverse: "#000000",
   },
   status: {
-    success: "#059669",
-    successLight: "#ecfdf5",
-    successBorder: "#a7f3d0",
-    warning: "#d97706",
-    warningLight: "#fffbeb",
-    warningBorder: "#fde68a",
-    error: "#dc2626",
-    errorLight: "#fef2f2",
-    info: "#2563eb",
-    infoLight: "#eff6ff",
+    success: "#7fb287",
+    successLight: "#1f3a26",
+    successBorder: "#3a5e44",
+    warning: "#d8a85a",
+    warningLight: "#3a2c14",
+    warningBorder: "#574532",
+    error: "#c47171",
+    errorLight: "#3a1c1c",
+    info: "#c5a572",
+    infoLight: "#1a1408",
   },
   toll: {
-    free: "#059669",
-    freeLight: "#ecfdf5",
-    freeBorder: "#a7f3d0",
-    peak: "#dc2626",
-    peakLight: "#fef2f2",
-    offpeak: "#059669",
+    free: "#7fb287",
+    freeLight: "#1f3a26",
+    freeBorder: "#3a5e44",
+    peak: "#c47171",
+    peakLight: "#3a1c1c",
+    offpeak: "#7fb287",
   },
 } as const;
 
-// Zone colors matched to 407 ETR's official map legend
+// Zone colors retuned for the dark Amex-black theme.
+// `dot` is used on the (light) MapLibre basemap and keeps the original 407 ETR
+// hue. `bg`/`text` are used in dark-surface zone badges, so we use deep tinted
+// backgrounds with a brighter tinted foreground.
 export const zoneColors: Record<Zone, { bg: string; text: string; dot: string }> = {
-  1: { bg: "#e8edf3", text: "#1b365d", dot: "#1b365d" },   // dark navy
-  2: { bg: "#dce8f4", text: "#2d5ea0", dot: "#2d5ea0" },   // medium blue
-  3: { bg: "#fdf4d8", text: "#b8860b", dot: "#d4a843" },   // gold/yellow
-  4: { bg: "#dae4f0", text: "#1e4d8c", dot: "#1e4d8c" },   // royal blue
-  5: { bg: "#e8d8f0", text: "#6a2c91", dot: "#6a2c91" },   // purple
-  6: { bg: "#fce8d5", text: "#c65d1a", dot: "#e07830" },   // orange
-  7: { bg: "#f8d8e8", text: "#c41e5c", dot: "#e84080" },   // pink/magenta
-  8: { bg: "#d8f0e0", text: "#2d8c4e", dot: "#3aab5f" },   // green
-  9: { bg: "#fce0e0", text: "#c41e3a", dot: "#e04050" },   // red
-  10: { bg: "#d8f0ec", text: "#1a7a6a", dot: "#20a090" },   // teal
-  11: { bg: "#e8d8f0", text: "#5c2d91", dot: "#7040b0" },   // deep purple
-  12: { bg: "#fce0d0", text: "#c44020", dot: "#e06040" },   // coral/red-orange
+  1: { bg: "#0f1924", text: "#7c98c2", dot: "#1b365d" },
+  2: { bg: "#0f1c2c", text: "#85a8d0", dot: "#2d5ea0" },
+  3: { bg: "#241b08", text: "#dcc28e", dot: "#d4a843" },
+  4: { bg: "#0f1d30", text: "#7fa4d4", dot: "#1e4d8c" },
+  5: { bg: "#1d1226", text: "#b88dd0", dot: "#6a2c91" },
+  6: { bg: "#241608", text: "#e09870", dot: "#e07830" },
+  7: { bg: "#241018", text: "#e07ea2", dot: "#e84080" },
+  8: { bg: "#0c2014", text: "#7fcc94", dot: "#3aab5f" },
+  9: { bg: "#241010", text: "#e07c84", dot: "#e04050" },
+  10: { bg: "#0c1f1c", text: "#74c5b8", dot: "#20a090" },
+  11: { bg: "#1a1226", text: "#a690d4", dot: "#7040b0" },
+  12: { bg: "#241208", text: "#e08470", dot: "#e06040" },
 };
 
-export const FREE_DOT_COLOR = "#059669";
+export const FREE_DOT_COLOR = "#7fb287";

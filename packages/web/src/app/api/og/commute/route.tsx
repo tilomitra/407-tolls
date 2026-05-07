@@ -63,14 +63,14 @@ export async function GET(req: Request) {
                 style={{
                   fontSize: 112,
                   fontWeight: 700,
-                  color: "#ffffff",
+                  color: "#c5a572",
                   lineHeight: 1,
                   letterSpacing: -3,
                 }}
               >
                 {monthly}
               </span>
-              <span style={{ fontSize: 36, fontWeight: 600, color: "#3b82f6", marginLeft: 6 }}>
+              <span style={{ fontSize: 36, fontWeight: 600, color: "#dcc28e", marginLeft: 6, letterSpacing: 2, textTransform: "uppercase" }}>
                 /mo
               </span>
             </div>
@@ -79,14 +79,14 @@ export async function GET(req: Request) {
                 style={{
                   fontSize: 44,
                   fontWeight: 700,
-                  color: "rgba(255,255,255,0.3)",
+                  color: "#a3a09a",
                   lineHeight: 1,
                   letterSpacing: -1,
                 }}
               >
                 {yearly}
               </span>
-              <span style={{ fontSize: 20, fontWeight: 600, color: "rgba(255,255,255,0.2)", marginLeft: 4 }}>
+              <span style={{ fontSize: 20, fontWeight: 600, color: "#6a675f", marginLeft: 4, letterSpacing: 2, textTransform: "uppercase" }}>
                 /yr
               </span>
             </div>

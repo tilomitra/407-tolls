@@ -235,9 +235,9 @@ export function ClientApp({
           ) : (
             <Card className="flex h-full items-center justify-center p-12">
               <div className="text-center">
-                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-slate-100">
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center border border-amex-gold-deep bg-amex-ink">
                   <svg
-                    className="h-6 w-6 text-slate-400"
+                    className="h-6 w-6 text-amex-gold"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -245,15 +245,18 @@ export function ClientApp({
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      strokeWidth={1.5}
+                      strokeWidth={1.25}
                       d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
                     />
                   </svg>
                 </div>
-                <p className="text-sm font-medium text-slate-500">
+                <p className="text-amex-eyebrow">
+                  {routeError ? "Route Unavailable" : "Awaiting Selection"}
+                </p>
+                <p className="mt-2 text-sm uppercase tracking-[0.14em] text-amex-text">
                   {routeError ? "Route not available" : "Select your route"}
                 </p>
-                <p className="mt-1 text-xs text-slate-400">
+                <p className="mt-2 text-[11px] uppercase tracking-[0.16em] text-amex-text-mute">
                   {routeError ?? "Pick entry and exit interchanges or click the map"}
                 </p>
               </div>

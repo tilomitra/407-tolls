@@ -26,14 +26,14 @@ function CostRow({
   return (
     <div
       className={`flex items-baseline justify-between py-2 ${
-        bold ? "font-semibold text-slate-900" : "text-slate-600"
+        bold ? "font-semibold text-amex-gold-hi" : "text-amex-text-dim"
       }`}
     >
       <div>
         <span className="text-sm">{label}</span>
-        {sub && <span className="ml-1.5 text-xs text-slate-400">{sub}</span>}
+        {sub && <span className="ml-1.5 text-[10px] uppercase tracking-[0.18em] text-amex-text-mute">{sub}</span>}
       </div>
-      <span className={`text-sm tabular-nums ${bold ? "text-lg" : ""}`}>{value}</span>
+      <span className={`tabular-nums ${bold ? "text-lg" : "text-sm"}`}>{value}</span>
     </div>
   );
 }
@@ -50,10 +50,10 @@ function DayCostSection({
   isRoundTrip: boolean;
 }) {
   return (
-    <div className="rounded-lg bg-slate-50 px-4 py-1">
+    <div className="border border-amex-line bg-amex-ink px-4 py-1">
       <CostRow label="Departure" value={fmt(goCostCents)} sub={label} />
       {isRoundTrip && <CostRow label="Return" value={fmt(returnCostCents)} sub={label} />}
-      <div className="border-t border-slate-200" />
+      <div className="border-t border-amex-line" />
       <CostRow
         label={isRoundTrip ? "Per day (round trip)" : "Per day (one way)"}
         value={fmt(goCostCents + returnCostCents)}
@@ -130,21 +130,22 @@ export function CommuteBreakdown({
       <CardBody className="space-y-4">
         <div className="flex items-start justify-between">
           <div>
+            <p className="text-amex-eyebrow mb-1">Member Commute</p>
             <div className="flex flex-wrap items-center gap-1.5">
-              <h3 className="text-base font-semibold text-slate-900">Commute Estimate</h3>
+              <h3 className="text-base font-semibold uppercase tracking-[0.14em] text-amex-text">Commute Estimate</h3>
               <Badge variant="info">{isRoundTrip ? "Round trip" : "One way"}</Badge>
             </div>
-            <p className="mt-0.5 text-xs text-slate-500">
-              {entryName} to {exitName}
+            <p className="mt-1 text-xs text-amex-text-dim">
+              {entryName} <span className="text-amex-text-faint">→</span> {exitName}
             </p>
-            <p className="text-xs text-slate-400">
+            <p className="text-[11px] uppercase tracking-[0.16em] text-amex-text-mute">
               {getVehicleClass({ id: vehicleClassId }).name} · {dayLabels}
             </p>
           </div>
           <div className="flex items-center gap-3">
             <div className="text-right">
-              <p className="text-2xl font-bold tabular-nums text-slate-900">{fmt(perMonthCents)}</p>
-              <p className="text-xs text-slate-400">per month</p>
+              <p className="text-3xl font-bold tabular-nums text-amex-gold">{fmt(perMonthCents)}</p>
+              <p className="text-[10px] uppercase tracking-[0.22em] text-amex-text-mute">Per Month</p>
             </div>
             <ShareButton url={shareUrl} />
           </div>
@@ -185,7 +186,7 @@ export function CommuteBreakdown({
           />
         )}
 
-        <div className="rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-500 space-y-0.5">
+        <div className="border border-amex-line bg-amex-ink px-3 py-2 text-[11px] uppercase tracking-[0.14em] text-amex-text-mute space-y-0.5">
           <p>
             {hasWeekdayDays && `${weekdayDaysPerYear} weekday`}
             {hasWeekdayDays && hasWeekendDays && " + "}
@@ -197,8 +198,8 @@ export function CommuteBreakdown({
           )}
         </div>
 
-        <p className="text-[11px] text-slate-400">
-          Estimate based on 2026 rates. Actual charges may vary.
+        <p className="text-[10px] uppercase tracking-[0.14em] text-amex-text-faint">
+          Estimate · 2026 rates · Actual charges may vary
         </p>
       </CardBody>
     </Card>

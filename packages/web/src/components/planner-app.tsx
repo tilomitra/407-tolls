@@ -56,7 +56,7 @@ export function PlannerApp() {
       <div className="lg:col-span-2">
         <PlannerForm onSubmit={handleSubmit} loading={loading} />
         {error && (
-          <div className="mt-3 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
+          <div className="mt-3 border border-[color:var(--color-amex-ruby)]/40 bg-amex-ruby-deep/40 px-4 py-3 text-sm text-amex-ruby">
             {error}
           </div>
         )}
@@ -73,8 +73,11 @@ export function PlannerApp() {
         ) : (
           <Card className="flex h-full items-center justify-center p-12">
             <div className="text-center">
-              <p className="text-sm font-medium text-slate-500">Plan your trip</p>
-              <p className="mt-1 text-xs text-slate-400">
+              <p className="text-amex-eyebrow">Member Itinerary</p>
+              <p className="mt-2 text-sm uppercase tracking-[0.14em] text-amex-text">
+                Plan your trip
+              </p>
+              <p className="mt-2 text-[11px] uppercase tracking-[0.16em] text-amex-text-mute">
                 Enter origin and destination to compare 407 vs. no-toll routes
               </p>
             </div>

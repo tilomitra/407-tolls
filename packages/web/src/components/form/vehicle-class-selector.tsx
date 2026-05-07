@@ -69,22 +69,24 @@ function VehicleOption({
     <Tooltip
       content={
         <div>
-          <p className="font-medium text-slate-900">{vehicleClass.name}</p>
-          <p className="mt-0.5">{vehicleClass.description}</p>
+          <p className="font-semibold text-amex-gold-hi">{vehicleClass.name}</p>
+          <p className="mt-0.5 text-amex-text-dim">{vehicleClass.description}</p>
         </div>
       }
     >
       <button
         type="button"
         onClick={onSelect}
-        className={`flex flex-col items-center gap-1 rounded-lg px-3 py-2 transition-all duration-150 ${
+        className={`flex flex-col items-center gap-1 border px-3 py-2 transition-all duration-150 ${
           selected
-            ? "bg-blue-50 text-blue-600 ring-1 ring-blue-200"
-            : "text-slate-400 hover:bg-slate-50 hover:text-slate-600"
+            ? "border-amex-gold bg-amex-gold-mist text-amex-gold-hi"
+            : "border-amex-line-mute text-amex-text-mute hover:border-amex-line-hi hover:text-amex-text-dim"
         }`}
       >
         {vehicleIcons[vehicleClass.id]}
-        <span className="text-[10px] font-medium leading-tight">{vehicleClass.name}</span>
+        <span className="text-[9px] font-medium uppercase tracking-[0.18em] leading-tight">
+          {vehicleClass.name}
+        </span>
       </button>
     </Tooltip>
   );

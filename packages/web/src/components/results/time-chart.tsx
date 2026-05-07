@@ -39,48 +39,50 @@ export function TimeChart({
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="flex w-full items-center justify-between px-6 py-4 text-left transition-colors hover:bg-slate-50"
+        className="flex w-full items-center justify-between px-6 py-4 text-left transition-colors hover:bg-amex-elev"
       >
         <div className="flex items-center gap-3">
           {canSave ? (
             <>
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-50">
-                <svg className="h-4 w-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <div className="flex h-9 w-9 items-center justify-center border border-amex-gold-deep bg-amex-gold-mist">
+                <svg className="h-4 w-4 text-amex-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
               <div>
-                <p className="text-sm font-medium text-slate-900">
-                  Save up to {formatDollars(savings)} on this trip
+                <p className="text-amex-eyebrow">Off-peak Saving</p>
+                <p className="mt-0.5 text-sm font-medium uppercase tracking-[0.12em] text-amex-text">
+                  Save up to {formatDollars(savings)}
                 </p>
-                <p className="text-xs text-slate-500">
-                  Lowest: {formatDollars(minCost)} (off-peak) vs {formatDollars(maxCost)} (peak)
+                <p className="text-[11px] uppercase tracking-[0.14em] text-amex-text-mute">
+                  Lowest {formatDollars(minCost)} · Peak {formatDollars(maxCost)}
                 </p>
               </div>
             </>
           ) : (
             <>
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-50">
-                <svg className="h-4 w-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <div className="flex h-9 w-9 items-center justify-center border border-[color:var(--color-amex-emerald)]/40 bg-amex-emerald-deep/30">
+                <svg className="h-4 w-4 text-amex-emerald" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
               <div>
-                <p className="text-sm font-medium text-slate-900">
+                <p className="text-amex-eyebrow">Lowest Tier</p>
+                <p className="mt-0.5 text-sm font-medium uppercase tracking-[0.12em] text-amex-text">
                   You&apos;re traveling at the lowest rate
                 </p>
-                <p className="text-xs text-slate-500">See all time slots</p>
+                <p className="text-[11px] uppercase tracking-[0.14em] text-amex-text-mute">See all time slots</p>
               </div>
             </>
           )}
         </div>
 
         <svg
-          className={`h-5 w-5 shrink-0 text-slate-400 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          className={`h-5 w-5 shrink-0 text-amex-gold-lo transition-transform duration-200 ${open ? "rotate-180" : ""}`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
-          strokeWidth={2}
+          strokeWidth={1.5}
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
@@ -91,7 +93,7 @@ export function TimeChart({
           open ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="border-t border-slate-100">
+        <div className="border-t border-amex-line">
           <table className="w-full text-xs">
             <tbody>
               <SectionHeader label="Weekday" />
@@ -125,7 +127,7 @@ export function TimeChart({
 function SectionHeader({ label }: { label: string }) {
   return (
     <tr>
-      <td colSpan={3} className="px-6 pb-1.5 pt-3 text-[11px] font-medium uppercase tracking-wider text-slate-400">
+      <td colSpan={3} className="px-6 pb-1.5 pt-3 text-[10px] font-medium uppercase tracking-[0.22em] text-amex-gold">
         {label}
       </td>
     </tr>
@@ -146,19 +148,19 @@ function SlotRow({
   const barPercent = maxCost > 0 ? (slot.totalCents / maxCost) * 100 : 0;
 
   return (
-    <tr className={isCurrent ? "bg-blue-50/60" : "hover:bg-slate-50/50"}>
-      <td className={`whitespace-nowrap py-2.5 pl-6 pr-2 ${isCurrent ? "font-medium text-blue-700" : "text-slate-500"}`}>
+    <tr className={isCurrent ? "bg-amex-gold-mist" : "hover:bg-amex-elev"}>
+      <td className={`whitespace-nowrap py-2.5 pl-6 pr-2 text-[11px] uppercase tracking-[0.14em] ${isCurrent ? "font-semibold text-amex-gold-hi" : "text-amex-text-dim"}`}>
         {slot.label}
       </td>
       <td className="w-full px-3 py-2.5">
-        <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
+        <div className="h-1.5 w-full overflow-hidden bg-amex-line-mute">
           <div
-            className={`h-full rounded-full transition-all duration-500 ease-out ${
+            className={`h-full transition-all duration-500 ease-out ${
               isCheapest
-                ? "bg-emerald-400"
+                ? "bg-amex-emerald"
                 : isCurrent
-                  ? "bg-blue-500"
-                  : "bg-slate-200"
+                  ? "bg-amex-gold"
+                  : "bg-amex-line-hi"
             }`}
             style={{ width: `${Math.max(barPercent, 4)}%` }}
           />
@@ -166,14 +168,14 @@ function SlotRow({
       </td>
       <td className={`whitespace-nowrap py-2.5 pl-2 pr-6 text-right tabular-nums ${
         isCheapest
-          ? "font-semibold text-emerald-600"
+          ? "font-semibold text-amex-emerald"
           : isCurrent
-            ? "font-semibold text-blue-700"
-            : "text-slate-500"
+            ? "font-semibold text-amex-gold-hi"
+            : "text-amex-text-dim"
       }`}>
         {formatDollars(slot.totalCents)}
         {isCheapest && (
-          <span className="ml-1.5 text-[10px] font-medium text-emerald-500">Lowest</span>
+          <span className="ml-1.5 text-[10px] uppercase tracking-[0.18em] text-amex-emerald">Lowest</span>
         )}
       </td>
     </tr>
