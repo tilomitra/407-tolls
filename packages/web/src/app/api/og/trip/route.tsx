@@ -55,7 +55,7 @@ export async function GET(req: Request) {
             style={{
               fontSize: 136,
               fontWeight: 700,
-              color: "#ffffff",
+              color: "#c5a572",
               lineHeight: 1,
               letterSpacing: -3,
             }}

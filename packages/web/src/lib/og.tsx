@@ -58,14 +58,15 @@ export function OgDefault() {
             style={{
               fontSize: 56,
               fontWeight: 700,
-              color: "#ffffff",
+              color: "#ededed",
               lineHeight: 1.2,
               textAlign: "center",
+              letterSpacing: 2,
             }}
           >
             Calculate Your Toll
           </span>
-          <span style={{ fontSize: 22, fontWeight: 600, color: "#64748b", textAlign: "center" }}>
+          <span style={{ fontSize: 22, fontWeight: 600, color: "#a3a09a", textAlign: "center" }}>
             Estimate trips, commute costs, and transponder savings
           </span>
         </div>
@@ -98,20 +99,22 @@ export function OgBadge({ variant, text }: OgBadgeProps) {
         display: "flex",
         alignItems: "center",
         padding: "7px 18px",
-        borderRadius: 20,
+        borderRadius: 0,
         backgroundColor: isNegative
-          ? "rgba(239,68,68,0.10)"
-          : "rgba(16,185,129,0.10)",
+          ? "rgba(196,113,113,0.10)"
+          : "rgba(127,178,135,0.10)",
         border: isNegative
-          ? "1px solid rgba(248,113,113,0.20)"
-          : "1px solid rgba(52,211,153,0.20)",
+          ? "1px solid rgba(196,113,113,0.40)"
+          : "1px solid rgba(127,178,135,0.40)",
       }}
     >
       <span
         style={{
           fontSize: 17,
           fontWeight: 600,
-          color: isNegative ? "#f87171" : "#34d399",
+          color: isNegative ? "#c47171" : "#7fb287",
+          letterSpacing: 1.5,
+          textTransform: "uppercase",
         }}
       >
         {text}
@@ -146,7 +149,8 @@ export function OgCard({
         flexDirection: "column",
         width: "100%",
         height: "100%",
-        backgroundImage: "linear-gradient(145deg, #0b1222 0%, #12203a 50%, #0b1222 100%)",
+        backgroundImage:
+          "radial-gradient(ellipse 80% 50% at 50% 0%, rgba(197,165,114,0.12), transparent 70%), linear-gradient(180deg, #000000 0%, #050505 100%)",
         fontFamily: "Inter",
         padding: 0,
         position: "relative",
@@ -157,23 +161,8 @@ export function OgCard({
         style={{
           display: "flex",
           width: "100%",
-          height: 4,
-          backgroundImage: "linear-gradient(90deg, #3b82f6, #818cf8, #3b82f6)",
-        }}
-      />
-
-      <div
-        style={{
-          display: "flex",
-          position: "absolute",
-          top: 140,
-          left: "50%",
-          width: 700,
-          height: 300,
-          marginLeft: -350,
-          borderRadius: 9999,
-          backgroundImage:
-            "radial-gradient(ellipse, rgba(59,130,246,0.08) 0%, transparent 70%)",
+          height: 1,
+          backgroundColor: "#574532",
         }}
       />
 
@@ -184,6 +173,8 @@ export function OgCard({
           flex: 1,
           padding: "40px 56px 44px 56px",
           position: "relative",
+          border: "1px solid #1c1c1c",
+          margin: 24,
         }}
       >
         <div
@@ -194,24 +185,42 @@ export function OgCard({
             marginBottom: 32,
           }}
         >
-          <span style={{ fontSize: 22, fontWeight: 700, color: "#3b82f6", letterSpacing: 2 }}>
-            407 ETR Calculator
+          <span
+            style={{
+              fontSize: 18,
+              fontWeight: 700,
+              color: "#c5a572",
+              letterSpacing: 6,
+              textTransform: "uppercase",
+            }}
+          >
+            407 · Member · Tolls
           </span>
-          <span style={{ fontSize: 17, fontWeight: 600, color: "#64748b" }}>{label}</span>
+          <span
+            style={{
+              fontSize: 14,
+              fontWeight: 600,
+              color: "#a3a09a",
+              letterSpacing: 4,
+              textTransform: "uppercase",
+            }}
+          >
+            {label}
+          </span>
         </div>
 
         {entryName && exitName && (
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <span style={{ fontSize: 36, fontWeight: 700, color: "#ffffff" }}>{entryName}</span>
+            <span style={{ fontSize: 36, fontWeight: 700, color: "#ededed", letterSpacing: 1 }}>{entryName}</span>
             {roundTrip ? (
               <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-                <span style={{ fontSize: 18, fontWeight: 700, color: "#3b82f6" }}>→</span>
-                <span style={{ fontSize: 18, fontWeight: 700, color: "#818cf8" }}>←</span>
+                <span style={{ fontSize: 18, fontWeight: 700, color: "#c5a572" }}>→</span>
+                <span style={{ fontSize: 18, fontWeight: 700, color: "#dcc28e" }}>←</span>
               </div>
             ) : (
-              <span style={{ fontSize: 22, fontWeight: 700, color: "#3b82f6" }}>→</span>
+              <span style={{ fontSize: 22, fontWeight: 700, color: "#c5a572" }}>→</span>
             )}
-            <span style={{ fontSize: 36, fontWeight: 700, color: "#ffffff" }}>{exitName}</span>
+            <span style={{ fontSize: 36, fontWeight: 700, color: "#ededed", letterSpacing: 1 }}>{exitName}</span>
           </div>
         )}
 
@@ -235,12 +244,21 @@ export function OgCard({
               style={{
                 display: "flex",
                 padding: "8px 18px",
-                borderRadius: 20,
-                backgroundColor: "rgba(255,255,255,0.06)",
-                border: "1px solid rgba(255,255,255,0.08)",
+                backgroundColor: "rgba(197,165,114,0.05)",
+                border: "1px solid #574532",
               }}
             >
-              <span style={{ fontSize: 16, fontWeight: 600, color: "#cbd5e1" }}>{pill}</span>
+              <span
+                style={{
+                  fontSize: 14,
+                  fontWeight: 600,
+                  color: "#dcc28e",
+                  letterSpacing: 2,
+                  textTransform: "uppercase",
+                }}
+              >
+                {pill}
+              </span>
             </div>
           ))}
         </div>
@@ -252,8 +270,28 @@ export function OgCard({
             alignItems: "center",
           }}
         >
-          <span style={{ fontSize: 18, fontWeight: 700, color: "#3b82f6" }}>407tolls.com</span>
-          <span style={{ fontSize: 15, fontWeight: 600, color: "#475569" }}>{ctaText}</span>
+          <span
+            style={{
+              fontSize: 16,
+              fontWeight: 700,
+              color: "#c5a572",
+              letterSpacing: 4,
+              textTransform: "uppercase",
+            }}
+          >
+            407tolls.com
+          </span>
+          <span
+            style={{
+              fontSize: 13,
+              fontWeight: 600,
+              color: "#6a675f",
+              letterSpacing: 3,
+              textTransform: "uppercase",
+            }}
+          >
+            {ctaText}
+          </span>
         </div>
       </div>
     </div>

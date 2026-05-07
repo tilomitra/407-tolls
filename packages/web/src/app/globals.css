@@ -1,11 +1,107 @@
 @import "tailwindcss" source("../");
 
+/* Monaspace Neon — Amex Black inspired typography */
+@font-face {
+  font-family: "Monaspace Neon";
+  src: url("https://cdn.jsdelivr.net/gh/githubnext/monaspace@v1.101/fonts/webfonts/MonaspaceNeon-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Monaspace Neon";
+  src: url("https://cdn.jsdelivr.net/gh/githubnext/monaspace@v1.101/fonts/webfonts/MonaspaceNeon-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Monaspace Neon";
+  src: url("https://cdn.jsdelivr.net/gh/githubnext/monaspace@v1.101/fonts/webfonts/MonaspaceNeon-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Monaspace Neon";
+  src: url("https://cdn.jsdelivr.net/gh/githubnext/monaspace@v1.101/fonts/webfonts/MonaspaceNeon-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Monaspace Neon";
+  src: url("https://cdn.jsdelivr.net/gh/githubnext/monaspace@v1.101/fonts/webfonts/MonaspaceNeon-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: "Monaspace Neon", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-mono: "Monaspace Neon", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Amex Black Card palette — matte black with champagne gold accents */
+  --color-amex-black: #000000;
+  --color-amex-ink: #050505;
+  --color-amex-card: #0c0c0c;
+  --color-amex-elev: #141414;
+  --color-amex-line: #1c1c1c;
+  --color-amex-line-hi: #2a2a2a;
+  --color-amex-line-mute: #131313;
+
+  --color-amex-paper: #f4ede0;
+  --color-amex-paper-dim: #c8bfae;
+  --color-amex-text: #ededed;
+  --color-amex-text-dim: #a3a09a;
+  --color-amex-text-mute: #6a675f;
+  --color-amex-text-faint: #3d3b36;
+
+  /* Champagne gold (Centurion-inspired) */
+  --color-amex-gold: #c5a572;
+  --color-amex-gold-hi: #dcc28e;
+  --color-amex-gold-lo: #8a7350;
+  --color-amex-gold-deep: #574532;
+  --color-amex-gold-mist: rgba(197, 165, 114, 0.08);
+
+  /* Status accents tuned for dark background */
+  --color-amex-emerald: #7fb287;
+  --color-amex-emerald-deep: #1f3a26;
+  --color-amex-amber: #d8a85a;
+  --color-amex-amber-deep: #3a2c14;
+  --color-amex-ruby: #c47171;
+  --color-amex-ruby-deep: #3a1c1c;
+  --color-amex-violet: #9b8bbf;
+  --color-amex-violet-deep: #2a223a;
+}
+
 @layer base {
+  html,
+  body {
+    background: var(--color-amex-black);
+    color: var(--color-amex-text);
+  }
+
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "ss01", "ss02", "calt";
+    letter-spacing: -0.01em;
     /* Home indicator clearance on iPhone */
     padding-bottom: env(safe-area-inset-bottom);
+    background-image:
+      radial-gradient(
+        ellipse 80% 50% at 50% -10%,
+        rgba(197, 165, 114, 0.06),
+        transparent 70%
+      ),
+      linear-gradient(
+        180deg,
+        var(--color-amex-black) 0%,
+        var(--color-amex-ink) 100%
+      );
+    background-attachment: fixed;
   }
 
   /* Status bar clearance in standalone (home screen) mode */
@@ -14,4 +110,76 @@
       padding-top: env(safe-area-inset-top);
     }
   }
+
+  /* Selection */
+  ::selection {
+    background: var(--color-amex-gold);
+    color: var(--color-amex-black);
+  }
+
+  /* Scrollbars (WebKit) */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-amex-black);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-amex-line-hi);
+    border-radius: 0;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-amex-gold-lo);
+  }
+
+  /* Form fields inherit dark surface */
+  input,
+  select,
+  textarea,
+  button {
+    font-family: inherit;
+    color: inherit;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-amex-text-mute);
+  }
+}
+
+/* Subtle hairline border that hints at the embossed gold edge */
+@utility border-amex-hairline {
+  border-color: var(--color-amex-line);
+}
+
+/* Etched gold uppercase label, Centurion-style */
+@utility text-amex-eyebrow {
+  font-size: 0.625rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--color-amex-gold);
+}
+
+/* Card with the matte-black, gold-edge feel */
+@utility surface-amex {
+  background: linear-gradient(
+    180deg,
+    rgba(20, 20, 20, 1) 0%,
+    rgba(8, 8, 8, 1) 100%
+  );
+  border: 1px solid var(--color-amex-line);
+  box-shadow:
+    inset 0 1px 0 rgba(197, 165, 114, 0.04),
+    0 1px 0 rgba(0, 0, 0, 0.6);
+}
+
+@utility surface-amex-elev {
+  background: linear-gradient(
+    180deg,
+    rgba(28, 28, 28, 1) 0%,
+    rgba(14, 14, 14, 1) 100%
+  );
+  border: 1px solid var(--color-amex-line-hi);
 }

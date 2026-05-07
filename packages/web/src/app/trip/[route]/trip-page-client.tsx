@@ -34,14 +34,14 @@ export function TripPageClient({
   return (
     <div className="space-y-4">
       <div className="flex items-baseline justify-between gap-4">
-        <h2 className="text-xl font-semibold text-slate-900">
-          {entryName} to {exitName}
+        <h2 className="text-xl font-semibold uppercase tracking-[0.14em] text-amex-text">
+          {entryName} <span className="text-amex-gold-lo">→</span> {exitName}
         </h2>
         <a
           href={`/?entry=${entryId}&exit=${exitId}&mode=trip`}
-          className="shrink-0 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-500 transition-colors hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
+          className="shrink-0 border border-amex-line-hi px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.22em] text-amex-text-dim transition-colors hover:border-amex-gold-lo hover:text-amex-gold-hi"
         >
-          Try your own route →
+          Plan your own →
         </a>
       </div>
 

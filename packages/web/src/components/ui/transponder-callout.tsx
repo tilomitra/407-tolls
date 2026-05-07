@@ -5,24 +5,23 @@ export function TransponderCallout({
   hasTransponder: boolean;
   summary?: string;
 }) {
-  const isGreen = hasTransponder;
+  const isPositive = hasTransponder;
 
   return (
-    <div className={`rounded-lg border px-3 py-2 text-xs ${
-      isGreen
-        ? "border-emerald-200 bg-emerald-50 text-emerald-700"
-        : "border-amber-200 bg-amber-50 text-amber-700"
+    <div className={`border px-3 py-2 text-xs ${
+      isPositive
+        ? "border-[color:var(--color-amex-emerald)]/40 bg-amex-emerald-deep/40 text-amex-emerald"
+        : "border-amex-gold-deep bg-amex-gold-mist text-amex-gold-hi"
     }`}>
       <p>
-        {isGreen ? "Your transponder saves you" : "Get a transponder and save"}{" "}
-        {summary ?? "$5.30/trip + $5/month account fee"}
+        {isPositive ? "Your transponder saves you" : "Get a transponder and save"}{" "}
+        <span className="font-semibold">{summary ?? "$5.30/trip + $5/month account fee"}</span>
       </p>
       {summary && (
         <p className="mt-0.5 opacity-75">
-          {isGreen
+          {isPositive
             ? "$5.30/trip camera charge + $5/month account fee waived"
-            : "Includes $5.30/trip camera charge + $5/month account fee"
-          }
+            : "Includes $5.30/trip camera charge + $5/month account fee"}
         </p>
       )}
     </div>
