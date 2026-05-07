@@ -1,5 +1,5 @@
-const CACHE = 'v1';
-const PRECACHE = ['/', '/favicon.svg', '/icon-192.png', '/icon-512.png', '/apple-icon.png'];
+const CACHE = 'v2';
+const PRECACHE = ['/favicon.svg', '/icon-192.png', '/icon-512.png', '/apple-icon.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(PRECACHE)));
@@ -15,9 +15,14 @@ self.addEventListener('activate', e => {
   self.clients.claim();
 });
 
+// Pass through everything except a tiny precached icon set. This avoids serving
+// stale HTML that points at hashed /_next/static/css/*.css files from a previous
+// deploy (which would 404 and leave the page unstyled).
 self.addEventListener('fetch', e => {
+  if (e.request.method !== 'GET') return;
   const url = new URL(e.request.url);
-  if (url.pathname.startsWith('/api/')) return;
+  if (url.origin !== self.location.origin) return;
+  if (!PRECACHE.includes(url.pathname)) return;
   e.respondWith(
     caches.match(e.request).then(cached => cached ?? fetch(e.request))
   );
