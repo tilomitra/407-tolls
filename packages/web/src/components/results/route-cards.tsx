@@ -1,6 +1,7 @@
 "use client";
 
-import type { LatLng, RankedRoute } from "@407-tolls/core";
+import { useEffect, useMemo, useState } from "react";
+import type { CandidateRoute, LatLng, RankedRoute, RouteOption } from "@407-tolls/core";
 import { Card } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { formatDollars } from "@/lib/format";
@@ -29,7 +30,7 @@ function trafficColor(level: TrafficLevel): string {
   return "text-amex-text";
 }
 
-function routeKindLabel(r: RankedRoute): string {
+function routeKindLabel(r: RouteOption): string {
   if (r.kind === "no_407") return "No 407";
   if (r.kind === "full_407") return "Full 407";
   return "Partial 407";
@@ -52,7 +53,7 @@ function llStr(p: LatLng): string {
   return `${p.lat},${p.lng}`;
 }
 
-function googleMapsUrl(r: RankedRoute, origin: LatLng, destination: LatLng): string {
+function googleMapsUrl(r: RouteOption, origin: LatLng, destination: LatLng): string {
   const params = new URLSearchParams({
     api: "1",
     origin: llStr(origin),
@@ -69,14 +70,23 @@ function googleMapsUrl(r: RankedRoute, origin: LatLng, destination: LatLng): str
   return `https://www.google.com/maps/dir/?${params.toString()}`;
 }
 
+// Round a cent value UP to the nearest 50¢ — used to give the slider a clean
+// upper bound and step size.
+const BUDGET_STEP_CENTS = 50;
+function roundUpToStep(cents: number, step: number = BUDGET_STEP_CENTS): number {
+  return Math.ceil(cents / step) * step;
+}
+
 export function RouteCards({
   routes,
+  allRoutes,
   selectedId,
   onSelect,
   origin,
   destination,
 }: {
   routes: RankedRoute[];
+  allRoutes: CandidateRoute[];
   selectedId: string | null;
   onSelect: (id: string) => void;
   origin: LatLng | null;
@@ -219,6 +229,164 @@ export function RouteCards({
           </tbody>
         </table>
       </Card>
+
+      <BudgetPicker
+        allRoutes={allRoutes}
+        noTollMinutes={noTollMinutes}
+        noTollIsHeavy={noTollIsHeavy}
+        origin={origin}
+        destination={destination}
+      />
     </div>
+  );
+}
+
+function BudgetPicker({
+  allRoutes,
+  noTollMinutes,
+  noTollIsHeavy,
+  origin,
+  destination,
+}: {
+  allRoutes: CandidateRoute[];
+  noTollMinutes: number;
+  noTollIsHeavy: boolean;
+  origin: LatLng | null;
+  destination: LatLng | null;
+}) {
+  const maxCents = useMemo(() => {
+    const max = allRoutes.reduce(
+      (acc, r) => Math.max(acc, r.toll?.totalCents ?? 0),
+      0,
+    );
+    return roundUpToStep(max);
+  }, [allRoutes]);
+
+  const [budgetCents, setBudgetCents] = useState<number>(maxCents);
+
+  // If a new search produces a different toll ceiling, reset the slider so
+  // it doesn't snap to an out-of-range value from a previous result set.
+  useEffect(() => {
+    setBudgetCents(maxCents);
+  }, [maxCents]);
+
+  const pick = useMemo(() => {
+    const eligible = allRoutes.filter(
+      (r) => (r.toll?.totalCents ?? 0) <= budgetCents,
+    );
+    if (eligible.length === 0) return null;
+    return eligible.reduce((best, r) =>
+      r.driveTimeMinutes < best.driveTimeMinutes ? r : best,
+    );
+  }, [allRoutes, budgetCents]);
+
+  // No 407 candidates with a toll → slider has no meaningful range.
+  if (maxCents <= 0 || allRoutes.length === 0) return null;
+
+  const pickTollCents = pick?.toll?.totalCents ?? 0;
+  const pickLevel = pick
+    ? trafficLevel(pick.driveTimeMinutes, pick.staticDurationMinutes)
+    : "unknown";
+  const pickTimeColor = trafficColor(pickLevel);
+  const pickTimeSaved = pick ? noTollMinutes - pick.driveTimeMinutes : 0;
+  const pickMapsUrl = pick && origin && destination
+    ? googleMapsUrl(pick, origin, destination)
+    : null;
+
+  return (
+    <Card className="p-4">
+      <div className="flex items-baseline justify-between gap-3">
+        <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-amex-text-mute">
+          Pick By Budget
+        </p>
+        <p className="text-[10px] uppercase tracking-[0.16em] text-amex-text-faint">
+          Max toll{" "}
+          <span className="font-semibold tabular-nums text-amex-gold">
+            {formatDollars(budgetCents)}
+          </span>
+        </p>
+      </div>
+
+      <input
+        type="range"
+        min={0}
+        max={maxCents}
+        step={BUDGET_STEP_CENTS}
+        value={budgetCents}
+        onChange={(e) => setBudgetCents(Number(e.target.value))}
+        aria-label="Maximum toll budget"
+        className="mt-3 h-1.5 w-full cursor-pointer appearance-none rounded-none bg-amex-line accent-amex-gold focus:outline-none focus-visible:ring-1 focus-visible:ring-amex-gold"
+      />
+      <div className="mt-1 flex justify-between text-[10px] uppercase tracking-[0.16em] text-amex-text-faint">
+        <span>$0</span>
+        <span>{formatDollars(maxCents)}</span>
+      </div>
+
+      {pick ? (
+        <div className="mt-4 border-t border-amex-line pt-3">
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="font-semibold uppercase tracking-[0.12em] text-sm text-amex-text">
+              {routeKindLabel(pick)}
+            </span>
+            <Badge variant="warning">Your Pick</Badge>
+          </div>
+
+          {pick.kind === "partial_407" && pick.onRamp && pick.offRamp && (
+            <div className="mt-1 space-y-0.5 text-[10px] uppercase tracking-[0.14em] text-amex-text-mute">
+              <p><span className="text-amex-text-faint">Enter</span> {pick.onRamp.name}</p>
+              <p><span className="text-amex-text-faint">Exit</span> {pick.offRamp.name}</p>
+            </div>
+          )}
+          {pick.kind === "full_407" && pick.onRamp && pick.offRamp && (
+            <p className="mt-0.5 text-[10px] uppercase tracking-[0.14em] text-amex-text-mute">
+              {pick.onRamp.name} → {pick.offRamp.name}
+            </p>
+          )}
+
+          <div className="mt-3 flex flex-wrap items-baseline gap-x-6 gap-y-1">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.16em] text-amex-text-faint">Time</p>
+              <p className={`font-semibold tabular-nums ${pickTimeColor}`}>
+                {formatMinutes(pick.driveTimeMinutes)}
+                {noTollMinutes > 0 && pickTimeSaved !== 0 && (
+                  <span className={`ml-2 text-[11px] tabular-nums ${
+                    pickTimeSaved > 0
+                      ? noTollIsHeavy ? "text-amex-emerald" : "text-amex-text-mute"
+                      : "text-amex-text-mute"
+                  }`}>
+                    {pickTimeSaved > 0
+                      ? `−${formatMinutes(pickTimeSaved)}`
+                      : `+${formatMinutes(-pickTimeSaved)}`}
+                  </span>
+                )}
+              </p>
+            </div>
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.16em] text-amex-text-faint">Cost</p>
+              <p className="font-semibold tabular-nums text-amex-text">
+                {formatDollars(pickTollCents)}
+              </p>
+            </div>
+            {pickMapsUrl && (
+              <a
+                href={pickMapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-auto inline-flex items-center gap-1 text-[10px] uppercase tracking-[0.18em] text-amex-gold hover:text-amex-gold-hi"
+              >
+                <svg className="h-3 w-3" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" />
+                </svg>
+                Maps
+              </a>
+            )}
+          </div>
+        </div>
+      ) : (
+        <p className="mt-3 border-t border-amex-line pt-3 text-xs text-amex-text-mute">
+          No route fits this budget. Raise the slider to see options.
+        </p>
+      )}
+    </Card>
   );
 }

@@ -65,6 +65,7 @@ export function PlannerApp() {
         {result ? (
           <RouteCards
             routes={result.routes}
+            allRoutes={result.allRoutes}
             selectedId={selectedId}
             onSelect={setSelectedId}
             origin={coords?.origin ?? null}

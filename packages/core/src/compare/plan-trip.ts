@@ -18,6 +18,13 @@ export interface PlanTripArgs {
   getNoTollDirections: NoTollDirectionsProvider;
 }
 
+// Two routes are considered meaningfully different if cost differs by at least
+// MIN_COST_DIFF_CENTS OR drive time differs by at least MIN_TIME_DIFF_MIN. Both
+// thresholds together mean: routes that are within ~$0.50 AND within ~2 min are
+// treated as duplicates and won't both be shown.
+const MIN_COST_DIFF_CENTS = 50;
+const MIN_TIME_DIFF_MIN = 2;
+
 /**
  * Plan a trip end-to-end: build the no-toll baseline and the 407 candidates,
  * then rank them with badges (cheapest, fastest, best_value).
@@ -91,41 +98,82 @@ export async function planTrip({
     return minutesSaved / tollDollars;
   };
 
-  let bestValueIdx = -1;
-  let bestValueScore = 0;
-  let secondBestValueIdx = -1;
-  let secondBestValueScore = 0;
-  for (let i = 0; i < unique.length; i++) {
-    const score = optimalScore(unique[i]!);
-    if (score > bestValueScore) {
-      secondBestValueScore = bestValueScore;
-      secondBestValueIdx = bestValueIdx;
-      bestValueScore = score;
-      bestValueIdx = i;
-    } else if (score > secondBestValueScore) {
-      secondBestValueScore = score;
-      secondBestValueIdx = i;
+  // Candidate indices sorted by value score, descending (only positive scores).
+  const byValueDesc = unique
+    .map((r, i) => ({ i, score: optimalScore(r) }))
+    .filter((x) => x.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .map((x) => x.i);
+
+  // Diversity check: two routes are "different enough" if either cost or time
+  // differs by more than the threshold. This prevents the value slots from
+  // landing on routes that look identical to the fastest/cheapest picks.
+  const isDifferentEnough = (aIdx: number, bIdx: number): boolean => {
+    const a = unique[aIdx]!;
+    const b = unique[bIdx]!;
+    const costDiff = Math.abs((a.toll?.totalCents ?? 0) - (b.toll?.totalCents ?? 0));
+    const timeDiff = Math.abs(a.driveTimeMinutes - b.driveTimeMinutes);
+    return costDiff >= MIN_COST_DIFF_CENTS || timeDiff >= MIN_TIME_DIFF_MIN;
+  };
+
+  // Build slots. Each slot is a distinct route; if a route qualifies for
+  // multiple badges (e.g. fastest is also best value), badges are merged on
+  // the same slot and another diverse route is picked for the freed slot.
+  const slots: Array<{ idx: number; badges: RouteBadge[] }> = [];
+
+  const addSlot = (idx: number, badge: RouteBadge): void => {
+    const existing = slots.find((s) => s.idx === idx);
+    if (existing) {
+      if (!existing.badges.includes(badge)) existing.badges.push(badge);
+    } else {
+      slots.push({ idx, badges: [badge] });
     }
-  }
+  };
 
-  // Build 4 independent slots: fastest, cheapest, most optimal, 2nd most optimal.
-  // Each slot gets its own card and badge. A route may appear in multiple slots
-  // (e.g. the fastest route is also the most optimal) — both cards are shown so
-  // the "Most Optimal" slot is always present when a valid score exists.
-  const slots: Array<{ idx: number; badge: RouteBadge }> = [
-    { idx: fastestIdx, badge: "fastest" },
-    { idx: cheapestIdx, badge: "cheapest" },
-    ...(bestValueIdx >= 0 ? [{ idx: bestValueIdx, badge: "best_value" as RouteBadge }] : []),
-    ...(secondBestValueIdx >= 0 ? [{ idx: secondBestValueIdx, badge: "second_best_value" as RouteBadge }] : []),
-  ];
+  addSlot(fastestIdx, "fastest");
+  addSlot(cheapestIdx, "cheapest");
 
-  const ranked: RankedRoute[] = slots.map(({ idx, badge }, slotNum) => ({
+  // Pick the next route for `badge` from `candidates`, preferring one that is
+  // not already in a slot AND is diverse from every existing slot. Falls back
+  // to "not already in a slot" if no diverse candidate exists.
+  const pickDiverseSlot = (badge: RouteBadge, candidates: readonly number[]): void => {
+    const used = new Set(slots.map((s) => s.idx));
+
+    for (const idx of candidates) {
+      if (used.has(idx)) continue;
+      if (slots.every((s) => isDifferentEnough(idx, s.idx))) {
+        addSlot(idx, badge);
+        return;
+      }
+    }
+    // Fallback: any unused candidate, even if similar.
+    for (const idx of candidates) {
+      if (used.has(idx)) continue;
+      addSlot(idx, badge);
+      return;
+    }
+    // No remaining candidates — merge badge onto the highest-scoring slot
+    // that already exists (so the badge is still surfaced somewhere).
+    if (candidates.length > 0) addSlot(candidates[0]!, badge);
+  };
+
+  pickDiverseSlot("best_value", byValueDesc);
+  pickDiverseSlot("second_best_value", byValueDesc);
+
+  const ranked: RankedRoute[] = slots.map(({ idx, badges }, slotNum) => ({
     ...unique[idx]!,
     id: `slot${slotNum}-${routeId(unique[idx]!, idx)}`,
-    badges: [badge],
+    badges,
   }));
 
-  return { routes: ranked };
+  // Every deduped candidate, so the client can compute things like a
+  // "best route under $X budget" picker without re-fetching directions.
+  const allRoutes = unique.map((r, i) => ({
+    ...r,
+    id: `cand${i}-${routeId(r, i)}`,
+  }));
+
+  return { routes: ranked, allRoutes };
 }
 
 function routeId(r: RouteOption, i: number): string {

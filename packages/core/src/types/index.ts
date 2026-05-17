@@ -254,8 +254,14 @@ export const RankedRouteSchema = RouteOptionSchema.extend({
 });
 export type RankedRoute = z.infer<typeof RankedRouteSchema>;
 
+export const CandidateRouteSchema = RouteOptionSchema.extend({
+  id: z.string(),
+});
+export type CandidateRoute = z.infer<typeof CandidateRouteSchema>;
+
 export const PlannerResultSchema = z.object({
   routes: z.array(RankedRouteSchema),
+  allRoutes: z.array(CandidateRouteSchema),
 });
 export type PlannerResult = z.infer<typeof PlannerResultSchema>;
 
