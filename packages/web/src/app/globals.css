@@ -1,5 +1,9 @@
 @import "tailwindcss" source("../");
 
+/* Class-based dark mode: enables `dark:` utilities and lets us flip the
+   semantic `--color-ab-*` variables defined below. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* Monaspace Neon — Airbnb-inspired layout with monospace typography */
 @font-face {
   font-family: "Monaspace Neon";
@@ -88,6 +92,39 @@
   --shadow-ab-lg: 0 12px 32px rgba(0, 0, 0, 0.12);
 }
 
+/* Dark mode: override the semantic tokens. Components consume `--color-ab-*`
+   so the whole UI flips by re-pointing the variables. The Rausch accent
+   (`--color-ab-gold*`) stays the same in both modes. */
+.dark {
+  --color-ab-black: #1a1a1a;
+  --color-ab-ink: #242424;
+  --color-ab-card: #1f1f1f;
+  --color-ab-elev: #262626;
+  --color-ab-line: #2e2e2e;
+  --color-ab-line-hi: #3d3d3d;
+  --color-ab-line-mute: #262626;
+
+  --color-ab-paper: #1f1f1f;
+  --color-ab-paper-dim: #1a1a1a;
+  --color-ab-text: #f2f2f2;
+  --color-ab-text-dim: #a8a8a8;
+  --color-ab-text-mute: #6b6b6b;
+  --color-ab-text-faint: #3a3a3a;
+
+  --color-ab-gold-mist: rgba(255, 56, 92, 0.14);
+
+  --color-ab-emerald-deep: #0f3a30;
+  --color-ab-amber-deep: #3a2b0a;
+  --color-ab-ruby-deep: #3a160d;
+  --color-ab-violet-deep: #2c1532;
+
+  --shadow-ab-sm: 0 1px 2px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(0, 0, 0, 0.3);
+  --shadow-ab-md: 0 6px 16px rgba(0, 0, 0, 0.55);
+  --shadow-ab-lg: 0 12px 32px rgba(0, 0, 0, 0.65);
+
+  color-scheme: dark;
+}
+
 @layer base {
   html,
   body {
@@ -109,6 +146,14 @@
       transparent 70%
     );
     background-attachment: fixed;
+  }
+
+  .dark body {
+    background-image: radial-gradient(
+      ellipse 80% 50% at 50% -10%,
+      rgba(255, 56, 92, 0.12),
+      transparent 70%
+    );
   }
 
   /* Status bar clearance in standalone (home screen) mode */
