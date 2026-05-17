@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import type { VehicleClassId, VehicleClass } from "@407-tolls/core";
-import { VEHICLE_CLASSES } from "@407-tolls/core";
+import { VEHICLE_CLASSES, getVehicleClass } from "@407-tolls/core";
 import { Tooltip, TooltipProvider } from "../ui/tooltip";
 
 const iconClass = "h-7 w-7";
@@ -99,6 +100,36 @@ export function VehicleClassSelector({
   value: VehicleClassId;
   onChange: (id: VehicleClassId) => void;
 }) {
+  const [expanded, setExpanded] = useState(false);
+  const selectedClass = getVehicleClass({ id: value });
+
+  if (!expanded) {
+    return (
+      <button
+        type="button"
+        onClick={() => setExpanded(true)}
+        className="flex w-full items-center justify-between gap-3 rounded-2xl border border-ab-line bg-ab-card px-3 py-2.5 text-left text-ab-text transition-all duration-150 hover:border-ab-line-hi"
+        aria-expanded="false"
+        aria-label={`Vehicle class: ${selectedClass.name}. Tap to change.`}
+      >
+        <span className="flex items-center gap-2.5">
+          <span className="text-ab-text">{vehicleIcons[selectedClass.id]}</span>
+          <span className="flex flex-col">
+            <span className="text-[10px] font-medium uppercase tracking-[0.22em] text-ab-text-mute">
+              Vehicle
+            </span>
+            <span className="text-sm font-semibold leading-tight">
+              {selectedClass.name}
+            </span>
+          </span>
+        </span>
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-ab-text-dim">
+          Change
+        </span>
+      </button>
+    );
+  }
+
   return (
     <TooltipProvider>
       <div className="flex items-stretch gap-2">
@@ -107,7 +138,10 @@ export function VehicleClassSelector({
             key={vc.id}
             vehicleClass={vc}
             selected={value === vc.id}
-            onSelect={() => onChange(vc.id)}
+            onSelect={() => {
+              onChange(vc.id);
+              setExpanded(false);
+            }}
           />
         ))}
       </div>
