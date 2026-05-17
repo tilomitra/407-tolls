@@ -9,9 +9,17 @@ import "./globals.css";
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#ffffff",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#1a1a1a" },
+  ],
   viewportFit: "cover",
 };
+
+// Runs synchronously before paint to apply the saved theme, avoiding a
+// light-to-dark flash on first load. Kept as a string so React doesn't try
+// to escape its contents.
+const themeBootstrapScript = `(function(){try{var p=localStorage.getItem('407-theme');var d=p==='dark'||((!p||p==='system')&&window.matchMedia('(prefers-color-scheme: dark)').matches);if(d)document.documentElement.classList.add('dark');}catch(e){}})();`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
@@ -40,7 +48,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
+      </head>
       <body className="min-h-screen overflow-x-hidden bg-ab-black text-ab-text antialiased">
         <SwRegister />
         <Header />

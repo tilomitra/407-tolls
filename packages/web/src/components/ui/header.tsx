@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export function Header() {
   return (
@@ -13,9 +14,12 @@ export function Header() {
             407 tolls
           </span>
         </Link>
-        <span className="inline-flex items-center rounded-full border border-ab-line bg-ab-ink px-3 py-1 text-[11px] font-medium text-ab-text-dim">
-          2026 rates
-        </span>
+        <div className="flex items-center gap-2 sm:gap-3">
+          <span className="inline-flex items-center rounded-full border border-ab-line bg-ab-ink px-3 py-1 text-[11px] font-medium text-ab-text-dim">
+            2026 rates
+          </span>
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   );
