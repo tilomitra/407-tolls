@@ -43,7 +43,7 @@ export function StyledSelect({
             </svg>
           </ListboxButton>
 
-          <ListboxOptions className="absolute z-50 mt-2 max-h-60 w-full overflow-auto rounded-xl border border-ab-line bg-ab-card py-2 shadow-[0_6px_20px_rgba(0,0,0,0.12)] focus:outline-none">
+          <ListboxOptions className="absolute z-50 mt-2 max-h-60 w-full touch-pan-y overflow-auto overscroll-contain rounded-xl border border-ab-line bg-ab-card py-2 shadow-[0_6px_20px_rgba(0,0,0,0.12)] focus:outline-none">
             {options.map((o) => (
               <ListboxOption
                 key={o.value}
