@@ -58,11 +58,13 @@ function googleMapsUrl(r: RankedRoute, origin: LatLng, destination: LatLng): str
     origin: llStr(origin),
     destination: llStr(destination),
     travelmode: "driving",
+    dir_action: "navigate",
   });
   if (r.kind === "no_407") {
     params.set("avoid", "tolls");
   } else if (r.onRamp && r.offRamp) {
     params.set("waypoints", `${llStr(r.onRamp.location)}|${llStr(r.offRamp.location)}`);
+    params.set("waypoint_names", `${r.onRamp.name}|${r.offRamp.name}`);
   }
   return `https://www.google.com/maps/dir/?${params.toString()}`;
 }
