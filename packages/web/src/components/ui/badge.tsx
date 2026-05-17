@@ -1,11 +1,11 @@
 type BadgeVariant = "default" | "success" | "warning" | "info" | "zone";
 
 const variantStyles: Record<BadgeVariant, string> = {
-  default: "bg-amex-elev text-amex-text-dim border border-amex-line-hi",
-  success: "bg-transparent text-amex-emerald border border-[color:var(--color-amex-emerald)]/40",
-  warning: "bg-transparent text-amex-gold border border-amex-gold-deep",
-  info: "bg-transparent text-amex-violet border border-[color:var(--color-amex-violet)]/40",
-  zone: "text-[10px] tracking-[0.18em]",
+  default: "bg-ab-ink text-ab-text-dim border border-ab-line",
+  success: "bg-ab-emerald-deep text-ab-emerald border border-transparent",
+  warning: "bg-ab-amber-deep text-ab-amber border border-transparent",
+  info: "bg-ab-violet-deep text-ab-violet border border-transparent",
+  zone: "text-[10px] tracking-[0.04em]",
 };
 
 export function Badge({
@@ -21,7 +21,7 @@ export function Badge({
 }) {
   return (
     <span
-      className={`inline-flex items-center px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.18em] ${variantStyles[variant]} ${className}`}
+      className={`inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold tracking-tight ${variantStyles[variant]} ${className}`}
       style={style}
     >
       {children}

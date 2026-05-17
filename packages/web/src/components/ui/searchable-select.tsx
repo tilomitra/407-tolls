@@ -61,25 +61,25 @@ export function SearchableSelect<T extends SearchableSelectOption>({
       <div className="relative">
         <ComboboxInput
           ref={inputRef}
-          className="block w-full cursor-pointer appearance-none bg-transparent text-sm text-amex-text placeholder:text-amex-text-mute focus:outline-none"
+          className="block w-full cursor-pointer appearance-none bg-transparent text-sm text-ab-text placeholder:text-ab-text-mute focus:outline-none"
           displayValue={(o: T | null) => o?.label ?? ""}
           onChange={(e) => setQuery(e.target.value)}
           onFocus={handleFocus}
           placeholder={placeholder}
         />
 
-        <ComboboxOptions className="absolute left-0 right-0 z-50 mt-2 max-h-52 overflow-y-auto overflow-x-hidden border border-amex-gold-deep bg-amex-ink shadow-[0_8px_24px_rgba(0,0,0,0.7)]">
+        <ComboboxOptions className="absolute left-0 right-0 z-50 mt-2 max-h-60 overflow-y-auto overflow-x-hidden rounded-xl border border-ab-line bg-ab-card py-2 shadow-[0_6px_20px_rgba(0,0,0,0.12)]">
           {filtered.length === 0 ? (
-            <div className="px-3 py-2 text-xs text-amex-text-mute">No results</div>
+            <div className="px-4 py-2 text-sm text-ab-text-mute">No results</div>
           ) : (
             filtered.map((o) => (
               <ComboboxOption
                 key={o.id}
                 value={o}
-                className="cursor-pointer px-3 py-2 data-[focus]:bg-amex-gold-mist data-[selected]:bg-amex-gold-mist"
+                className="cursor-pointer px-4 py-2 data-[focus]:bg-ab-ink data-[selected]:bg-ab-gold-mist"
               >
                 {renderOption ? renderOption(o) : (
-                  <div className="text-sm text-amex-text">{o.label}</div>
+                  <div className="text-sm text-ab-text">{o.label}</div>
                 )}
               </ComboboxOption>
             ))

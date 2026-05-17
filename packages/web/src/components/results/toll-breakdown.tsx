@@ -51,19 +51,18 @@ export function TollBreakdownView({
       <CardHeader>
         <div className="flex items-start justify-between">
           <div>
-            <p className="text-amex-eyebrow mb-1">Statement</p>
-            <div className="flex flex-wrap items-center gap-1.5">
-              <h2 className="text-sm font-semibold uppercase tracking-[0.16em] text-amex-text">Toll Estimate</h2>
+            <div className="flex flex-wrap items-center gap-2">
+              <h2 className="text-lg font-semibold tracking-tight text-ab-text">Toll estimate</h2>
               <DirectionBadge direction={breakdown.direction} />
               {isPeak && <Badge variant="warning">Peak</Badge>}
             </div>
-            <p className="mt-1 text-[11px] uppercase tracking-[0.14em] text-amex-text-mute">
+            <p className="mt-1 text-sm text-ab-text-dim">
               {vehicleClass.name} · {totalDistanceKm.toFixed(1)} km · {breakdown.perZone.length}{" "}
               {breakdown.perZone.length === 1 ? "zone" : "zones"}
             </p>
           </div>
           <div className="flex shrink-0 items-center gap-3">
-            <span className="text-3xl font-bold tabular-nums tracking-tight text-amex-gold">
+            <span className="text-3xl font-bold tabular-nums tracking-tight text-ab-gold">
               {formatDollars(breakdown.totalCents)}
             </span>
             <ShareButton
@@ -80,12 +79,12 @@ export function TollBreakdownView({
         </div>
       </CardHeader>
 
-      {children && <div className="border-b border-amex-line px-6 py-3">{children}</div>}
+      {children && <div className="border-b border-ab-line px-6 py-3">{children}</div>}
 
       <CardBody className="p-0">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-amex-line bg-amex-ink text-left text-[10px] font-medium uppercase tracking-[0.22em] text-amex-text-mute">
+            <tr className="border-b border-ab-line bg-ab-ink text-left text-xs font-semibold text-ab-text-dim">
               <th className="px-6 py-3">Zone</th>
               <th className="px-6 py-3 text-right">Distance</th>
               <th className="hidden px-6 py-3 text-right sm:table-cell">Rate</th>
@@ -96,18 +95,18 @@ export function TollBreakdownView({
             {breakdown.perZone.map((z, i) => (
               <tr
                 key={z.zone}
-                className={i < breakdown.perZone.length - 1 ? "border-b border-amex-line-mute" : ""}
+                className={i < breakdown.perZone.length - 1 ? "border-b border-ab-line-mute" : ""}
               >
                 <td className="px-6 py-3">
                   <ZoneBadge zone={z.zone} />
                 </td>
-                <td className="px-6 py-3 text-right tabular-nums text-amex-text-dim">
+                <td className="px-6 py-3 text-right tabular-nums text-ab-text-dim">
                   {z.distanceKm.toFixed(1)} km
                 </td>
-                <td className="hidden px-6 py-3 text-right tabular-nums text-amex-text-mute sm:table-cell">
+                <td className="hidden px-6 py-3 text-right tabular-nums text-ab-text-dim sm:table-cell">
                   {z.rateCentsPerKm.toFixed(1)}&cent;/km
                 </td>
-                <td className="px-6 py-3 text-right tabular-nums font-medium text-amex-text">
+                <td className="px-6 py-3 text-right tabular-nums font-medium text-ab-text">
                   {formatDollars(z.costCents)}
                 </td>
               </tr>
@@ -115,25 +114,25 @@ export function TollBreakdownView({
           </tbody>
         </table>
 
-        <div className="border-t border-amex-line px-6 py-3">
+        <div className="border-t border-ab-line px-6 py-3">
           <div className="space-y-1.5">
-            <div className="flex justify-between text-sm text-amex-text-dim">
+            <div className="flex justify-between text-sm text-ab-text-dim">
               <span>Toll (distance-based)</span>
               <span className="tabular-nums">{formatDollars(breakdown.tollCents)}</span>
             </div>
-            <div className="flex justify-between text-sm text-amex-text-dim">
+            <div className="flex justify-between text-sm text-ab-text-dim">
               <span>Trip charge</span>
               <span className="tabular-nums">{formatDollars(breakdown.tripChargeCents)}</span>
             </div>
             {breakdown.cameraChargeCents > 0 && (
-              <div className="flex justify-between text-sm text-amex-amber">
+              <div className="flex justify-between text-sm text-ab-amber">
                 <span>Camera charge (no transponder)</span>
                 <span className="tabular-nums">{formatDollars(breakdown.cameraChargeCents)}</span>
               </div>
             )}
-            <div className="flex justify-between border-t border-amex-line pt-2 text-base font-semibold uppercase tracking-[0.14em] text-amex-gold-hi">
+            <div className="flex justify-between border-t border-ab-line pt-2 text-base font-semibold text-ab-text">
               <span>Estimated total</span>
-              <span className="tabular-nums">{formatDollars(breakdown.totalCents)}</span>
+              <span className="tabular-nums text-ab-gold">{formatDollars(breakdown.totalCents)}</span>
             </div>
           </div>
 
@@ -143,7 +142,7 @@ export function TollBreakdownView({
             </div>
           )}
 
-          <p className="mt-3 text-[10px] uppercase tracking-[0.14em] text-amex-text-faint">
+          <p className="mt-3 text-xs text-ab-text-mute">
             Estimate · 2026 rates · Trip charge {formatDollars(breakdown.tripChargeCents)} included
           </p>
         </div>

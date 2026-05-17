@@ -2,46 +2,43 @@ import Link from "next/link";
 
 export function Header() {
   return (
-    <header className="border-b border-amex-line bg-amex-black/95 backdrop-blur supports-[backdrop-filter]:bg-amex-black/70">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 sm:py-5">
-        <Link href="/" className="group flex items-center gap-3">
-          <CenturionMark />
-          <div className="flex flex-col leading-none">
-            <span className="text-[10px] font-medium uppercase tracking-[0.32em] text-amex-gold">
-              407 · Member
-            </span>
-            <span className="mt-1 text-base font-semibold tracking-[0.18em] text-amex-text uppercase group-hover:text-amex-gold-hi transition-colors">
-              Tolls
-            </span>
-          </div>
+    <header className="sticky top-0 z-30 border-b border-ab-line bg-ab-black/90 backdrop-blur supports-[backdrop-filter]:bg-ab-black/70">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
+        <Link
+          href="/"
+          className="group flex items-center gap-2.5 rounded-full px-2 py-1 -mx-2 transition-colors hover:bg-ab-ink"
+        >
+          <RauschMark />
+          <span className="text-base font-semibold tracking-tight text-ab-gold-hi group-hover:text-ab-gold transition-colors">
+            407 tolls
+          </span>
         </Link>
-        <span className="border border-amex-gold-deep px-3 py-1 text-[10px] font-medium uppercase tracking-[0.28em] text-amex-gold">
-          2026 · Rates
+        <span className="inline-flex items-center rounded-full border border-ab-line bg-ab-ink px-3 py-1 text-[11px] font-medium text-ab-text-dim">
+          2026 rates
         </span>
       </div>
     </header>
   );
 }
 
-function CenturionMark() {
+function RauschMark() {
   return (
     <span
       aria-hidden
-      className="relative flex h-9 w-9 items-center justify-center border border-amex-gold-deep bg-amex-black"
+      className="relative flex h-8 w-8 items-center justify-center rounded-full bg-ab-gold text-white shadow-sm"
     >
       <svg
         viewBox="0 0 32 32"
-        className="h-5 w-5 text-amex-gold"
+        className="h-4 w-4"
         fill="none"
         stroke="currentColor"
-        strokeWidth="1.25"
-        strokeLinecap="square"
-        strokeLinejoin="miter"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       >
-        {/* abstract centurion-style helmet glyph */}
-        <path d="M6 22 V12 L16 6 L26 12 V22" />
-        <path d="M11 22 V14 L16 11 L21 14 V22" />
-        <line x1="6" y1="26" x2="26" y2="26" />
+        {/* Stylized highway curve mark */}
+        <path d="M6 22 C 10 8, 22 8, 26 22" />
+        <circle cx="16" cy="14" r="1.5" fill="currentColor" stroke="none" />
       </svg>
     </span>
   );

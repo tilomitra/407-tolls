@@ -69,22 +69,22 @@ function VehicleOption({
     <Tooltip
       content={
         <div>
-          <p className="font-semibold text-amex-gold-hi">{vehicleClass.name}</p>
-          <p className="mt-0.5 text-amex-text-dim">{vehicleClass.description}</p>
+          <p className="font-semibold text-white">{vehicleClass.name}</p>
+          <p className="mt-0.5 text-white/70">{vehicleClass.description}</p>
         </div>
       }
     >
       <button
         type="button"
         onClick={onSelect}
-        className={`flex flex-col items-center gap-1 border px-3 py-2 transition-all duration-150 ${
+        className={`flex flex-1 flex-col items-center gap-1.5 rounded-2xl border px-3 py-3 transition-all duration-150 ${
           selected
-            ? "border-amex-gold bg-amex-gold-mist text-amex-gold-hi"
-            : "border-amex-line-mute text-amex-text-mute hover:border-amex-line-hi hover:text-amex-text-dim"
+            ? "border-ab-text bg-ab-card text-ab-text shadow-sm"
+            : "border-ab-line bg-ab-card text-ab-text-dim hover:border-ab-line-hi hover:text-ab-text"
         }`}
       >
         {vehicleIcons[vehicleClass.id]}
-        <span className="text-[9px] font-medium uppercase tracking-[0.18em] leading-tight">
+        <span className="text-[11px] font-semibold leading-tight">
           {vehicleClass.name}
         </span>
       </button>
@@ -101,7 +101,7 @@ export function VehicleClassSelector({
 }) {
   return (
     <TooltipProvider>
-      <div className="flex items-center gap-1">
+      <div className="flex items-stretch gap-2">
         {VEHICLE_CLASSES.map((vc) => (
           <VehicleOption
             key={vc.id}

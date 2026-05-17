@@ -56,7 +56,7 @@ export function PlannerApp() {
       <div className="lg:col-span-2">
         <PlannerForm onSubmit={handleSubmit} loading={loading} />
         {error && (
-          <div className="mt-3 border border-[color:var(--color-amex-ruby)]/40 bg-amex-ruby-deep/40 px-4 py-3 text-sm text-amex-ruby">
+          <div className="mt-3 rounded-2xl border border-[color:var(--color-ab-ruby)]/30 bg-ab-ruby-deep px-4 py-3 text-sm text-ab-ruby">
             {error}
           </div>
         )}
@@ -73,13 +73,18 @@ export function PlannerApp() {
           />
         ) : (
           <Card className="flex h-full items-center justify-center p-12">
-            <div className="text-center">
-              <p className="text-amex-eyebrow">Member Itinerary</p>
-              <p className="mt-2 text-sm uppercase tracking-[0.14em] text-amex-text">
-                Plan your trip
-              </p>
-              <p className="mt-2 text-[11px] uppercase tracking-[0.16em] text-amex-text-mute">
-                Enter origin and destination to compare 407 vs. no-toll routes
+            <div className="max-w-sm text-center">
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-ab-gold-mist">
+                <svg className="h-7 w-7 text-ab-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+                  <path d="M17.657 16.657L13.414 20.9a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-ab-text">
+                Compare your routes
+              </h3>
+              <p className="mt-2 text-sm text-ab-text-dim">
+                Enter an origin and destination to see toll, time, and distance for every route option.
               </p>
             </div>
           </Card>

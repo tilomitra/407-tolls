@@ -24,10 +24,10 @@ function trafficLevel(driveTimeMinutes: number, staticDurationMinutes?: number):
 }
 
 function trafficColor(level: TrafficLevel): string {
-  if (level === "light") return "text-amex-emerald";
-  if (level === "moderate") return "text-amex-amber";
-  if (level === "heavy") return "text-amex-ruby";
-  return "text-amex-text";
+  if (level === "light") return "text-ab-emerald";
+  if (level === "moderate") return "text-ab-amber";
+  if (level === "heavy") return "text-ab-ruby";
+  return "text-ab-text";
 }
 
 function routeKindLabel(r: RouteOption): string {
@@ -96,8 +96,8 @@ export function RouteCards({
     return (
       <Card className="flex h-full items-center justify-center p-12">
         <div className="text-center">
-          <p className="text-amex-eyebrow">No Routes Yet</p>
-          <p className="mt-2 text-xs text-amex-text-mute">Pick origin and destination to see options</p>
+          <p className="text-base font-semibold text-ab-text">No routes yet</p>
+          <p className="mt-2 text-sm text-ab-text-dim">Pick origin and destination to see options</p>
         </div>
       </Card>
     );
@@ -113,8 +113,8 @@ export function RouteCards({
   return (
     <div className="space-y-3">
       {noTollIsHeavy && (
-        <div className="flex items-center gap-2 border border-amex-amber-deep bg-amex-amber-deep/30 px-3 py-2 text-[11px] uppercase tracking-[0.16em] text-amex-amber">
-          <svg className="h-3.5 w-3.5 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+        <div className="flex items-center gap-2 rounded-2xl border border-ab-amber-deep bg-ab-amber-deep px-4 py-3 text-sm font-medium text-ab-amber">
+          <svg className="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
           </svg>
           Heavy traffic — 407 may save significant time
@@ -124,7 +124,7 @@ export function RouteCards({
       <Card className="overflow-x-auto">
         <table className="w-full min-w-[340px] text-sm">
           <thead>
-            <tr className="border-b border-amex-line bg-amex-ink text-left text-[10px] font-medium uppercase tracking-[0.22em] text-amex-text-mute">
+            <tr className="border-b border-ab-line bg-ab-ink text-left text-xs font-semibold text-ab-text-dim">
               <th className="px-4 py-3">Route</th>
               <th className="px-4 py-3">Time</th>
               <th className="px-4 py-3 text-right">Cost</th>
@@ -156,13 +156,13 @@ export function RouteCards({
                       onSelect(r.id);
                     }
                   }}
-                  className={`cursor-pointer border-b border-amex-line last:border-0 transition-colors ${
-                    isSelected ? "bg-amex-gold-mist" : "hover:bg-amex-elev"
+                  className={`cursor-pointer border-b border-ab-line last:border-0 transition-colors ${
+                    isSelected ? "bg-ab-gold-mist" : "hover:bg-ab-ink"
                   }`}
                 >
                   <td className="px-4 py-3">
                     <div className="flex flex-wrap items-center gap-1.5">
-                      <span className={`font-semibold uppercase tracking-[0.12em] text-sm ${isSelected ? "text-amex-gold-hi" : "text-amex-text"}`}>
+                      <span className={`font-semibold text-sm ${isSelected ? "text-ab-gold-hi" : "text-ab-text"}`}>
                         {routeKindLabel(r)}
                       </span>
                       {r.badges.map((b) => {
@@ -171,13 +171,13 @@ export function RouteCards({
                       })}
                     </div>
                     {r.kind === "partial_407" && r.onRamp && r.offRamp && (
-                      <div className="mt-1 space-y-0.5 text-[10px] uppercase tracking-[0.14em] text-amex-text-mute">
-                        <p><span className="text-amex-text-faint">Enter</span> {r.onRamp.name}</p>
-                        <p><span className="text-amex-text-faint">Exit</span> {r.offRamp.name}</p>
+                      <div className="mt-1 space-y-0.5 text-xs text-ab-text-dim">
+                        <p><span className="text-ab-text-mute">Enter</span> {r.onRamp.name}</p>
+                        <p><span className="text-ab-text-mute">Exit</span> {r.offRamp.name}</p>
                       </div>
                     )}
                     {r.kind === "full_407" && r.onRamp && r.offRamp && (
-                      <p className="mt-0.5 text-[10px] uppercase tracking-[0.14em] text-amex-text-mute">
+                      <p className="mt-0.5 text-xs text-ab-text-dim">
                         {r.onRamp.name} → {r.offRamp.name}
                       </p>
                     )}
@@ -187,7 +187,7 @@ export function RouteCards({
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
-                        className="mt-1 inline-flex items-center gap-1 text-[10px] uppercase tracking-[0.18em] text-amex-gold hover:text-amex-gold-hi"
+                        className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-ab-gold hover:text-ab-gold-hi underline-offset-2 hover:underline"
                       >
                         <svg className="h-3 w-3" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" />
@@ -200,10 +200,10 @@ export function RouteCards({
                   <td className="px-4 py-3">
                     <span className={`font-semibold tabular-nums ${timeColor}`}>{formatMinutes(r.driveTimeMinutes)}</span>
                     {r.kind !== "no_407" && noTollMinutes > 0 && timeSavedVsNoToll !== 0 && (
-                      <p className={`text-[10px] tabular-nums ${
+                      <p className={`text-xs tabular-nums ${
                         timeSavedVsNoToll > 0
-                          ? noTollIsHeavy ? "text-amex-emerald" : "text-amex-text-mute"
-                          : "text-amex-text-mute"
+                          ? noTollIsHeavy ? "text-ab-emerald" : "text-ab-text-dim"
+                          : "text-ab-text-dim"
                       }`}>
                         {timeSavedVsNoToll > 0
                           ? `−${formatMinutes(timeSavedVsNoToll)}`
@@ -213,14 +213,14 @@ export function RouteCards({
                   </td>
 
                   <td className="px-4 py-3 text-right">
-                    <span className="font-semibold tabular-nums text-amex-text">{formatDollars(tollCents)}</span>
+                    <span className="font-semibold tabular-nums text-ab-text">{formatDollars(tollCents)}</span>
                   </td>
 
                   <td className="px-4 py-3 text-right">
                     {costPerMinSaved !== null ? (
-                      <span className="font-medium tabular-nums text-amex-text-dim">${costPerMinSaved.toFixed(2)}</span>
+                      <span className="font-medium tabular-nums text-ab-text-dim">${costPerMinSaved.toFixed(2)}</span>
                     ) : (
-                      <span className="text-amex-text-faint">—</span>
+                      <span className="text-ab-text-faint">—</span>
                     )}
                   </td>
                 </tr>

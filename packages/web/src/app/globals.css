@@ -1,6 +1,6 @@
 @import "tailwindcss" source("../");
 
-/* Monaspace Neon — Amex Black inspired typography */
+/* Monaspace Neon — Airbnb-inspired layout with monospace typography */
 @font-face {
   font-family: "Monaspace Neon";
   src: url("https://cdn.jsdelivr.net/gh/githubnext/monaspace@v1.101/fonts/webfonts/MonaspaceNeon-Light.woff2") format("woff2");
@@ -42,65 +42,72 @@
     Consolas, "Liberation Mono", "Courier New", monospace;
   --font-mono: "Monaspace Neon", ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* Amex Black Card palette — matte black with champagne gold accents */
-  --color-amex-black: #000000;
-  --color-amex-ink: #050505;
-  --color-amex-card: #0c0c0c;
-  --color-amex-elev: #141414;
-  --color-amex-line: #1c1c1c;
-  --color-amex-line-hi: #2a2a2a;
-  --color-amex-line-mute: #131313;
+  /* Airbnb palette — soft whites, hospitable greys, signature Rausch coral */
+  --color-ab-black: #ffffff;          /* page surface — bright off-white canvas */
+  --color-ab-ink: #f7f7f7;            /* secondary surface tint */
+  --color-ab-card: #ffffff;           /* card background */
+  --color-ab-elev: #ffffff;           /* elevated card */
+  --color-ab-line: #ebebeb;           /* default hairline */
+  --color-ab-line-hi: #dddddd;        /* stronger border */
+  --color-ab-line-mute: #f0f0f0;      /* very faint divider */
 
-  --color-amex-paper: #f4ede0;
-  --color-amex-paper-dim: #c8bfae;
-  --color-amex-text: #ededed;
-  --color-amex-text-dim: #a3a09a;
-  --color-amex-text-mute: #6a675f;
-  --color-amex-text-faint: #3d3b36;
+  --color-ab-paper: #ffffff;
+  --color-ab-paper-dim: #f7f7f7;
+  --color-ab-text: #222222;           /* primary ink */
+  --color-ab-text-dim: #717171;       /* Airbnb secondary text */
+  --color-ab-text-mute: #b0b0b0;      /* tertiary / placeholder */
+  --color-ab-text-faint: #dddddd;     /* nearly disabled */
 
-  /* Champagne gold (Centurion-inspired) */
-  --color-amex-gold: #c5a572;
-  --color-amex-gold-hi: #dcc28e;
-  --color-amex-gold-lo: #8a7350;
-  --color-amex-gold-deep: #574532;
-  --color-amex-gold-mist: rgba(197, 165, 114, 0.08);
+  /* Rausch — the signature Airbnb coral, used as primary accent */
+  --color-ab-gold: #ff385c;           /* Rausch */
+  --color-ab-gold-hi: #e31c5f;        /* darker rausch for hover/press */
+  --color-ab-gold-lo: #ff8095;        /* lighter pink tint */
+  --color-ab-gold-deep: #b1153f;      /* deep rausch for borders */
+  --color-ab-gold-mist: rgba(255, 56, 92, 0.08); /* tinted background wash */
 
-  /* Status accents tuned for dark background */
-  --color-amex-emerald: #7fb287;
-  --color-amex-emerald-deep: #1f3a26;
-  --color-amex-amber: #d8a85a;
-  --color-amex-amber-deep: #3a2c14;
-  --color-amex-ruby: #c47171;
-  --color-amex-ruby-deep: #3a1c1c;
-  --color-amex-violet: #9b8bbf;
-  --color-amex-violet-deep: #2a223a;
+  /* Status accents tuned for a bright surface */
+  --color-ab-emerald: #1d8a72;        /* teal/forest for success */
+  --color-ab-emerald-deep: #e3f4ef;   /* light teal wash */
+  --color-ab-amber: #b27300;          /* warm amber for warnings */
+  --color-ab-amber-deep: #fdf3df;     /* warm amber wash */
+  --color-ab-ruby: #c13515;           /* Airbnb error red */
+  --color-ab-ruby-deep: #fde7e1;      /* soft ruby wash */
+  --color-ab-violet: #7b2c8c;         /* violet accent */
+  --color-ab-violet-deep: #f5e9f7;    /* soft violet wash */
+
+  /* Radius scale */
+  --radius-ab-sm: 8px;
+  --radius-ab-md: 12px;
+  --radius-ab-lg: 16px;
+  --radius-ab-xl: 24px;
+  --radius-ab-pill: 9999px;
+
+  /* Soft elevation, Airbnb-style */
+  --shadow-ab-sm: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.02);
+  --shadow-ab-md: 0 6px 16px rgba(0, 0, 0, 0.08);
+  --shadow-ab-lg: 0 12px 32px rgba(0, 0, 0, 0.12);
 }
 
 @layer base {
   html,
   body {
-    background: var(--color-amex-black);
-    color: var(--color-amex-text);
+    background: var(--color-ab-black);
+    color: var(--color-ab-text);
   }
 
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "ss01", "ss02", "calt";
-    letter-spacing: -0.01em;
+    letter-spacing: -0.005em;
     /* Home indicator clearance on iPhone */
     padding-bottom: env(safe-area-inset-bottom);
-    background-image:
-      radial-gradient(
-        ellipse 80% 50% at 50% -10%,
-        rgba(197, 165, 114, 0.06),
-        transparent 70%
-      ),
-      linear-gradient(
-        180deg,
-        var(--color-amex-black) 0%,
-        var(--color-amex-ink) 100%
-      );
+    background-color: var(--color-ab-black);
+    background-image: radial-gradient(
+      ellipse 80% 50% at 50% -10%,
+      rgba(255, 56, 92, 0.05),
+      transparent 70%
+    );
     background-attachment: fixed;
   }
 
@@ -113,8 +120,8 @@
 
   /* Selection */
   ::selection {
-    background: var(--color-amex-gold);
-    color: var(--color-amex-black);
+    background: var(--color-ab-gold);
+    color: #ffffff;
   }
 
   /* Scrollbars (WebKit) */
@@ -123,17 +130,17 @@
     height: 10px;
   }
   ::-webkit-scrollbar-track {
-    background: var(--color-amex-black);
+    background: var(--color-ab-ink);
   }
   ::-webkit-scrollbar-thumb {
-    background: var(--color-amex-line-hi);
-    border-radius: 0;
+    background: var(--color-ab-line-hi);
+    border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-amex-gold-lo);
+    background: var(--color-ab-text-mute);
   }
 
-  /* Form fields inherit dark surface */
+  /* Form fields inherit light surface */
   input,
   select,
   textarea,
@@ -144,42 +151,35 @@
 
   input::placeholder,
   textarea::placeholder {
-    color: var(--color-amex-text-mute);
+    color: var(--color-ab-text-mute);
   }
 }
 
-/* Subtle hairline border that hints at the embossed gold edge */
-@utility border-amex-hairline {
-  border-color: var(--color-amex-line);
+/* Subtle hairline border */
+@utility border-ab-hairline {
+  border-color: var(--color-ab-line);
 }
 
-/* Etched gold uppercase label, Centurion-style */
-@utility text-amex-eyebrow {
-  font-size: 0.625rem;
-  letter-spacing: 0.22em;
+/* Airbnb-style small label — friendlier tracking than the old centurion eyebrow */
+@utility text-ab-eyebrow {
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  font-weight: 500;
-  color: var(--color-amex-gold);
+  font-weight: 600;
+  color: var(--color-ab-gold);
 }
 
-/* Card with the matte-black, gold-edge feel */
-@utility surface-amex {
-  background: linear-gradient(
-    180deg,
-    rgba(20, 20, 20, 1) 0%,
-    rgba(8, 8, 8, 1) 100%
-  );
-  border: 1px solid var(--color-amex-line);
-  box-shadow:
-    inset 0 1px 0 rgba(197, 165, 114, 0.04),
-    0 1px 0 rgba(0, 0, 0, 0.6);
+/* Rounded white card with soft shadow */
+@utility surface-ab {
+  background: var(--color-ab-card);
+  border: 1px solid var(--color-ab-line);
+  border-radius: var(--radius-ab-lg);
+  box-shadow: var(--shadow-ab-sm);
 }
 
-@utility surface-amex-elev {
-  background: linear-gradient(
-    180deg,
-    rgba(28, 28, 28, 1) 0%,
-    rgba(14, 14, 14, 1) 100%
-  );
-  border: 1px solid var(--color-amex-line-hi);
+@utility surface-ab-elev {
+  background: var(--color-ab-elev);
+  border: 1px solid var(--color-ab-line);
+  border-radius: var(--radius-ab-lg);
+  box-shadow: var(--shadow-ab-md);
 }
