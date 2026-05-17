@@ -8,10 +8,10 @@ export function TransponderCallout({
   const isPositive = hasTransponder;
 
   return (
-    <div className={`border px-3 py-2 text-xs ${
+    <div className={`rounded-xl border px-3 py-2.5 text-xs ${
       isPositive
-        ? "border-[color:var(--color-amex-emerald)]/40 bg-amex-emerald-deep/40 text-amex-emerald"
-        : "border-amex-gold-deep bg-amex-gold-mist text-amex-gold-hi"
+        ? "border-[color:var(--color-ab-emerald)]/20 bg-ab-emerald-deep text-ab-emerald"
+        : "border-ab-gold-deep/20 bg-ab-gold-mist text-ab-gold-hi"
     }`}>
       <p>
         {isPositive ? "Your transponder saves you" : "Get a transponder and save"}{" "}

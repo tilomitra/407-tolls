@@ -138,7 +138,7 @@ export function AddressAutocomplete({
   return (
     <div ref={containerRef} className="relative">
       <div className="mb-1.5 flex items-center justify-between">
-        <span className="text-[10px] font-medium uppercase tracking-[0.22em] text-amex-text-mute">
+        <span className="text-xs font-medium text-ab-text-dim">
           {label}
         </span>
         {allowCurrentLocation && (
@@ -147,7 +147,7 @@ export function AddressAutocomplete({
             onClick={handleCurrentLocation}
             disabled={geoLoading}
             title="Use current location"
-            className="flex items-center gap-1 text-[10px] font-medium uppercase tracking-[0.18em] text-amex-gold hover:text-amex-gold-hi disabled:text-amex-text-faint"
+            className="flex items-center gap-1 text-xs font-semibold text-ab-gold hover:text-ab-gold-hi disabled:text-ab-text-faint"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -165,7 +165,7 @@ export function AddressAutocomplete({
           </button>
         )}
       </div>
-      {geoError && <p className="mb-1 text-xs text-amex-ruby">{geoError}</p>}
+      {geoError && <p className="mb-1 text-xs text-ab-ruby">{geoError}</p>}
       <input
         type="text"
         value={value}
@@ -194,16 +194,16 @@ export function AddressAutocomplete({
         }}
         placeholder={placeholder}
         className="
-          w-full border border-amex-line-hi bg-amex-ink px-3 py-2
-          text-sm text-amex-text placeholder:text-amex-text-mute
-          focus:border-amex-gold focus:outline-none focus:ring-1 focus:ring-amex-gold
+          w-full rounded-xl border border-ab-line-hi bg-ab-card px-4 py-2.5
+          text-sm text-ab-text placeholder:text-ab-text-mute
+          focus:border-ab-text focus:outline-none focus:ring-2 focus:ring-ab-gold/30
         "
         autoComplete="off"
       />
       {open && (loading || suggestions.length > 0) && (
-        <div className="absolute z-20 mt-1 w-full overflow-hidden border border-amex-gold-deep bg-amex-ink shadow-[0_8px_24px_rgba(0,0,0,0.7)]">
+        <div className="absolute z-20 mt-2 w-full overflow-hidden rounded-xl border border-ab-line bg-ab-card shadow-[0_6px_20px_rgba(0,0,0,0.12)]">
           {loading && suggestions.length === 0 && (
-            <div className="px-3 py-2 text-xs text-amex-text-mute">Searching…</div>
+            <div className="px-4 py-2 text-sm text-ab-text-mute">Searching…</div>
           )}
           {suggestions.map((s, i) => (
             <button
@@ -211,13 +211,13 @@ export function AddressAutocomplete({
               type="button"
               onMouseEnter={() => setActiveIdx(i)}
               onClick={() => void selectSuggestion(s)}
-              className={`flex w-full flex-col items-start px-3 py-2 text-left transition-colors ${
-                i === activeIdx ? "bg-amex-gold-mist text-amex-gold-hi" : "hover:bg-amex-elev"
+              className={`flex w-full flex-col items-start px-4 py-2.5 text-left transition-colors ${
+                i === activeIdx ? "bg-ab-ink" : "hover:bg-ab-ink"
               }`}
             >
-              <span className="text-sm font-medium text-amex-text">{s.mainText}</span>
+              <span className="text-sm font-medium text-ab-text">{s.mainText}</span>
               {s.secondaryText && (
-                <span className="text-xs text-amex-text-mute">{s.secondaryText}</span>
+                <span className="text-xs text-ab-text-dim">{s.secondaryText}</span>
               )}
             </button>
           ))}

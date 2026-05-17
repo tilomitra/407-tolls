@@ -20,10 +20,10 @@ export function Tooltip({
       <TooltipPrimitive.Portal>
         <TooltipPrimitive.Content
           sideOffset={6}
-          className="z-50 w-48 border border-amex-gold-deep bg-amex-ink px-3 py-2 text-xs text-amex-text-dim shadow-[0_8px_24px_rgba(0,0,0,0.6)] animate-in fade-in-0 zoom-in-95"
+          className="z-50 w-48 rounded-xl border border-ab-line bg-ab-text px-3 py-2 text-xs text-white shadow-[0_6px_20px_rgba(0,0,0,0.18)] animate-in fade-in-0 zoom-in-95"
         >
           {content}
-          <TooltipPrimitive.Arrow className="fill-amex-ink" />
+          <TooltipPrimitive.Arrow className="fill-ab-text" />
         </TooltipPrimitive.Content>
       </TooltipPrimitive.Portal>
     </TooltipPrimitive.Root>

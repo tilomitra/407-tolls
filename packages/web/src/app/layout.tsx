@@ -9,7 +9,7 @@ import "./globals.css";
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#000000",
+  themeColor: "#ffffff",
   viewportFit: "cover",
 };
 
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     title: "407 Tolls",
-    statusBarStyle: "black-translucent",
+    statusBarStyle: "default",
   },
   manifest: "/manifest.json",
   openGraph: {
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="min-h-screen overflow-x-hidden bg-amex-black text-amex-text antialiased">
+      <body className="min-h-screen overflow-x-hidden bg-ab-black text-ab-text antialiased">
         <SwRegister />
         <Header />
         {children}

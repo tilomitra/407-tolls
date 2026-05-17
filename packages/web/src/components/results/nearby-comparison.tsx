@@ -21,28 +21,28 @@ function AlternativeRow({
       type={onClick ? "button" : undefined}
       onClick={onClick}
       className={`flex w-full items-center justify-between gap-4 py-3 text-left ${
-        onClick ? "-mx-2 px-2 transition-colors hover:bg-amex-gold-mist active:bg-amex-gold-mist cursor-pointer" : ""
+        onClick ? "-mx-2 px-2 transition-colors hover:bg-ab-gold-mist active:bg-ab-gold-mist cursor-pointer" : ""
       }`}
     >
       <div className="min-w-0">
-        <p className="text-sm font-medium text-amex-text">
-          <span className="text-[10px] uppercase tracking-[0.18em] text-amex-text-mute">{label}</span>{" "}
-          <span className="text-amex-gold-hi">{alternative.interchange.name}</span>
+        <p className="text-sm font-medium text-ab-text">
+          <span className="text-xs font-semibold text-ab-text-dim">{label}</span>{" "}
+          <span className="text-ab-gold-hi">{alternative.interchange.name}</span>
         </p>
-        <p className="text-xs text-amex-text-mute">
+        <p className="text-xs text-ab-text-dim">
           instead of {currentName}
           {extraKm !== 0 && (
-            <span className="ml-1 text-amex-text-faint">
+            <span className="ml-1 text-ab-text-mute">
               ({extraKm > 0 ? "+" : ""}{extraKm.toFixed(1)} km on 407)
             </span>
           )}
         </p>
       </div>
       <div className="shrink-0 text-right">
-        <p className="text-sm font-semibold tabular-nums text-amex-emerald">
+        <p className="text-sm font-semibold tabular-nums text-ab-emerald">
           -{formatDollars(savingsPerMonth)}/mo
         </p>
-        <p className="text-[10px] uppercase tracking-[0.16em] text-amex-text-mute tabular-nums">
+        <p className="text-xs text-ab-text-dim tabular-nums">
           -{formatDollars(savingsPerMonth * 12)}/yr
         </p>
       </div>
@@ -66,14 +66,14 @@ export function NearbyComparisonView({
       <Card>
         <CardBody>
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center border border-[color:var(--color-amex-emerald)]/40 bg-amex-emerald-deep/30">
-              <svg className="h-4 w-4 text-amex-emerald" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ab-emerald-deep">
+              <svg className="h-4 w-4 text-ab-emerald" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             </div>
             <div>
-              <p className="text-sm font-medium uppercase tracking-[0.14em] text-amex-text">Best route already</p>
-              <p className="text-xs text-amex-text-mute">No nearby interchange is cheaper for this commute.</p>
+              <p className="text-sm font-semibold text-ab-text">Best route already</p>
+              <p className="text-xs text-ab-text-dim">No nearby interchange is cheaper for this commute.</p>
             </div>
           </div>
         </CardBody>
@@ -85,12 +85,11 @@ export function NearbyComparisonView({
     <Card>
       <CardBody className="space-y-0">
         <div className="mb-2">
-          <p className="text-amex-eyebrow">Optimization</p>
-          <h3 className="mt-1 text-sm font-semibold uppercase tracking-[0.14em] text-amex-text">Could you save more?</h3>
-          <p className="text-[11px] uppercase tracking-[0.14em] text-amex-text-mute">Nearby interchanges with lower monthly costs</p>
+          <h3 className="text-lg font-semibold tracking-tight text-ab-text">Could you save more?</h3>
+          <p className="text-sm text-ab-text-dim">Nearby interchanges with lower monthly costs</p>
         </div>
 
-        <div className="divide-y divide-[color:var(--color-amex-line-mute)]">
+        <div className="divide-y divide-[color:var(--color-ab-line-mute)]">
           {comparison.alternatives.map((alt) => (
             <AlternativeRow
               key={`${alt.role}-${alt.interchange.id}`}
@@ -101,7 +100,7 @@ export function NearbyComparisonView({
           ))}
         </div>
 
-        <p className="mt-3 text-[10px] uppercase tracking-[0.14em] text-amex-text-faint">
+        <p className="mt-3 text-xs text-ab-text-mute">
           Savings based on schedule. Excludes extra driving time to alternate interchange.
         </p>
       </CardBody>

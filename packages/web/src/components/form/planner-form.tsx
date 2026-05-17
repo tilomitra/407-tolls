@@ -107,11 +107,13 @@ export function PlannerForm({
   return (
     <Card>
       <CardBody>
-        <div className="mb-5 flex items-center justify-between">
-          <span className="text-amex-eyebrow">Itinerary</span>
-          <span className="text-[10px] font-medium uppercase tracking-[0.22em] text-amex-text-faint">
-            Member · 407
-          </span>
+        <div className="mb-5">
+          <h2 className="text-xl font-semibold tracking-tight text-ab-text">
+            Plan your trip
+          </h2>
+          <p className="mt-1 text-sm text-ab-text-dim">
+            Compare 407 ETR tolls against toll-free routes.
+          </p>
         </div>
         <form
           className="space-y-5"
@@ -129,7 +131,7 @@ export function PlannerForm({
         >
           <VehicleClassSelector value={vehicleClassId} onChange={setVehicleClassId} />
 
-          <div className="relative border border-amex-line-hi p-3">
+          <div className="relative rounded-2xl border border-ab-line bg-ab-ink p-3">
             <div className="space-y-3">
               <AddressAutocomplete
                 label="From"
@@ -156,7 +158,7 @@ export function PlannerForm({
                 setDestination(origin);
               }}
               title="Swap origin and destination"
-              className="absolute right-3 top-1/2 -translate-y-1/2 border border-amex-gold-deep bg-amex-ink p-1.5 text-amex-gold-lo transition-colors hover:border-amex-gold hover:text-amex-gold-hi"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full border border-ab-line-hi bg-ab-card p-2 text-ab-text-dim shadow-sm transition-colors hover:border-ab-text hover:text-ab-text"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-4">
                 <path fillRule="evenodd" d="M13.2 2.24a.75.75 0 0 0 .04 1.06l2.1 1.95H6.75a.75.75 0 0 0 0 1.5h8.59l-2.1 1.95a.75.75 0 1 0 1.02 1.1l3.5-3.25a.75.75 0 0 0 0-1.1l-3.5-3.25a.75.75 0 0 0-1.06.04Zm-6.4 8a.75.75 0 0 0-1.06-.04l-3.5 3.25a.75.75 0 0 0 0 1.1l3.5 3.25a.75.75 0 1 0 1.02-1.1l-2.1-1.95h8.59a.75.75 0 0 0 0-1.5H4.66l2.1-1.95a.75.75 0 0 0 .04-1.06Z" clipRule="evenodd" />
@@ -166,21 +168,21 @@ export function PlannerForm({
 
           {/* Timing toggle */}
           <div className="space-y-3">
-            <div className="flex gap-2">
+            <div className="inline-flex gap-1 rounded-full bg-ab-ink p-1">
               {(["now", "later"] as const).map((opt) => (
                 <button
                   key={opt}
                   type="button"
                   onClick={() => setTiming(opt)}
                   className={`
-                    border px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] transition-colors
+                    rounded-full px-4 py-1.5 text-sm font-semibold transition-colors
                     ${timing === opt
-                      ? "border-amex-gold bg-amex-gold-mist text-amex-gold-hi"
-                      : "border-amex-line-hi bg-amex-ink text-amex-text-dim hover:border-amex-gold-lo"
+                      ? "bg-ab-card text-ab-text shadow-sm"
+                      : "text-ab-text-dim hover:text-ab-text"
                     }
                   `}
                 >
-                  {opt === "now" ? "Depart Now" : "Schedule"}
+                  {opt === "now" ? "Depart now" : "Schedule"}
                 </button>
               ))}
             </div>
@@ -210,7 +212,7 @@ export function PlannerForm({
           </div>
 
           {vehicleClass.hasTransponderOption && (
-            <div className="border-t border-amex-line pt-4">
+            <div className="border-t border-ab-line pt-4">
               <Toggle
                 checked={hasTransponder}
                 onChange={setHasTransponder}
@@ -228,23 +230,23 @@ export function PlannerForm({
             type="submit"
             disabled={!ready || loading}
             className="
-              relative flex w-full items-center justify-center gap-2 border border-amex-gold bg-amex-gold px-4 py-3
-              text-[11px] font-semibold uppercase tracking-[0.28em] text-amex-black transition-all
-              hover:bg-amex-gold-hi hover:border-amex-gold-hi
-              disabled:cursor-not-allowed disabled:border-amex-line-hi disabled:bg-amex-elev disabled:text-amex-text-faint
+              relative flex w-full items-center justify-center gap-2 rounded-full bg-ab-gold px-5 py-3.5
+              text-base font-semibold text-white shadow-sm transition-all
+              hover:bg-ab-gold-hi
+              disabled:cursor-not-allowed disabled:bg-ab-line-hi disabled:text-white/70 disabled:shadow-none
             "
           >
             {loading && (
-              <svg className="h-3.5 w-3.5 animate-spin" viewBox="0 0 24 24" fill="none">
+              <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
             )}
-            {loading ? "Calculating" : "Compare Routes"}
+            {loading ? "Calculating…" : "Compare routes"}
           </button>
 
           {!ready && (originText || destinationText) && (
-            <p className="text-center text-[10px] uppercase tracking-[0.18em] text-amex-text-mute">
+            <p className="text-center text-xs text-ab-text-dim">
               Select an address from the dropdown to continue
             </p>
           )}

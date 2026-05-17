@@ -127,8 +127,8 @@ function DayPicker({
               border transition-colors duration-150
               ${
                 active
-                  ? "border-amex-gold bg-amex-gold text-amex-black"
-                  : "border-amex-line-hi bg-amex-ink text-amex-text-dim hover:border-amex-gold-lo hover:text-amex-gold-hi"
+                  ? "border-ab-gold bg-ab-gold text-ab-black"
+                  : "border-ab-line-hi bg-ab-ink text-ab-text-dim hover:border-ab-gold-lo hover:text-ab-gold-hi"
               }
             `}
           >
@@ -198,13 +198,13 @@ export function RouteForm({
 
   const renderInterchangeOption = (o: (typeof interchangeOptions)[number]) => (
     <>
-      <div className="text-sm font-medium text-amex-text">{o.label}</div>
-      <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-amex-text-mute">
+      <div className="text-sm font-medium text-ab-text">{o.label}</div>
+      <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-ab-text-mute">
         <span>Zone {o.zone}</span>
         {o.note && (
           <>
-            <span className="h-2.5 w-px bg-amex-line-hi" />
-            <span className="text-amex-amber">{o.note}</span>
+            <span className="h-2.5 w-px bg-ab-line-hi" />
+            <span className="text-ab-amber">{o.note}</span>
           </>
         )}
       </div>
@@ -410,9 +410,9 @@ export function RouteForm({
           <VehicleClassSelector value={vehicleClassId} onChange={setVehicleClassId} />
 
           <div className="relative">
-            <div className="border border-amex-line-hi">
+            <div className="border border-ab-line-hi">
               <div className="px-3 pb-2 pt-3">
-                <span className="mb-1.5 block text-[10px] font-medium uppercase tracking-[0.22em] text-amex-text-mute">
+                <span className="mb-1.5 block text-[10px] font-medium uppercase tracking-[0.22em] text-ab-text-mute">
                   Enter at
                 </span>
                 <SearchableSelect
@@ -424,10 +424,10 @@ export function RouteForm({
                 />
               </div>
 
-              <div className="border-t border-amex-line" />
+              <div className="border-t border-ab-line" />
 
               <div className="px-3 pb-3 pt-2">
-                <span className="mb-1.5 block text-[10px] font-medium uppercase tracking-[0.22em] text-amex-text-mute">
+                <span className="mb-1.5 block text-[10px] font-medium uppercase tracking-[0.22em] text-ab-text-mute">
                   Exit at
                 </span>
                 <SearchableSelect
@@ -450,14 +450,14 @@ export function RouteForm({
               className="
                 absolute right-3 top-1/2 -translate-y-1/2
                 flex h-9 w-9 items-center justify-center
-                border border-amex-gold-deep bg-amex-ink
+                border border-ab-gold-deep bg-ab-ink
                 transition-all duration-150
-                hover:border-amex-gold hover:text-amex-gold-hi
+                hover:border-ab-gold hover:text-ab-gold-hi
                 active:scale-90
               "
             >
               <svg
-                className="h-4 w-4 text-amex-gold"
+                className="h-4 w-4 text-ab-gold"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -498,13 +498,13 @@ export function RouteForm({
           ) : (
             <>
               <div className="space-y-3">
-                <span className="block text-amex-eyebrow">Days</span>
+                <span className="block text-ab-eyebrow">Days</span>
                 <DayPicker selected={commuteDays} onChange={setCommuteDays} />
               </div>
 
               {hasWeekdayDays && (
                 <div className="space-y-3">
-                  <span className="block text-amex-eyebrow">Weekday schedule</span>
+                  <span className="block text-ab-eyebrow">Weekday schedule</span>
                   <div className={`grid gap-3 ${isRoundTrip ? "grid-cols-2" : "grid-cols-1"}`}>
                     <StyledSelect
                       label="Departure"
@@ -526,7 +526,7 @@ export function RouteForm({
 
               {hasWeekendDays && (
                 <div className="space-y-3">
-                  <span className="block text-amex-eyebrow">Weekend schedule</span>
+                  <span className="block text-ab-eyebrow">Weekend schedule</span>
                   <div className={`grid gap-3 ${isRoundTrip ? "grid-cols-2" : "grid-cols-1"}`}>
                     <StyledSelect
                       label="Departure"
@@ -549,7 +549,7 @@ export function RouteForm({
           )}
 
           {vehicleClass.hasTransponderOption && (
-            <div className="border-t border-amex-line pt-4">
+            <div className="border-t border-ab-line pt-4">
               <Toggle
                 checked={hasTransponder}
                 onChange={setHasTransponder}
@@ -564,17 +564,17 @@ export function RouteForm({
           )}
 
           {sameInterchange && (
-            <p className="text-center text-[11px] uppercase tracking-[0.18em] text-amex-amber">
+            <p className="text-center text-[11px] uppercase tracking-[0.18em] text-ab-amber">
               Entry and exit must be different interchanges
             </p>
           )}
 
           {routeError && !sameInterchange && (
-            <p className="text-center text-[11px] uppercase tracking-[0.18em] text-amex-amber">{routeError}</p>
+            <p className="text-center text-[11px] uppercase tracking-[0.18em] text-ab-amber">{routeError}</p>
           )}
 
           {error && (
-            <div className="border border-[color:var(--color-amex-ruby)]/40 bg-amex-ruby-deep/40 px-4 py-3 text-sm text-amex-ruby">{error}</div>
+            <div className="rounded-2xl border border-[color:var(--color-ab-ruby)]/30 bg-ab-ruby-deep px-4 py-3 text-sm text-ab-ruby">{error}</div>
           )}
         </div>
       </CardBody>

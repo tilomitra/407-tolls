@@ -55,12 +55,12 @@ export function CommutePageClient({
   return (
     <div className="space-y-4">
       <div className="flex items-baseline justify-between gap-4">
-        <h2 className="text-xl font-semibold uppercase tracking-[0.14em] text-amex-text">
-          {entryName} <span className="text-amex-gold-lo">→</span> {exitName}
+        <h2 className="text-xl font-semibold tracking-tight text-ab-text">
+          {entryName} <span className="text-ab-gold">→</span> {exitName}
         </h2>
         <a
           href={`/?entry=${entryId}&exit=${exitId}&mode=commute`}
-          className="shrink-0 border border-amex-line-hi px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.22em] text-amex-text-dim transition-colors hover:border-amex-gold-lo hover:text-amex-gold-hi"
+          className="shrink-0 rounded-full border border-ab-line-hi bg-ab-card px-3 py-1.5 text-xs font-semibold text-ab-text transition-colors hover:border-ab-text hover:bg-ab-ink"
         >
           Plan your own →
         </a>

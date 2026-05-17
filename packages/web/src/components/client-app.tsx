@@ -235,9 +235,9 @@ export function ClientApp({
           ) : (
             <Card className="flex h-full items-center justify-center p-12">
               <div className="text-center">
-                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center border border-amex-gold-deep bg-amex-ink">
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center border border-ab-gold-deep bg-ab-ink">
                   <svg
-                    className="h-6 w-6 text-amex-gold"
+                    className="h-6 w-6 text-ab-gold"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -250,13 +250,13 @@ export function ClientApp({
                     />
                   </svg>
                 </div>
-                <p className="text-amex-eyebrow">
+                <p className="text-ab-eyebrow">
                   {routeError ? "Route Unavailable" : "Awaiting Selection"}
                 </p>
-                <p className="mt-2 text-sm uppercase tracking-[0.14em] text-amex-text">
+                <p className="mt-2 text-sm uppercase tracking-[0.14em] text-ab-text">
                   {routeError ? "Route not available" : "Select your route"}
                 </p>
-                <p className="mt-2 text-[11px] uppercase tracking-[0.16em] text-amex-text-mute">
+                <p className="mt-2 text-[11px] uppercase tracking-[0.16em] text-ab-text-mute">
                   {routeError ?? "Pick entry and exit interchanges or click the map"}
                 </p>
               </div>
