@@ -166,7 +166,14 @@ export async function planTrip({
     badges,
   }));
 
-  return { routes: ranked };
+  // Every deduped candidate, so the client can compute things like a
+  // "best route under $X budget" picker without re-fetching directions.
+  const allRoutes = unique.map((r, i) => ({
+    ...r,
+    id: `cand${i}-${routeId(r, i)}`,
+  }));
+
+  return { routes: ranked, allRoutes };
 }
 
 function routeId(r: RouteOption, i: number): string {
