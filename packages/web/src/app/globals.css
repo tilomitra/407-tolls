@@ -132,6 +132,15 @@
     color: var(--color-ab-text);
   }
 
+  html {
+    /* Stop iOS rubber-band scroll from exposing the browser chrome and
+       prevent pull-to-refresh in standalone PWA mode. */
+    overscroll-behavior-y: none;
+    /* Don't let iOS upsize text when rotating to landscape. */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -146,6 +155,32 @@
       transparent 70%
     );
     background-attachment: fixed;
+  }
+
+  /* Native-feeling touch on interactive elements: no gray tap flash, no
+     iOS long-press callout/preview, no accidental text selection on
+     UI chrome. Inputs/textareas keep their default selection behavior. */
+  a,
+  button,
+  [role="button"],
+  [role="switch"],
+  [role="tab"],
+  label,
+  summary {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
+  }
+
+  /* Prevent iOS Safari from auto-zooming the viewport when focusing a
+     form control with a sub-16px font. Only applied at narrow widths so
+     desktop keeps its compact 14px input typography. */
+  @media (max-width: 640px) {
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+    select,
+    textarea {
+      font-size: 16px;
+    }
   }
 
   .dark body {

@@ -68,7 +68,7 @@ export function SearchableSelect<T extends SearchableSelectOption>({
           placeholder={placeholder}
         />
 
-        <ComboboxOptions className="absolute left-0 right-0 z-50 mt-2 max-h-60 overflow-y-auto overflow-x-hidden rounded-xl border border-ab-line bg-ab-card py-2 shadow-[0_6px_20px_rgba(0,0,0,0.12)]">
+        <ComboboxOptions className="absolute left-0 right-0 z-50 mt-2 max-h-60 touch-pan-y overflow-y-auto overflow-x-hidden overscroll-contain rounded-xl border border-ab-line bg-ab-card py-2 shadow-[0_6px_20px_rgba(0,0,0,0.12)]">
           {filtered.length === 0 ? (
             <div className="px-4 py-2 text-sm text-ab-text-mute">No results</div>
           ) : (

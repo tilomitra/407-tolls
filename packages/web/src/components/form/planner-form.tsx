@@ -158,7 +158,7 @@ export function PlannerForm({
                 setDestination(origin);
               }}
               title="Swap origin and destination"
-              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full border border-ab-line-hi bg-ab-card p-2 text-ab-text-dim shadow-sm transition-colors hover:border-ab-text hover:text-ab-text"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full border border-ab-line-hi bg-ab-card p-2 text-ab-text-dim shadow-sm transition-all duration-150 hover:border-ab-text hover:text-ab-text active:scale-90 active:duration-75"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-4">
                 <path fillRule="evenodd" d="M13.2 2.24a.75.75 0 0 0 .04 1.06l2.1 1.95H6.75a.75.75 0 0 0 0 1.5h8.59l-2.1 1.95a.75.75 0 1 0 1.02 1.1l3.5-3.25a.75.75 0 0 0 0-1.1l-3.5-3.25a.75.75 0 0 0-1.06.04Zm-6.4 8a.75.75 0 0 0-1.06-.04l-3.5 3.25a.75.75 0 0 0 0 1.1l3.5 3.25a.75.75 0 1 0 1.02-1.1l-2.1-1.95h8.59a.75.75 0 0 0 0-1.5H4.66l2.1-1.95a.75.75 0 0 0 .04-1.06Z" clipRule="evenodd" />
@@ -175,7 +175,8 @@ export function PlannerForm({
                   type="button"
                   onClick={() => setTiming(opt)}
                   className={`
-                    rounded-full px-4 py-1.5 text-sm font-semibold transition-colors
+                    rounded-full px-4 py-1.5 text-sm font-semibold transition-all duration-150
+                    active:scale-95 active:duration-75
                     ${timing === opt
                       ? "bg-ab-card text-ab-text shadow-sm"
                       : "text-ab-text-dim hover:text-ab-text"
@@ -233,7 +234,8 @@ export function PlannerForm({
               relative flex w-full items-center justify-center gap-2 rounded-full bg-ab-gold px-5 py-3.5
               text-base font-semibold text-white shadow-sm transition-all
               hover:bg-ab-gold-hi
-              disabled:cursor-not-allowed disabled:bg-ab-line-hi disabled:text-white/70 disabled:shadow-none
+              active:scale-[0.98] active:duration-75
+              disabled:cursor-not-allowed disabled:bg-ab-line-hi disabled:text-white/70 disabled:shadow-none disabled:active:scale-100
             "
           >
             {loading && (

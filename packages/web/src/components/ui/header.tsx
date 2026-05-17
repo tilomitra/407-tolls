@@ -3,7 +3,7 @@ import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-30 border-b border-ab-line bg-ab-black/90 backdrop-blur supports-[backdrop-filter]:bg-ab-black/70">
+    <header className="sticky top-0 z-30 border-b border-ab-line bg-ab-black/90 backdrop-blur-xl supports-[backdrop-filter]:bg-ab-black/70">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
         <Link
           href="/"
