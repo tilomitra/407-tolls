@@ -156,7 +156,7 @@ export function RouteCards({
                       onSelect(r.id);
                     }
                   }}
-                  className={`cursor-pointer border-b border-ab-line last:border-0 transition-colors ${
+                  className={`cursor-pointer border-b border-ab-line last:border-0 transition-colors active:bg-ab-ink ${
                     isSelected ? "bg-ab-gold-mist" : "hover:bg-ab-ink"
                   }`}
                 >

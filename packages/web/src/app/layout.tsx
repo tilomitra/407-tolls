@@ -52,7 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
       </head>
-      <body className="min-h-screen overflow-x-hidden bg-ab-black text-ab-text antialiased">
+      <body className="min-h-dvh overflow-x-hidden bg-ab-black text-ab-text antialiased">
         <SwRegister />
         <Header />
         {children}

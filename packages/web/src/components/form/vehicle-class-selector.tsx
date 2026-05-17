@@ -78,7 +78,7 @@ function VehicleOption({
       <button
         type="button"
         onClick={onSelect}
-        className={`flex flex-1 flex-col items-center gap-1.5 rounded-2xl border px-3 py-3 transition-all duration-150 ${
+        className={`flex flex-1 flex-col items-center gap-1.5 rounded-2xl border px-3 py-3 transition-all duration-150 active:scale-[0.97] active:duration-75 ${
           selected
             ? "border-ab-text bg-ab-card text-ab-text shadow-sm"
             : "border-ab-line bg-ab-card text-ab-text-dim hover:border-ab-line-hi hover:text-ab-text"
@@ -108,7 +108,7 @@ export function VehicleClassSelector({
       <button
         type="button"
         onClick={() => setExpanded(true)}
-        className="flex w-full items-center justify-between gap-3 rounded-2xl border border-ab-line bg-ab-card px-3 py-2.5 text-left text-ab-text transition-all duration-150 hover:border-ab-line-hi"
+        className="flex w-full items-center justify-between gap-3 rounded-2xl border border-ab-line bg-ab-card px-3 py-2.5 text-left text-ab-text transition-all duration-150 active:scale-[0.99] active:bg-ab-ink hover:border-ab-line-hi"
         aria-expanded="false"
         aria-label={`Vehicle class: ${selectedClass.name}. Tap to change.`}
       >
