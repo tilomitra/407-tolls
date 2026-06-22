@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 import { CompareInputSchema, planTrip } from "@407-tolls/core";
 import { z } from "zod/v4";
-import { getOnRampsForDirection } from "@/lib/load-toll-points";
-import { inferDirection } from "@407-tolls/core";
+import { getTripRamps } from "@/lib/load-toll-points";
 import { getDirections, getNoTollDirections } from "@/lib/directions";
 
 export async function POST(req: Request) {
@@ -18,8 +17,7 @@ export async function POST(req: Request) {
     }
 
     const { origin, destination } = parsed.data;
-    const direction = inferDirection({ entryLng: origin.lng, exitLng: destination.lng });
-    const onRamps = getOnRampsForDirection({ direction });
+    const { onRamps } = getTripRamps({ origin, destination });
 
     const result = await planTrip({
       input: parsed.data,

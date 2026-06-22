@@ -232,7 +232,7 @@ export type RouteOption = z.infer<typeof RouteOptionSchema>;
 
 export const CompareResultSchema = z.object({
   routes: z.array(RouteOptionSchema),
-  defaultRoute: RouteOptionSchema,
+  defaultRoute: RouteOptionSchema.nullable(),
   bestSaving: z
     .object({
       savingsCents: z.number(),

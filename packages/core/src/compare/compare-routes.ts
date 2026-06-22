@@ -1,5 +1,5 @@
 import type { CompareResult, CompareRoutesArgs, Direction, RouteOption } from "../types";
-import { findNearestOnRamps, inferDirection } from "../geo";
+import { inferDirection, inferTripDirection, selectSpreadRamps } from "../geo";
 import { calculateToll } from "../toll";
 
 export async function compareRoutes({
@@ -10,24 +10,47 @@ export async function compareRoutes({
 }: CompareRoutesArgs): Promise<CompareResult> {
   const { origin, destination, timeSlot, hasTransponder, maxRamps = 4 } = input;
 
-  const nearestOnRamps = findNearestOnRamps({ origin, ramps: onRamps, count: maxRamps });
-  const nearestOffRamps = findNearestOnRamps({
-    origin: destination,
+  // Candidate entries are spread along the trip starting from the on-ramp nearest
+  // the origin; candidate exits are spread back from the off-ramp nearest the
+  // destination. This surfaces genuinely different places to get on/off the 407
+  // (enter early and ride longer vs. stay on surface streets and enter later)
+  // rather than a cluster of adjacent interchanges.
+  const entryRamps = selectSpreadRamps({
+    anchor: origin,
+    far: destination,
+    ramps: onRamps,
+    count: maxRamps,
+  });
+  const exitRamps = selectSpreadRamps({
+    anchor: destination,
+    far: origin,
     ramps: offRamps,
     count: maxRamps,
   });
 
+  // Trip direction along the 407, derived by projecting both endpoints onto the
+  // highway (km of the nearest ramp) rather than comparing raw longitudes —
+  // otherwise a destination off to the side of the corridor (e.g. Niagara Falls,
+  // reached via the QEW at the highway's west end) gets the wrong direction and
+  // every candidate pair is discarded. km markers increase eastward, so a valid
+  // entry/exit pair must have the exit ahead of the entry in the travel direction.
+  const tripDirection = inferTripDirection({ origin, destination, ramps: onRamps });
+  const isExitAhead = (entryKm: number, exitKm: number): boolean =>
+    tripDirection === "eastbound" ? exitKm > entryKm : exitKm < entryKm;
+
   // Build candidate pairs, compute tolls (cheap, sync), and fire directions calls in parallel
   const candidates: Array<{
-    onRamp: (typeof nearestOnRamps)[number];
-    offRamp: (typeof nearestOffRamps)[number];
+    onRamp: (typeof entryRamps)[number];
+    offRamp: (typeof exitRamps)[number];
     direction: Direction;
     isDefault: boolean;
   }> = [];
 
-  for (const onRamp of nearestOnRamps) {
-    for (const offRamp of nearestOffRamps) {
+  for (const onRamp of entryRamps) {
+    for (const offRamp of exitRamps) {
       if (onRamp.id === offRamp.id) continue;
+      // Skip pairs that would run backwards (exit behind the entry).
+      if (!isExitAhead(onRamp.km, offRamp.km)) continue;
 
       candidates.push({
         onRamp,
@@ -36,9 +59,16 @@ export async function compareRoutes({
           entryLng: onRamp.location.lng,
           exitLng: offRamp.location.lng,
         }),
-        isDefault: onRamp.id === nearestOnRamps[0]?.id && offRamp.id === nearestOffRamps[0]?.id,
+        isDefault: onRamp.id === entryRamps[0]?.id && offRamp.id === exitRamps[0]?.id,
       });
     }
+  }
+
+  // Degenerate trips (origin and destination map to the same interchange, or no
+  // forward-ordered pair exists) yield no 407 option. Bail out cleanly rather
+  // than dereferencing an empty routes array.
+  if (candidates.length === 0) {
+    return { routes: [], defaultRoute: null, bestSaving: null };
   }
 
   // Parallel directions API calls instead of sequential awaits

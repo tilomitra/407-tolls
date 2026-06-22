@@ -9,6 +9,7 @@ import type {
   RouteOption,
 } from "../types";
 import { compareRoutes } from "./compare-routes";
+import { buildRampOrder, interchangeGap } from "../geo";
 
 export interface PlanTripArgs {
   input: CompareInput;
@@ -18,12 +19,11 @@ export interface PlanTripArgs {
   getNoTollDirections: NoTollDirectionsProvider;
 }
 
-// Two routes are considered meaningfully different if cost differs by at least
-// MIN_COST_DIFF_CENTS OR drive time differs by at least MIN_TIME_DIFF_MIN. Both
-// thresholds together mean: routes that are within ~$0.50 AND within ~2 min are
-// treated as duplicates and won't both be shown.
-const MIN_COST_DIFF_CENTS = 50;
-const MIN_TIME_DIFF_MIN = 2;
+// Two 407 routes are only "different enough" to show side by side when they use
+// meaningfully different ramps. Entering (or exiting) one interchange over is not
+// a distinct choice for a driver, so we require the entry OR the exit to differ
+// by at least this many interchanges. The no-407 baseline is always distinct.
+const MIN_INTERCHANGE_GAP = 2;
 
 /**
  * Plan a trip end-to-end: build the no-toll baseline and the 407 candidates,
@@ -45,6 +45,11 @@ export async function planTrip({
     compareRoutes({ input, onRamps, offRamps, getDirections }),
     getNoTollDirections({ origin: input.origin, destination: input.destination }),
   ]);
+
+  // Position-along-highway lookups so we can measure how many interchanges apart
+  // two routes' entry (or exit) ramps are.
+  const entryOrder = buildRampOrder(onRamps);
+  const exitOrder = buildRampOrder(offRamps);
 
   const noTollRoute: RouteOption = {
     kind: "no_407",
@@ -105,15 +110,18 @@ export async function planTrip({
     .sort((a, b) => b.score - a.score)
     .map((x) => x.i);
 
-  // Diversity check: two routes are "different enough" if either cost or time
-  // differs by more than the threshold. This prevents the value slots from
-  // landing on routes that look identical to the fastest/cheapest picks.
+  // Diversity check: two routes are "different enough" to occupy separate slots
+  // when they get on/off the highway at meaningfully different interchanges —
+  // entry OR exit at least MIN_INTERCHANGE_GAP interchanges apart. This keeps the
+  // suggestions spatially distinct instead of "the same trip, one ramp over". The
+  // no-407 baseline (null ramps) is always distinct from any 407 route.
   const isDifferentEnough = (aIdx: number, bIdx: number): boolean => {
     const a = unique[aIdx]!;
     const b = unique[bIdx]!;
-    const costDiff = Math.abs((a.toll?.totalCents ?? 0) - (b.toll?.totalCents ?? 0));
-    const timeDiff = Math.abs(a.driveTimeMinutes - b.driveTimeMinutes);
-    return costDiff >= MIN_COST_DIFF_CENTS || timeDiff >= MIN_TIME_DIFF_MIN;
+    if (a.kind === "no_407" || b.kind === "no_407") return true;
+    const entryGap = interchangeGap({ order: entryOrder, aId: a.onRamp?.id, bId: b.onRamp?.id });
+    const exitGap = interchangeGap({ order: exitOrder, aId: a.offRamp?.id, bId: b.offRamp?.id });
+    return entryGap >= MIN_INTERCHANGE_GAP || exitGap >= MIN_INTERCHANGE_GAP;
   };
 
   // Build slots. Each slot is a distinct route; if a route qualifies for
