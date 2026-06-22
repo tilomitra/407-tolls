@@ -1,6 +1,36 @@
-import type { LatLng, OnRamp, RampWithDistance } from "../types";
+import type { Direction, LatLng, OnRamp, RampWithDistance } from "../types";
 import { haversineKm } from "./haversine";
 import { findNearestOnRamps } from "./nearest-ramps";
+import { inferDirection } from "./direction";
+
+/**
+ * Decide which way a trip travels along the 407 by projecting each endpoint onto
+ * the highway — i.e. comparing the km marker of the ramp nearest the origin with
+ * the one nearest the destination. km increases eastward, so origin-km < dest-km
+ * means eastbound.
+ *
+ * This is far more reliable than comparing raw longitudes, which breaks when an
+ * endpoint is off to the side of the corridor. Example: Thornhill → Niagara
+ * Falls. Niagara sits slightly *east* of Thornhill in longitude, so a longitude
+ * test says "eastbound", but the nearest 407 access to Niagara is the QEW at the
+ * highway's *west* end — the trip actually runs westbound. Falls back to the
+ * longitude heuristic only when the two endpoints project to the same ramp.
+ */
+export function inferTripDirection({
+  origin,
+  destination,
+  ramps,
+}: {
+  origin: LatLng;
+  destination: LatLng;
+  ramps: readonly OnRamp[];
+}): Direction {
+  const lngFallback = inferDirection({ entryLng: origin.lng, exitLng: destination.lng });
+  const originRamp = findNearestOnRamps({ origin, ramps, count: 1 })[0];
+  const destRamp = findNearestOnRamps({ origin: destination, ramps, count: 1 })[0];
+  if (!originRamp || !destRamp || originRamp.km === destRamp.km) return lngFallback;
+  return originRamp.km < destRamp.km ? "eastbound" : "westbound";
+}
 
 /**
  * Rank ramps by their position along the highway (km marker) so we can reason

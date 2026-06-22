@@ -1,5 +1,5 @@
 import type { CompareResult, CompareRoutesArgs, Direction, RouteOption } from "../types";
-import { inferDirection, selectSpreadRamps } from "../geo";
+import { inferDirection, inferTripDirection, selectSpreadRamps } from "../geo";
 import { calculateToll } from "../toll";
 
 export async function compareRoutes({
@@ -28,13 +28,13 @@ export async function compareRoutes({
     count: maxRamps,
   });
 
-  // Trip direction from the actual origin → destination. Along the 407, km
-  // markers increase eastward, so a valid entry/exit pair must have the exit
-  // ahead of the entry in the direction of travel.
-  const tripDirection = inferDirection({
-    entryLng: origin.lng,
-    exitLng: destination.lng,
-  });
+  // Trip direction along the 407, derived by projecting both endpoints onto the
+  // highway (km of the nearest ramp) rather than comparing raw longitudes —
+  // otherwise a destination off to the side of the corridor (e.g. Niagara Falls,
+  // reached via the QEW at the highway's west end) gets the wrong direction and
+  // every candidate pair is discarded. km markers increase eastward, so a valid
+  // entry/exit pair must have the exit ahead of the entry in the travel direction.
+  const tripDirection = inferTripDirection({ origin, destination, ramps: onRamps });
   const isExitAhead = (entryKm: number, exitKm: number): boolean =>
     tripDirection === "eastbound" ? exitKm > entryKm : exitKm < entryKm;
 

@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 import type { OnRamp } from "../types";
-import { buildRampOrder, interchangeGap, selectSpreadRamps } from "./select-ramps";
+import {
+  buildRampOrder,
+  inferTripDirection,
+  interchangeGap,
+  selectSpreadRamps,
+} from "./select-ramps";
 
 // A toy stretch of highway running west→east. km increases eastward, mirroring
 // the real 407 where km 0 is at the QEW (west) and rises to the east end.
@@ -43,6 +48,28 @@ describe("interchangeGap", () => {
   it("treats missing ids (e.g. the no-407 baseline) as infinitely far", () => {
     expect(interchangeGap({ order, aId: null, bId: "r0" })).toBe(Infinity);
     expect(interchangeGap({ order, aId: "r0", bId: "nope" })).toBe(Infinity);
+  });
+});
+
+describe("inferTripDirection", () => {
+  it("uses corridor projection, not raw longitude", () => {
+    // Mirror Thornhill → Niagara Falls: the destination is slightly EAST in
+    // longitude, but its nearest highway access is the WEST end (km 0), so the
+    // trip is westbound. A naive longitude test would wrongly say eastbound.
+    const ramps: OnRamp[] = [
+      { id: "west", name: "QEW", km: 0, location: { lat: 43.4, lng: -79.83 }, zone: 1, isFree: false },
+      { id: "mid", name: "Bayview", km: 81, location: { lat: 43.82, lng: -79.41 }, zone: 8, isFree: false },
+    ];
+    const origin = { lat: 43.82, lng: -79.4 }; // nearest "mid" (km 81)
+    const destination = { lat: 43.06, lng: -79.11 }; // nearest "west" (km 0), but east in lng
+    expect(destination.lng > origin.lng).toBe(true); // longitude alone would say eastbound
+    expect(inferTripDirection({ origin, destination, ramps })).toBe("westbound");
+  });
+
+  it("returns eastbound when the destination projects further east", () => {
+    const origin = { lat: 43.7, lng: -79.8 }; // r0
+    const destination = { lat: 43.7, lng: -79.62 }; // r9
+    expect(inferTripDirection({ origin, destination, ramps: RAMPS })).toBe("eastbound");
   });
 });
 
